@@ -24,6 +24,7 @@ import com.hbmspace.items.weapon.ItemCustomRocket;
 import com.hbmspace.main.SpaceMain;
 import com.hbmspace.render.misc.RocketPart;
 import com.hbmspace.tileentity.machine.TileEntityOrbitalStation;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -48,6 +49,9 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @AutoRegister(name = "entity_rideable_rocket", trackingRange = 1000)
 public class EntityRideableRocket extends EntityMissileBaseNT implements ILookOverlay {
@@ -184,7 +188,7 @@ public class EntityRideableRocket extends EntityMissileBaseNT implements ILookOv
                 setDrive(navDrive);
             }
 
-            if(state == RocketState.AWAITING && ((rider != null && rider.jumpMovementFactor > 0) || !canRide())) {
+            if(state == RocketState.AWAITING && ((rider != null && rider.isJumping) || !canRide())) {
                 ItemVOTVdrive.Target from = CelestialBody.getTarget(world, (int)posX, (int)posZ);
                 ItemVOTVdrive.Target to = getTarget();
 
@@ -725,9 +729,9 @@ public class EntityRideableRocket extends EntityMissileBaseNT implements ILookOv
         RocketStruct rocket = getRocket();
         if(rocket.stages.size() == 0 && world.provider.getDimension() != SpaceConfig.orbitDimension && !isReusable()) return;
 
-        java.util.List<String> text = new java.util.ArrayList<>();
+        List<String> text = new ArrayList<>();
 
-        net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getMinecraft();
+        Minecraft mc = Minecraft.getMinecraft();
         EntityPlayer player = mc.player;
 
         ItemVOTVdrive.Target from = CelestialBody.getTarget(world, (int)posX, (int)posZ);
@@ -742,9 +746,9 @@ public class EntityRideableRocket extends EntityMissileBaseNT implements ILookOv
             canLaunch = false;
         }
 
-        if(this.getControllingPassenger() == null) {
+        if(this.getPassengers().isEmpty()) {
             text.add("Interact to enter");
-        } else if(this.getControllingPassenger() != player) {
+        } else if(this.getPassengers().get(0) != player) {
             text.add("OCCUPIED");
         } else {
             if(to.inOrbit) {
@@ -783,7 +787,7 @@ public class EntityRideableRocket extends EntityMissileBaseNT implements ILookOv
     }
 
     @Override
-    public java.util.List<ItemStack> getDebris() {
+    public List<ItemStack> getDebris() {
         return null;
     }
 

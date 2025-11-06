@@ -6,6 +6,7 @@ import com.hbm.util.ParticleUtil;
 import com.hbmspace.capability.HbmLivingCapabilitySpace;
 import com.hbmspace.dim.*;
 import com.hbmspace.dim.trait.CBT_Atmosphere;
+import com.hbmspace.entity.missile.EntityRideableRocket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityChicken;
@@ -14,6 +15,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -132,6 +134,15 @@ public class ModEventHandler {
             customProvider.setWorld(event.getWorld());
             customProvider.setDimension(0);
             event.getWorld().provider = customProvider;
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEntityMount(EntityMountEvent event) {
+        if (event.isDismounting() && event.getEntityBeingMounted() instanceof EntityRideableRocket rocket) {
+            if (rocket.getState() == EntityRideableRocket.RocketState.LAUNCHING) {
+                event.setCanceled(true);
+            }
         }
     }
 }
