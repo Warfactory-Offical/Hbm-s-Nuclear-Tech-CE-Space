@@ -2,6 +2,7 @@ package com.hbmspace.tileentity.machine;
 
 import com.hbm.api.fluid.IFluidStandardReceiver;
 import com.hbm.blocks.ModBlocks;
+import com.hbmspace.blocks.ModBlocksSpace;
 import com.hbmspace.entity.missile.EntityRideableRocket;
 import com.hbmspace.handler.RocketStruct;
 import com.hbm.inventory.fluid.Fluids;
@@ -142,7 +143,7 @@ public class TileEntityOrbitalStation extends TileEntityMachineBase implements I
     }
 
     public boolean isCore() {
-        return getBlockType() == ModBlocks.orbital_station;
+        return getBlockType() == ModBlocksSpace.orbital_station;
     }
 
     public DirPos[] getConPos() {

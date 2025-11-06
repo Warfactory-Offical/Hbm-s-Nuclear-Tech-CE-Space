@@ -5,6 +5,7 @@ import com.hbm.items.ISatChip;
 import com.hbm.items.ItemBase;
 import com.hbm.items.ModItems;
 import com.hbm.util.I18nUtil;
+import com.hbmspace.items.ItemBakedSpace;
 import com.hbmspace.items.ModItemsSpace;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.util.ITooltipFlag;
@@ -15,16 +16,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class ItemCustomRocket extends ItemBase implements ISatChip {
+public class ItemCustomRocket extends ItemBakedSpace implements ISatChip {
 
     public ItemCustomRocket(String s){
         super(s);
-        ModItems.ALL_ITEMS.remove(this);
-        ModItemsSpace.ALL_ITEMS.add(this);
     }
 
     public static ItemStack build(RocketStruct rocket) {
-        ItemStack stack = new ItemStack(ModItems.rocket_custom);
+        ItemStack stack = new ItemStack(ModItemsSpace.rocket_custom);
 
         stack.setTagCompound(new NBTTagCompound());
         rocket.writeToNBT(stack.getTagCompound());
@@ -41,7 +40,7 @@ public class ItemCustomRocket extends ItemBase implements ISatChip {
     }
 
     public static RocketStruct get(ItemStack stack) {
-        if(stack == null || !(stack.getItem() instanceof com.hbm.items.weapon.ItemCustomRocket) || stack.getTagCompound() == null)
+        if(stack == null || !(stack.getItem() instanceof ItemCustomRocket) || stack.getTagCompound() == null)
             return null;
 
         return RocketStruct.readFromNBT(stack.getTagCompound());

@@ -1,7 +1,7 @@
 package com.hbmspace.blocks.machine;
 
 import com.hbm.blocks.ILookOverlay;
-import com.hbm.dim.CelestialBody;
+import com.hbmspace.dim.CelestialBody;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.lib.ForgeDirection;
 import com.hbm.tileentity.TileEntityProxyCombo;

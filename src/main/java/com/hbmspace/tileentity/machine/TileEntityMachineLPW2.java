@@ -1,10 +1,10 @@
 package com.hbmspace.tileentity.machine;
 
 import com.hbm.api.fluid.IFluidStandardReceiver;
-import com.hbm.api.tile.IPropulsion;
+import com.hbmspace.api.tile.IPropulsion;
 import com.hbm.blocks.BlockDummyable;
-import com.hbm.dim.CelestialBody;
-import com.hbm.dim.SolarSystem;
+import com.hbmspace.dim.CelestialBody;
+import com.hbmspace.dim.SolarSystem;
 import com.hbmspace.interfaces.AutoRegister;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;

@@ -1,11 +1,21 @@
 package com.hbmspace.items;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.hbm.render.model.BakedModelTransforms;
+import com.hbm.util.I18nUtil;
 import com.hbmspace.config.SpaceConfig;
 import com.hbmspace.entity.missile.EntityRideableRocket;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbmspace.dim.CelestialBody;
 import com.hbmspace.dim.SolarSystem;
 import com.hbmspace.dim.orbit.OrbitalStation;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.model.ModelRotation;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,42 +27,122 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.model.*;
+import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.function.Function;
 
 public class ItemVOTVdrive extends ItemEnumMultiSpace {
-    public ItemVOTVdrive(String registryName) {
-        super(registryName, SolarSystem.Body.class, false, true);
+    @SideOnly(Side.CLIENT)
+    private ModelResourceLocation[] mrls;
+    @SideOnly(Side.CLIENT)
+    private final ResourceLocation baseTex = new ResourceLocation("hbm", "items/votv_f");
+    @SideOnly(Side.CLIENT)
+    private final ResourceLocation[] overlayTex;
+
+    public ItemVOTVdrive(String s) {
+        super(s, SolarSystem.Body.class, false, false);
         this.setMaxStackSize(1);
-        this.canRepair = false;
-    }
-
-    public static Destination getDestination(ItemStack stack) {
-        if (!stack.hasTagCompound())
-            stack.setTagCompound(new NBTTagCompound());
-
-        SolarSystem.Body body = SolarSystem.Body.values()[stack.getItemDamage()];
-        int x = stack.getTagCompound().getInteger("x");
-        int z = stack.getTagCompound().getInteger("z");
-        return new Destination(body, x, z);
-    }
-
-    public static Target getTarget(ItemStack stack, World world) {
-        if (stack == null) {
-            return new Target(null, false, false);
+        this.setNoRepair();
+        this.overlayTex = new ResourceLocation[SolarSystem.Body.values().length];
+        for (int i = 0; i < overlayTex.length; i++) {
+            SolarSystem.Body body = SolarSystem.Body.values()[i];
+            String name = body != SolarSystem.Body.ORBIT ? body.name().toLowerCase(Locale.US) : "orbit";
+            overlayTex[i] = new ResourceLocation("hbm", "items/votv." + name);
         }
+    }
 
-        if (!stack.hasTagCompound())
-            stack.setTagCompound(new NBTTagCompound());
+    @Override
+    public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
 
         Destination destination = getDestination(stack);
 
         if (destination.body == SolarSystem.Body.ORBIT) {
+            NBTTagCompound tag = stack.getTagCompound();
+            String identifier = tag != null ? tag.getString("stationName") : "";
+
+            if (identifier.equals("")) {
+                identifier = "0x" + Integer.toHexString(new ChunkPos(destination.x, destination.z).hashCode()).toUpperCase();
+            }
+
+            tooltip.add("Destination: ORBITAL STATION");
+            tooltip.add("Station: " + identifier);
+            return;
+        }
+
+        int processingLevel = 0;
+        if (worldIn != null) {
+            processingLevel = destination.body.getProcessingLevel(CelestialBody.getBody(worldIn));
+        }
+
+        tooltip.add("Destination: " + TextFormatting.AQUA + I18nUtil.resolveKey("body." + destination.body.name));
+
+        if (destination.x == 0 && destination.z == 0) {
+            tooltip.add(TextFormatting.GOLD + "Needs destination coordinates!");
+        } else if (!getProcessed(stack)) {
+            tooltip.add("Process requirement: Level " + processingLevel);
+            tooltip.add(TextFormatting.GOLD + "Needs processing!");
+            tooltip.add("Target coordinates: " + destination.x + ", " + destination.z);
+        } else {
+            tooltip.add(TextFormatting.GREEN + "Processed!");
+            tooltip.add("Target coordinates: " + destination.x + ", " + destination.z);
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if (!this.isInCreativeTab(tab)) return;
+
+        for (int i = 0; i < theEnum.getEnumConstants().length; i++) {
+            ItemStack stack = new ItemStack(this, 1, i);
+            NBTTagCompound stackTag = new NBTTagCompound();
+            stackTag.setInteger("x", 1);
+            stackTag.setInteger("ax", 1);
+            stackTag.setBoolean("Processed", true);
+            stack.setTagCompound(stackTag);
+            items.add(stack);
+        }
+    }
+
+    public static SolarSystem.Body getBody(ItemStack stack) {
+        return SolarSystem.Body.values()[stack.getMetadata() % SolarSystem.Body.values().length];
+    }
+
+    public static Destination getDestination(ItemStack stack) {
+        if (!stack.hasTagCompound()) {
+            stack.setTagCompound(new NBTTagCompound());
+        }
+
+        NBTTagCompound tag = stack.getTagCompound();
+        SolarSystem.Body body = getBody(stack);
+        int x = tag.getInteger("x");
+        int z = tag.getInteger("z");
+        return new Destination(body, x, z);
+    }
+
+    public static Target getTarget(ItemStack stack, World world) {
+        if (stack == null || stack.isEmpty()) {
+            return new Target(null, false, false);
+        }
+
+        if (!stack.hasTagCompound()) {
+            stack.setTagCompound(new NBTTagCompound());
+        }
+
+        NBTTagCompound tag = stack.getTagCompound();
+        Destination destination = getDestination(stack);
+
+        if (destination.body == SolarSystem.Body.ORBIT) {
             if (world.isRemote) {
-                CelestialBody body = CelestialBody.getBody(stack.getTagCompound().getInteger("sDim"));
-                boolean hasStation = stack.getTagCompound().getBoolean("sHas");
+                CelestialBody body = CelestialBody.getBody(tag.getInteger("sDim"));
+                boolean hasStation = tag.getBoolean("sHas");
 
                 return new Target(body, true, hasStation);
             }
@@ -60,10 +150,9 @@ public class ItemVOTVdrive extends ItemEnumMultiSpace {
             OrbitalStation station = OrbitalStation.getStation(destination.x, destination.z);
             if (!station.hasStation) station.orbiting = CelestialBody.getBody(world);
 
-            // The client can't get this information, so any time the server grabs it, serialize it to the itemstack
-            stack.getTagCompound().setString("stationName", station.name);
-            stack.getTagCompound().setInteger("sDim", station.orbiting.dimensionId);
-            stack.getTagCompound().setBoolean("sHas", station.hasStation);
+            tag.setString("stationName", station.name);
+            tag.setInteger("sDim", station.orbiting.dimensionId);
+            tag.setBoolean("sHas", station.hasStation);
 
             return new Target(station.orbiting, true, station.hasStation);
         } else {
@@ -72,50 +161,56 @@ public class ItemVOTVdrive extends ItemEnumMultiSpace {
     }
 
     public static void setCoordinates(ItemStack stack, int x, int z) {
-        if (!stack.hasTagCompound())
+        if (!stack.hasTagCompound()) {
             stack.setTagCompound(new NBTTagCompound());
+        }
 
-        stack.getTagCompound().setInteger("x", x);
-        stack.getTagCompound().setInteger("z", z);
+        NBTTagCompound tag = stack.getTagCompound();
+        tag.setInteger("x", x);
+        tag.setInteger("z", z);
     }
 
-    public static int getProcessingTier(ItemStack stack) {
-        SolarSystem.Body body = SolarSystem.Body.values()[stack.getItemDamage()];
-        return body.getProcessingLevel();
+    public static int getProcessingTier(ItemStack stack, CelestialBody from) {
+        SolarSystem.Body body = getBody(stack);
+        return body.getProcessingLevel(from);
     }
 
     public static boolean getProcessed(ItemStack stack) {
-        if (!stack.hasTagCompound())
+        if (!stack.hasTagCompound()) {
             stack.setTagCompound(new NBTTagCompound());
+        }
 
         return stack.getTagCompound().getBoolean("Processed");
     }
 
     public static void setProcessed(ItemStack stack, boolean processed) {
-        if (!stack.hasTagCompound())
+        if (!stack.hasTagCompound()) {
             stack.setTagCompound(new NBTTagCompound());
+        }
 
         stack.getTagCompound().setBoolean("Processed", processed);
     }
 
-    // Returns an area for the Stardar to draw, so the player can pick a safe spot to land
     public static Destination getApproximateDestination(ItemStack stack) {
-        if (!stack.hasTagCompound())
+        if (!stack.hasTagCompound()) {
             stack.setTagCompound(new NBTTagCompound());
-
-        SolarSystem.Body body = SolarSystem.Body.values()[stack.getItemDamage()];
-        if (!stack.getTagCompound().hasKey("ax") || !stack.getTagCompound().hasKey("az")) {
-            stack.getTagCompound().setInteger("ax", itemRand.nextInt(SpaceConfig.maxProbeDistance * 2) - SpaceConfig.maxProbeDistance);
-            stack.getTagCompound().setInteger("az", itemRand.nextInt(SpaceConfig.maxProbeDistance * 2) - SpaceConfig.maxProbeDistance);
         }
-        int ax = stack.getTagCompound().getInteger("ax");
-        int az = stack.getTagCompound().getInteger("az");
+
+        NBTTagCompound tag = stack.getTagCompound();
+        SolarSystem.Body body = getBody(stack);
+        if (!tag.hasKey("ax") || !tag.hasKey("az")) {
+            tag.setInteger("ax", itemRand.nextInt(SpaceConfig.maxProbeDistance * 2) - SpaceConfig.maxProbeDistance);
+            tag.setInteger("az", itemRand.nextInt(SpaceConfig.maxProbeDistance * 2) - SpaceConfig.maxProbeDistance);
+        }
+        int ax = tag.getInteger("ax");
+        int az = tag.getInteger("az");
         return new Destination(body, ax, az);
     }
 
     public static void markCopied(ItemStack stack) {
-        if (!stack.hasTagCompound())
+        if (!stack.hasTagCompound()) {
             stack.setTagCompound(new NBTTagCompound());
+        }
 
         stack.getTagCompound().setBoolean("copied", true);
     }
@@ -125,67 +220,13 @@ public class ItemVOTVdrive extends ItemEnumMultiSpace {
         return stack.getTagCompound().getBoolean("copied");
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    @Override
-    public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flagIn) {
-        super.addInformation(stack, world, list, flagIn);
-
-        Destination destination = getDestination(stack);
-
-        if (destination.body == SolarSystem.Body.ORBIT) {
-            String identifier = stack.getTagCompound().getString("stationName");
-
-            if (identifier.equals(""))
-                identifier = "0x" + Integer.toHexString(new ChunkPos(destination.x, destination.z).hashCode()).toUpperCase();
-
-            list.add("Destination: ORBITAL STATION");
-            list.add("Station: " + identifier);
-            return;
-        } else {/*
-
-            int processingLevel = destination.body.getProcessingLevel();
-
-            list.add("Destination: " + ChatFormatting.AQUA + I18nUtil.resolveKey("body." + destination.body.name));
-
-            if (destination.x == 0 && destination.z == 0) {
-                list.add(ChatFormatting.GOLD + "Needs destination coordinates!");
-            } else if (!getProcessed(stack)) {
-                // Display processing level info if not processed
-                list.add("Process requirement: Level " + processingLevel);
-                list.add(ChatFormatting.GOLD + "Needs processing!");
-                list.add("Target coordinates: " + destination.x + ", " + destination.z);
-            } else {
-                // Display destination info if processed
-                list.add(ChatFormatting.GREEN + "Processed!");
-                list.add("Target coordinates: " + destination.x + ", " + destination.z);
-            }*/
-        }
-    }
-
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (tab == CreativeTabs.SEARCH || tab == this.getCreativeTab()) {
-            NBTTagCompound stackTag = new NBTTagCompound();
-            stackTag.setInteger("x", 1);
-            stackTag.setInteger("ax", 1);
-            stackTag.setBoolean("Processed", true);
-            for (int i = 0; i < theEnum.getEnumConstants().length; i++) {
-                ItemStack stack = new ItemStack(this, 1, i);
-                stack.setTagCompound(stackTag);
-                items.add(stack);
-            }
-        }
-    }
-
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
+
         boolean isProcessed = getProcessed(stack);
         boolean onDestination = world.provider.getDimension() == getDestination(stack).body.getDimensionId();
 
-        // If we're on the body (or in creative), immediately process
         if (!isProcessed && (player.capabilities.isCreativeMode || onDestination)) {
             isProcessed = true;
             setProcessed(stack, true);
@@ -198,11 +239,10 @@ public class ItemVOTVdrive extends ItemEnumMultiSpace {
 
             if (rocket.getRocket().stages.size() > 0 || world.provider.getDimension() == SpaceConfig.orbitDimension || rocket.isReusable()) {
                 if (rocket.getState() == EntityRideableRocket.RocketState.LANDED || rocket.getState() == EntityRideableRocket.RocketState.AWAITING) {
-                    // Replace our held stack with the rocket drive and place our held drive into the rocket
                     if (rocket.navDrive != null) {
                         newStack = rocket.navDrive;
                     } else {
-                        newStack.setCount(0);
+                        newStack.shrink(newStack.getCount());
                     }
 
                     rocket.navDrive = stack.copy();
@@ -212,21 +252,16 @@ public class ItemVOTVdrive extends ItemEnumMultiSpace {
                         rocket.setState(EntityRideableRocket.RocketState.AWAITING);
                     }
 
-                    world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.upgradePlug, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                    if (!player.inventory.addItemStackToInventory(newStack)) {
-                        player.dropItem(newStack, true, false);
-                    }
+                    world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.upgradePlug, SoundCategory.PLAYERS, 1.0F, 1.0F);
                 }
             }
         }
 
-        return super.onItemRightClick(world, player, hand);
+        return new ActionResult<>(EnumActionResult.SUCCESS, newStack);
     }
 
-
-    @SuppressWarnings("deprecation")
     @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         ItemStack stack = player.getHeldItem(hand);
         Destination destination = getDestination(stack);
         if (destination.body == SolarSystem.Body.ORBIT)
@@ -236,11 +271,12 @@ public class ItemVOTVdrive extends ItemEnumMultiSpace {
         if (!onDestination)
             return EnumActionResult.FAIL;
 
-        setCoordinates(stack, (int) hitX, (int) hitZ);
+        setCoordinates(stack, pos.getX(), pos.getZ());
         setProcessed(stack, true);
 
-        if (!world.isRemote)
-            player.sendMessage(new TextComponentString(TextFormatting.YELLOW + "" + TextFormatting.ITALIC + "Set landing coordinates to: " + (int) hitX + ", " + (int) hitZ));
+        if (!world.isRemote) {
+            player.sendMessage(new TextComponentString(TextFormatting.YELLOW + "" + TextFormatting.ITALIC + "Set landing coordinates to: " + pos.getX() + ", " + pos.getZ()));
+        }
 
         return EnumActionResult.SUCCESS;
     }
@@ -275,5 +311,57 @@ public class ItemVOTVdrive extends ItemEnumMultiSpace {
             this.isValid = isValid;
         }
 
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerModel() {
+        ResourceLocation reg = this.getRegistryName();
+        if (reg == null) return;
+        int count = SolarSystem.Body.values().length;
+        mrls = new ModelResourceLocation[count];
+        for (int i = 0; i < count; i++) {
+            ResourceLocation loc = new ResourceLocation(reg.getNamespace(), reg.getPath() + "_" + i);
+            ModelResourceLocation mrl = new ModelResourceLocation(loc, "inventory");
+            mrls[i] = mrl;
+            ModelLoader.setCustomModelResourceLocation(this, i, mrl);
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerSprite(TextureMap map) {
+        map.registerSprite(baseTex);
+        for (ResourceLocation rl : overlayTex) {
+            map.registerSprite(rl);
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void bakeModel(ModelBakeEvent event) {
+        if (mrls == null || mrls.length == 0) return;
+
+        try {
+            IModel baseModel = ModelLoaderRegistry.getModel(new ResourceLocation("minecraft", "item/generated"));
+
+            int count = SolarSystem.Body.values().length;
+            for (int i = 0; i < count; i++) {
+                IModel retextured = baseModel.retexture(ImmutableMap.of(
+                        "layer0", baseTex.toString(),
+                        "layer1", overlayTex[i].toString()
+                ));
+
+                IBakedModel baked = retextured.bake(
+                        ModelRotation.X0_Y0,
+                        DefaultVertexFormats.ITEM,
+                        ModelLoader.defaultTextureGetter()
+                );
+
+                event.getModelRegistry().putObject(mrls[i], baked);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

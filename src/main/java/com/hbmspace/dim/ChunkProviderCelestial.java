@@ -162,7 +162,7 @@ public abstract class ChunkProviderCelestial implements IChunkGenerator {
 							for (int k3 = 0; k3 < 4; ++k3) {
 								if ((d15 += d16) > 0.0D) {
 									chunkPrimer.setBlockState(xPos, yPos, zPos + k3, stoneBlock.getDefaultState());
-								} else if (yPos < seaLevel) {
+								} else if (yPos < seaLevel && seaBlock != null) {
 									chunkPrimer.setBlockState(xPos, yPos, zPos + k3, seaBlock.getDefaultState());
 								} else {
 									chunkPrimer.setBlockState(xPos, yPos, zPos + k3, Blocks.AIR.getDefaultState());

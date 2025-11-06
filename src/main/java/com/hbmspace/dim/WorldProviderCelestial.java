@@ -3,7 +3,7 @@ package com.hbmspace.dim;
 import com.hbm.config.GeneralConfig;
 import com.hbmspace.dim.trait.CBT_Atmosphere;
 import com.hbmspace.dim.trait.CBT_Atmosphere.FluidEntry;
-import com.hbmspace.dim.trait.CelestialBodyTrait.CBT_Destroyed;
+import com.hbmspace.dim.trait.CBT_Destroyed;
 import com.hbmspace.handler.atmosphere.ChunkAtmosphereManager;
 import com.hbm.inventory.fluid.Fluids;
 import io.netty.buffer.ByteBuf;
@@ -60,6 +60,9 @@ public abstract class WorldProviderCelestial extends WorldProvider {
 		this.world.rainingStrength = 0.0F;
 		this.world.thunderingStrength = 0.0F;
 	}
+
+	@Override
+	public boolean hasSkyLight() { return true; }
 
 	// Can be overridden to provide fog changing events based on weather
 	public float fogDensity() {
@@ -425,7 +428,7 @@ public abstract class WorldProviderCelestial extends WorldProvider {
 		// you can uncomment this line below in your fork to get default skybox rendering on Earth.
 
 		// mlbv: nah ill do it anyway
-		if(!GeneralConfig.enableSkybox && this.getDimensionType() == DimensionType.OVERWORLD)
+		if(!GeneralConfig.enableSkyboxes && this.getDimensionType() == DimensionType.OVERWORLD)
 			return super.getSkyRenderer();
 		
 		// Make sure you also uncomment the relevant line in getMoonPhase below too.
@@ -474,7 +477,7 @@ public abstract class WorldProviderCelestial extends WorldProvider {
 	@Override
 	public int getMoonPhase(long worldTime) {
 		// Uncomment this line as well to return moon phase difficulty calcs to vanilla
-		if(!GeneralConfig.enableSkybox && getDimensionType() == DimensionType.OVERWORLD)
+		if(!GeneralConfig.enableSkyboxes && getDimensionType() == DimensionType.OVERWORLD)
 			return super.getMoonPhase(worldTime);
 
 		CelestialBody body = CelestialBody.getBody(world);

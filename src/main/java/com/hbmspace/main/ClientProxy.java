@@ -1,5 +1,6 @@
 package com.hbmspace.main;
 
+import com.hbm.main.AutoRegistry;
 import com.hbm.main.ModEventHandlerClient;
 import com.hbm.render.item.ItemRenderMissilePart;
 import com.hbm.render.misc.MissilePart;
@@ -7,14 +8,17 @@ import com.hbm.sound.AudioWrapper;
 import com.hbm.sound.AudioWrapperClient;
 import com.hbmspace.render.misc.RocketPart;
 import com.hbmspace.render.tileentity.IItemRendererProviderSpace;
+import com.hbmspace.sound.AudioWrapperClientSpace;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.registry.IRegistry;
@@ -38,6 +42,7 @@ public class ClientProxy extends ServerProxy {
     }
     @Override
     public void preInit(FMLPreInitializationEvent evt) {
+        AutoRegistrySpace.preInitClient();
         for (TileEntitySpecialRenderer<? extends TileEntity> renderer : TileEntityRendererDispatcher.instance.renderers.values()) {
             if (renderer instanceof IItemRendererProviderSpace prov) {
                 for (Item item : prov.getItemsForRenderer()) {
@@ -85,6 +90,15 @@ public class ClientProxy extends ServerProxy {
         audio.updatePosition(x, y, z);
         audio.updateVolume(volume);
         audio.updateRange(range);
+        return audio;
+    }
+
+    @Override
+    public AudioWrapper getLoopedSound(SoundEvent sound, SoundCategory cat, Entity entity, float volume, float range, float pitch, int keepAlive) {
+        AudioWrapperClientSpace audio = new AudioWrapperClientSpace(sound, cat, entity);
+        audio.updateVolume(volume);
+        audio.updateRange(range);
+        audio.setKeepAlive(keepAlive);
         return audio;
     }
 }

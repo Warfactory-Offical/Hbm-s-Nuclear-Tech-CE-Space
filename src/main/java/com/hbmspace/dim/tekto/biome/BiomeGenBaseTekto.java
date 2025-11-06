@@ -8,6 +8,7 @@ import com.hbmspace.dim.BiomeDecoratorCelestial;
 import com.hbmspace.dim.BiomeGenBaseCelestial;
 import net.minecraft.init.Biomes;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.BiomeDictionary;
 
 public abstract class BiomeGenBaseTekto extends BiomeGenBaseCelestial {
 
@@ -23,5 +24,6 @@ public abstract class BiomeGenBaseTekto extends BiomeGenBaseCelestial {
 		
 		this.topBlock = ModBlocks.sand_boron.getDefaultState();
 		this.fillerBlock = ModBlocks.sand_boron_layer.getDefaultState();
+		BiomeDictionary.addTypes(this, BiomeDictionary.Type.HOT, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SPOOKY);
 	}
 }

@@ -1,12 +1,11 @@
 package com.hbmspace.blocks;
 
 import com.hbm.blocks.generic.BlockNTMOre;
-import com.hbm.blocks.machine.BlockOrbitalStation;
+import com.hbm.lib.RefStrings;
+import com.hbmspace.blocks.bomb.LaunchPadRocket;
+import com.hbmspace.blocks.generic.BlockNTMOreSpace;
+import com.hbmspace.blocks.machine.*;
 import com.hbm.main.MainRegistry;
-import com.hbmspace.blocks.machine.MachineHTR3;
-import com.hbmspace.blocks.machine.MachineHTRF4;
-import com.hbmspace.blocks.machine.MachineLPW2;
-import com.hbmspace.blocks.machine.MachineXenonThruster;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -35,7 +34,7 @@ public class ModBlocksSpace {
     public static final Block minmus_regolith = new BlockBaseSpace(Material.ROCK, "minmus_regolith").setSoundType(SoundType.STONE).setCreativeTab(MainRegistry.resourceTab).setHardness(1.5F).setResistance(10.0F);
     public static final Block minmus_stone = new BlockBaseSpace(Material.ROCK, "minmus_stone").setSoundType(SoundType.STONE).setCreativeTab(MainRegistry.resourceTab).setHardness(1.5F).setResistance(10.0F);
     public static final Block minmus_smooth = new BlockBaseSpace(Material.ROCK, "minmus_smooth").setSoundType(SoundType.STONE).setCreativeTab(MainRegistry.resourceTab).setHardness(1.5F).setResistance(10.0F);
-    public static final Block ore_gas = new BlockNTMOre("ore_gas", 3).setCreativeTab(MainRegistry.resourceTab).setBlockUnbreakable().setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_gas = new BlockNTMOreSpace("ore_gas", 3).setCreativeTab(MainRegistry.resourceTab).setBlockUnbreakable().setHardness(5.0F).setResistance(10.0F);
     public static final Block ore_gas_empty = new BlockBaseSpace(Material.ROCK, "ore_gas_empty").setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(10.0F);
 
     public static final Block machine_lpw2 = new MachineLPW2("machine_lpw2").setHardness(5.0F).setResistance(100.0F).setCreativeTab(MainRegistry.machineTab);
@@ -43,6 +42,10 @@ public class ModBlocksSpace {
     public static final Block machine_htrf4 = new MachineHTRF4("machine_htrf4").setHardness(5.0F).setResistance(100.0F).setCreativeTab(MainRegistry.machineTab);
     public static final Block machine_xenon_thruster = new MachineXenonThruster(Material.IRON, "machine_xenon_thruster").setHardness(5.0F).setResistance(100.0F).setCreativeTab(MainRegistry.machineTab);
     public static final Block orbital_station = new BlockOrbitalStation(Material.IRON, "orbital_station").setBlockUnbreakable().setResistance(Float.POSITIVE_INFINITY).setCreativeTab(null);
+    public static final Block machine_stardar = new MachineStardar(Material.IRON, "machine_stardar").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
+    public static final Block machine_drive_processor = new MachineDriveProcessor(Material.IRON, "machine_drive_processor").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
+    public static final Block machine_rocket_assembly = new MachineRocketAssembly(Material.IRON, "machine_rocket_assembly").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.missileTab);
+    public static final Block launch_pad_rocket = new LaunchPadRocket(Material.IRON, "launch_pad_rocket").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.missileTab);
 
     public static void preInit(){
         for(Block block : ALL_BLOCKS){

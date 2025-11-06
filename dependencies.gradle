@@ -41,7 +41,8 @@ dependencies {
     annotationProcessor project(':processor')
     compileOnly project(':processor')
 
+    implementation rfg.deobf("curse.maven:opencomputers-223008:6608365")
     compileOnly 'mezz:jei:4.29.8'
     implementation 'com.google.guava:guava:31.0.1-jre'
-    implementation rfg.deobf("curse.maven:hbm-nuclear-tech-mod-community-edition-1312314:7172456")
+    implementation rfg.deobf("curse.maven:hbm-nuclear-tech-mod-community-edition-1312314:7180568")
 }

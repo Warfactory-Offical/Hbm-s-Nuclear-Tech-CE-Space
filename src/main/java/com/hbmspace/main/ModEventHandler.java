@@ -1,12 +1,20 @@
 package com.hbmspace.main;
 
 import com.hbm.render.amlfrom1710.Vec3;
+import com.hbm.util.AstronomyUtil;
 import com.hbm.util.ParticleUtil;
+import com.hbmspace.capability.HbmLivingCapabilitySpace;
 import com.hbmspace.dim.*;
 import com.hbmspace.dim.trait.CBT_Atmosphere;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -19,11 +27,58 @@ import java.util.Random;
 @Mod.EventBusSubscriber(modid = RefStrings.MODID)
 public class ModEventHandler {
 
+    public static final ResourceLocation ENT_HBM_PROP_ID = new ResourceLocation(RefStrings.MODID, "HBMLIVINGPROPS");
+
     public static Random rand = new Random();
+
+    @SubscribeEvent
+    public static void attachRadCap(AttachCapabilitiesEvent<Entity> e) {
+        if (e.getObject() instanceof EntityLivingBase)
+            e.addCapability(ENT_HBM_PROP_ID, new HbmLivingCapabilitySpace.EntityHbmPropsProvider());
+    }
+
+    @SubscribeEvent
+    public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
+        boolean isFlying = event.getEntity() instanceof EntityPlayer && ((EntityPlayer) event.getEntity()).capabilities.isFlying;
+
+        if(!isFlying) {
+            float gravity = CelestialBody.getGravity(event.getEntityLiving());
+
+            if(gravity == 0) {
+                event.getEntityLiving().motionY /= 0.98F;
+                event.getEntityLiving().motionY += (AstronomyUtil.STANDARD_GRAVITY / 20F);
+
+                if(event.getEntityLiving() instanceof EntityPlayer player) {
+                    if(player.isSneaking()) event.getEntityLiving().motionY -= 0.01F;
+                    if(player.isJumping) event.getEntityLiving().motionY += 0.01F;
+                } else if(event.getEntity() instanceof EntityChicken) {
+                    event.getEntityLiving().motionY = 0;
+                }
+
+                event.getEntityLiving().motionY *= 0.91F;
+            } else if(!event.getEntityLiving().isInWater() && event.getEntityLiving().ticksExisted > 20 && (gravity < 1.5F || gravity > 1.7F)) {
+                // If gravity is basically the same as normal, do nothing
+                // Also do nothing in water, or if we've been alive less than a second (so we don't glitch into the ground)
+
+                // Minimum gravity to prevent floating bug
+                if(gravity < 0.2F) gravity = 0.2F;
+
+                // Undo falling, and add our intended falling speed
+                // On high gravity planets, only apply falling speed when descending, so we can still jump up single blocks
+                if((gravity < 1.5F || event.getEntityLiving().motionY < 0) && !(event.getEntity() instanceof EntityChicken)) {
+                    event.getEntityLiving().motionY /= 0.98F;
+                    event.getEntityLiving().motionY += (AstronomyUtil.STANDARD_GRAVITY / 20F);
+                    event.getEntityLiving().motionY -= (gravity / 20F);
+                    event.getEntityLiving().motionY *= 0.98F;
+                }
+            }
+        }
+    }
+
     @SubscribeEvent
     public static void worldTick(TickEvent.WorldTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
-            DebugTeleporter.runQueuedTeleport();
+            CelestialTeleporter.runQueuedTeleport();
             if (event.world.getTotalWorldTime() % 20 == 0) {
                 CelestialBody.updateChemistry(event.world);
             }

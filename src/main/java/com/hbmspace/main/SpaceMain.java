@@ -1,13 +1,15 @@
 package com.hbmspace.main;
 
 import com.hbm.handler.GuiHandler;
-import com.hbmspace.config.SpaceConfig;
-import com.hbmspace.world.ModBiomes;
-import com.hbmspace.world.PlanetGen;
 import com.hbmspace.blocks.ModBlocksSpace;
+import com.hbmspace.capability.HbmLivingCapabilitySpace;
+import com.hbmspace.config.SpaceConfig;
 import com.hbmspace.dim.CommandSpaceTP;
 import com.hbmspace.dim.SolarSystem;
 import com.hbmspace.items.ModItemsSpace;
+import com.hbmspace.items.weapon.ItemCustomMissilePart;
+import com.hbmspace.world.PlanetGen;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -47,6 +49,8 @@ public class SpaceMain {
 
         reloadConfig();
 
+        CapabilityManager.INSTANCE.register(HbmLivingCapabilitySpace.IEntityHbmProps.class, new HbmLivingCapabilitySpace.EntityHbmPropsStorage(), HbmLivingCapabilitySpace.EntityHbmProps.FACTORY);
+
         ModItemsSpace.preInit();
         ModBlocksSpace.preInit();
 
@@ -56,6 +60,10 @@ public class SpaceMain {
         AutoRegistrySpace.registerTileEntities();
         AutoRegistrySpace.loadAuxiliaryData();
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
+
+        int i = 0;
+        AutoRegistrySpace.registerEntities(i);
+        ItemCustomMissilePart.initSpaceThrusters();
     }
 
 
@@ -72,7 +80,6 @@ public class SpaceMain {
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        ModBiomes.init();
         SolarSystem.init();
         PlanetGen.init();
     }

@@ -1,8 +1,8 @@
 package com.hbmspace.render.entity.missile;
 
-import com.hbm.main.ResourceManager;
 import com.hbmspace.entity.missile.EntityRideableRocket;
 import com.hbmspace.handler.RocketStruct;
+import com.hbmspace.main.ResourceManagerSpace;
 import com.hbmspace.render.misc.RocketPronter;
 import com.hbmspace.interfaces.AutoRegister;
 import net.minecraft.client.Minecraft;
@@ -41,6 +41,6 @@ public class RenderRocketCustom extends Render<EntityRideableRocket> {
     }
     @Override
     protected ResourceLocation getEntityTexture(@NotNull EntityRideableRocket entity) {
-        return ResourceManager.universal;
+        return ResourceManagerSpace.universal;
     }
 }

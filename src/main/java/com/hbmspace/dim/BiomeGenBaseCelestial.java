@@ -2,16 +2,17 @@ package com.hbmspace.dim;
 
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.Biome;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BiomeGenBaseCelestial extends Biome {
 
-    protected ArrayList<SpawnListEntry> creatures = new ArrayList<SpawnListEntry>();
-    protected ArrayList<SpawnListEntry> monsters = new ArrayList<SpawnListEntry>();
-    protected ArrayList<SpawnListEntry> waterCreatures = new ArrayList<SpawnListEntry>();
-    protected ArrayList<SpawnListEntry> caveCreatures = new ArrayList<SpawnListEntry>();
+    protected ArrayList<SpawnListEntry> creatures = new ArrayList<>();
+    protected ArrayList<SpawnListEntry> monsters = new ArrayList<>();
+    protected ArrayList<SpawnListEntry> waterCreatures = new ArrayList<>();
+    protected ArrayList<SpawnListEntry> caveCreatures = new ArrayList<>();
 
     public BiomeGenBaseCelestial(BiomeProperties properties) {
         super(properties);
@@ -20,14 +21,13 @@ public abstract class BiomeGenBaseCelestial extends Biome {
     // Returns a copy of the lists to prevent them being modified
     @SuppressWarnings("rawtypes")
     @Override
-    public List getSpawnableList(EnumCreatureType type) {
-        switch(type) {
-            case MONSTER: return (List)monsters.clone();
-            case CREATURE: return (List)creatures.clone();
-            case WATER_CREATURE: return (List)waterCreatures.clone();
-            case AMBIENT: return (List)caveCreatures.clone();
-        default: return new ArrayList<SpawnListEntry>();
-        }
+    public @NotNull List<SpawnListEntry> getSpawnableList(EnumCreatureType type) {
+        return switch (type) {
+            case MONSTER -> (List) monsters.clone();
+            case CREATURE -> (List) creatures.clone();
+            case WATER_CREATURE -> (List) waterCreatures.clone();
+            case AMBIENT -> (List) caveCreatures.clone();
+        };
     }
     
 }

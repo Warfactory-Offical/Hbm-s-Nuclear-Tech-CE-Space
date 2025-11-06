@@ -1,9 +1,11 @@
 package com.hbmspace.dim;
 
+import com.hbmspace.capability.HbmLivingPropsSpace;
 import com.hbmspace.config.SpaceConfig;
 import com.hbmspace.dim.orbit.OrbitalStation;
 import com.hbmspace.dim.trait.CBT_Atmosphere;
 import com.hbmspace.dim.trait.CBT_Atmosphere.FluidEntry;
+import com.hbmspace.dim.trait.CBT_War;
 import com.hbmspace.dim.trait.CBT_Water;
 import com.hbmspace.dim.trait.CelestialBodyTrait;
 import com.hbm.inventory.fluid.FluidType;
@@ -11,6 +13,8 @@ import com.hbm.inventory.fluid.Fluids;
 import com.hbmspace.items.ItemVOTVdrive.Target;
 import com.hbm.render.Shader;
 import com.hbm.util.AstronomyUtil;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntityWaterMob;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -42,7 +46,7 @@ public class CelestialBody {
 
 	public float axialTilt = 0;
 
-	public int processingLevel = 0; // What level of technology can locate this body?
+	private int minProcessingLevel = 0; // What level of technology can locate this body? This defines the minimum level, automatically adjusted based on stardar location
 
 	public ResourceLocation texture = null;
 	public float[] color = new float[] {0.4F, 0.4F, 0.4F}; // When too small to render the texture
@@ -103,7 +107,7 @@ public class CelestialBody {
 	}
 
 	public CelestialBody withProcessingLevel(int level) {
-		this.processingLevel = level;
+		this.minProcessingLevel = level;
 		return this;
 	}
 
@@ -348,7 +352,23 @@ public class CelestialBody {
 
 	// /Terraforming
 
+	public static void damage(int dmg, World world) {
+		HashMap<Class<? extends CelestialBodyTrait>, CelestialBodyTrait> currentTraits = getTraits(world);
 
+		CBT_War war = (CBT_War) currentTraits.get(CBT_War.class);
+		if(war == null) {
+			war = new CBT_War();
+			currentTraits.put(CBT_War.class, war);
+		}
+
+		if(war.shield > 0) {
+			war.shield -= dmg;
+		} else {
+			war.health -= dmg;
+		}
+
+		setTraits(world, currentTraits);
+	}
 
 	// Static getters
 	// A lot of these are member getters but without having to check the celestial body exists
@@ -399,6 +419,27 @@ public class CelestialBody {
 	
 	public static CelestialBody getPlanet(World world) {
 		return getBody(world).getPlanet();
+	}
+
+	public static float getGravity(EntityLivingBase entity) {
+		if(entity instanceof EntityWaterMob) return AstronomyUtil.STANDARD_GRAVITY;
+
+		if(inOrbit(entity.world)) {
+			if(HbmLivingPropsSpace.hasGravity(entity)) {
+				OrbitalStation station = entity.world.isRemote
+						? OrbitalStation.clientStation
+						: OrbitalStation.getStationFromPosition((int)entity.posX, (int)entity.posZ);
+
+				float gravity = AstronomyUtil.STANDARD_GRAVITY * station.gravityMultiplier;
+				if(gravity < 0.2) return 0;
+				return gravity;
+			}
+
+			return 0;
+		}
+
+		CelestialBody body = CelestialBody.getBody(entity.world);
+		return body.getSurfaceGravity() * AstronomyUtil.PLAYER_GRAVITY_MODIFIER;
 	}
 
 	public static boolean inOrbit(World world) {
@@ -484,6 +525,25 @@ public class CelestialBody {
 	public float getSunPower() {
 		float distanceAU = getPlanet().semiMajorAxisKm / AstronomyUtil.KM_IN_AU;
 		return 1 / (distanceAU * distanceAU);
+	}
+
+	// Processing level is based off of where you are processing from, so if you're on Duna, Ike will be tier 0
+	public int getProcessingLevel(CelestialBody from) {
+		int level = 3;
+
+		if(this == from) {
+			// If self, tier 0
+			level = 0;
+		} else if(this == from.parent || this.parent == from) {
+			// If going to/from a moon, tier 0
+			level = 0;
+		} else {
+			// Otherwise, tier 1
+			level = 1;
+		}
+
+		// Unless a minimum processing level is set
+		return Math.max(level, minProcessingLevel);
 	}
 
 	

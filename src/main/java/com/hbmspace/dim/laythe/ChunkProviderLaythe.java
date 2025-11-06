@@ -5,7 +5,7 @@ import com.hbmspace.dim.ChunkProviderCelestial;
 import com.hbmspace.dim.laythe.biome.BiomeGenBaseLaythe;
 import com.hbmspace.dim.mapgen.MapGenGreg;
 import com.hbmspace.dim.mapgen.MapGenTiltedSpires;
-import com.hbm.entity.mob.EntityCreeperFlesh;
+import com.hbmspace.entity.mob.EntityCreeperFlesh;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;

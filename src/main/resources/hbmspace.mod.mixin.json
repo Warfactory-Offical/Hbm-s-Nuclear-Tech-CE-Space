@@ -8,7 +8,11 @@
   ],
   "mixins": [
     "hbm.MixinPacketDispatcher",
-    "hbm.MixinPermaSyncHandler"
+    "hbm.MixinPermaSyncHandler",
+    "hbm.MixinModItems",
+    "hbm.MixinArmorFSB",
+    "hbm.MixinHBMSoundHandler",
+    "hbm.MixinEntityEffectHandler"
   ],
   "server": [],
   "setSourceFile": true,

@@ -1,20 +1,20 @@
 package com.hbmspace.handler;
 
-import com.hbm.handler.DataWatcher;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.ItemMissile;
-import com.hbmspace.render.misc.RocketPart;
 import com.hbm.util.BufferUtil;
 import com.hbm.util.Tuple;
 import com.hbmspace.dim.CelestialBody;
 import com.hbmspace.dim.SolarSystem;
-import com.mojang.realmsclient.gui.ChatFormatting;
+import com.hbmspace.items.weapon.ItemCustomMissilePart;
+import com.hbmspace.render.misc.RocketPart;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.util.Constants;
 
 import java.util.ArrayList;
@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 public class RocketStruct {
+
     public RocketPart capsule;
     public ArrayList<RocketStage> stages = new ArrayList<>();
     public int satFreq = 0;
@@ -87,13 +88,13 @@ public class RocketStruct {
 
     // Lists any validation issues so the player can rectify easily
     public List<String> findIssues(int stageNum, CelestialBody from, CelestialBody to, boolean fromOrbit, boolean toOrbit) {
-        List<String> issues = new ArrayList<String>();
+        List<String> issues = new ArrayList<>();
 
         // If we have no parts, we have no worries
         if(capsule == null && stages.size() == 0) return issues;
 
         if(capsule == null || (capsule.part.attributes[0] != ItemMissile.WarheadType.APOLLO && capsule.part.attributes[0] != ItemMissile.WarheadType.SATELLITE))
-            issues.add(ChatFormatting.RED + "Invalid Capsule/Satellite");
+            issues.add(TextFormatting.RED + "Invalid Capsule/Satellite");
 
         // Current stage stats
         if(stageNum < stages.size()) {
@@ -109,28 +110,23 @@ public class RocketStruct {
         for(int i = 0; i < stages.size(); i++) {
             RocketStage stage = stages.get(i);
             if(stage.fuselage == null)
-                issues.add(ChatFormatting.RED + "Stage " + (i + 1) + " missing fuselage");
+                issues.add(TextFormatting.RED + "Stage " + (i + 1) + " missing fuselage");
             if(stage.thruster == null)
-                issues.add(ChatFormatting.RED + "Stage " + (i + 1) + " missing thruster");
+                issues.add(TextFormatting.RED + "Stage " + (i + 1) + " missing thruster");
 
             if(stage.fuselage == null || stage.thruster == null)
                 continue;
 
             if(stage.thrusterCount > stage.fuselageCount)
-                issues.add(ChatFormatting.RED + "Stage " + (i + 1) + " too many thrusters");
+                issues.add(TextFormatting.RED + "Stage " + (i + 1) + " too many thrusters");
             if(stage.fuselageCount % stage.thrusterCount != 0)
-                issues.add(ChatFormatting.RED + "Stage " + (i + 1) + " uneven thrusters");
+                issues.add(TextFormatting.RED + "Stage " + (i + 1) + " uneven thrusters");
 
             if(stage.fuselage.part.attributes[0] != ItemMissile.FuelType.ANY && stage.fuselage.part.attributes[0] != stage.thruster.part.attributes[0])
-                issues.add(ChatFormatting.RED + "Stage " + (i + 1) + " fuel mismatch");
+                issues.add(TextFormatting.RED + "Stage " + (i + 1) + " fuel mismatch");
 
             if(i > 0 && stage.fins == null)
-                issues.add(ChatFormatting.YELLOW + "Stage " + (i + 1) + " lacks landing legs");
-
-            // I was gonna add all sorts of realistic restrictions but then realised
-            // KSP lets you shit any part onto any part, and that's fun
-            // so who am I to kill your creative spirit
-            // put that ant engine on your rhino fuselage
+                issues.add(TextFormatting.YELLOW + "Stage " + (i + 1) + " lacks landing legs");
         }
 
         if(from != null && to != null) {
@@ -138,15 +134,15 @@ public class RocketStruct {
             int fuelCapacity = getFuelCapacity(stageNum);
 
             if(fuelRequirement == Integer.MAX_VALUE) {
-                issues.add(ChatFormatting.YELLOW + "Insufficient thrust");
+                issues.add(TextFormatting.YELLOW + "Insufficient thrust");
             } else if(fuelCapacity < fuelRequirement) {
-                issues.add(ChatFormatting.YELLOW + "Insufficient fuel: " + fuelCapacity + "/" + fuelRequirement + "mB");
+                issues.add(TextFormatting.YELLOW + "Insufficient fuel: " + fuelCapacity + "/" + fuelRequirement + "mB");
             } else if(fuelCapacity > 0 && fuelRequirement > 0) {
-                issues.add(ChatFormatting.GREEN + "Trip possible! " + fuelCapacity + "/" + fuelRequirement + "mB");
+                issues.add(TextFormatting.GREEN + "Trip possible! " + fuelCapacity + "/" + fuelRequirement + "mB");
             }
         }
 
-        for(String issue : extraIssues) issues.add(issue);
+        issues.addAll(extraIssues);
 
         return issues;
     }
@@ -217,19 +213,19 @@ public class RocketStruct {
     }
 
     private int getThrust(RocketStage stage) {
-        return stage.thruster.part.getThrust() * stage.thrusterCount;
+        if(ItemCustomMissilePart.THRUSTER_ATTRIBUTES.containsKey(stage.thruster.part)) return (Integer) ItemCustomMissilePart.THRUSTER_ATTRIBUTES.get(stage.thruster.part)[3];
+        else return stage.thruster.part.getThrust() * stage.thrusterCount;
     }
 
     private int getISP(RocketStage stage) {
-        return stage.thruster.part.getISP();
+        if(ItemCustomMissilePart.THRUSTER_ATTRIBUTES.containsKey(stage.thruster.part)) return (Integer) ItemCustomMissilePart.THRUSTER_ATTRIBUTES.get(stage.thruster.part)[4];
+        else return stage.thruster.part.getISP();
     }
 
-    // Gets the dry mass of the active stage + the wet mass of the stages above it
     public int getLaunchMass() {
         return getMass(0, false);
     }
 
-    // Gets the dry mass of the selected stage + the wet mass of the stages above it
     public int getLaunchMass(int stageNum) {
         return getMass(stageNum, false);
     }
@@ -249,7 +245,7 @@ public class RocketStruct {
             if(stage.thruster != null) mass += stage.thruster.part.mass * stage.thrusterCount;
 
             if(stage.fuselage != null && (i > stageNum || wet)) {
-                mass += stage.fuselage.part.getTankSize() * stage.fuselageCount / 4; // Reduced fuel weight to improve multi-stages
+                mass += stage.fuselage.part.getTankSize() * stage.fuselageCount / 4;
             }
         }
 
@@ -380,42 +376,6 @@ public class RocketStruct {
         return rocket;
     }
 
-    // Sets up a DataWatcher to accept serialization
-    public static void setupDataWatcher(DataWatcher watcher, int start) {
-        watcher.addObject(start, 0);
-        watcher.addObject(start + 1, 0);
-        for(int i = 0; i < MAX_STAGES; i++) {
-            watcher.addObject(start + i * 2 + 2, 0);
-            watcher.addObject(start + i * 2 + 3, 0);
-        }
-    }
-
-    public void writeToDataWatcher(DataWatcher watcher, int start) {
-        watcher.updateObject(start, RocketPart.getId(capsule));
-        watcher.updateObject(start + 1, stages.size());
-        for(int i = 0; i < stages.size(); i++) {
-            Tuple.Pair<Integer, Integer> watchable = stages.get(i).zipWatchable();
-            watcher.updateObject(start + i * 2 + 2, watchable.key);
-            watcher.updateObject(start + i * 2 + 3, watchable.value);
-        }
-    }
-
-    public static RocketStruct readFromDataWatcher(DataWatcher watcher, int start) {
-        RocketStruct rocket = new RocketStruct();
-
-        rocket.capsule = RocketPart.getPart(watcher.getWatchableObjectInt(start));
-
-        int count = watcher.getWatchableObjectInt(start + 1);
-        for(int i = 0; i < count; i++) {
-            Tuple.Pair<Integer, Integer> watchable = new Tuple.Pair<Integer, Integer>(
-                    watcher.getWatchableObjectInt(start + i * 2 + 2),
-                    watcher.getWatchableObjectInt(start + i * 2 + 3));
-            rocket.stages.add(RocketStage.unzipWatchable(watchable));
-        }
-
-        return rocket;
-    }
-
     public static class RocketStage {
 
         public RocketPart fuselage;
@@ -425,13 +385,10 @@ public class RocketStruct {
         public int fuselageCount = 1;
         public int thrusterCount = 1;
 
-        // fucking datawatchers and their limit of 32 synced values
-        // don't worry, datamanagers are even worse
-        // I'm a crafty bastard though and can utilise the fact our values are always positive shorts and bytes
         public Tuple.Pair<Integer, Integer> zipWatchable() {
             int first = RocketPart.getId(fuselage) << 16 | RocketPart.getId(fins);
             int second = RocketPart.getId(thruster) << 16 | fuselageCount << 8 | thrusterCount;
-            return new Tuple.Pair<Integer, Integer>(first, second);
+            return new Tuple.Pair<>(first, second);
         }
 
         public static RocketStage unzipWatchable(Tuple.Pair<Integer, Integer> pair) {
@@ -445,11 +402,11 @@ public class RocketStruct {
         }
 
         public int getStack() {
-            return Math.max(fuselageCount / thrusterCount, 1);
+            return thrusterCount > 0 ? Math.max(fuselageCount / thrusterCount, 1) : 0;
         }
 
         public int getCluster() {
-            return Math.max(fuselageCount / getStack(), 1);
+            return getStack() > 0 ? Math.max(fuselageCount / getStack(), 1) : 0;
         }
 
     }

@@ -2,11 +2,11 @@ package com.hbmspace.blocks.machine;
 
 import com.hbmspace.blocks.BlockDummyableSpace;
 import com.hbm.blocks.ILookOverlay;
-import com.hbm.dim.CelestialBody;
+import com.hbmspace.dim.CelestialBody;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.lib.ForgeDirection;
 import com.hbm.tileentity.TileEntityProxyCombo;
-import com.hbm.tileentity.machine.TileEntityMachineLPW2;
+import com.hbmspace.tileentity.machine.TileEntityMachineLPW2;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.I18nUtil;
 import net.minecraft.block.material.Material;

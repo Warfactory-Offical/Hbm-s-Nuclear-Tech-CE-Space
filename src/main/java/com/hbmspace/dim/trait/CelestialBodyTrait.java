@@ -12,14 +12,8 @@ public abstract class CelestialBodyTrait {
 	// Similarly to fluid traits, we have classes, and instance members.
 	// For the simple traits, we'll just init both here rather than two places.
 
-	public static class CBT_War extends CelestialBodyTrait { }
-	public static CBT_War WAR = new CBT_War();
-	
-	public static class CBT_Destroyed extends CelestialBodyTrait { }
-	public static CBT_Destroyed SPLODE = new CBT_Destroyed();
-
 	// Constructor and loading
-	public static List<Class<? extends CelestialBodyTrait>> traitList = new ArrayList<Class<? extends CelestialBodyTrait>>();
+	public static List<Class<? extends CelestialBodyTrait>> traitList = new ArrayList<>();
 	public static HashBiMap<String, Class<? extends CelestialBodyTrait>> traitMap = HashBiMap.create();
 
 	static {
@@ -29,7 +23,7 @@ public abstract class CelestialBodyTrait {
 		registerTrait("war", CBT_War.class);
 		registerTrait("destroyed", CBT_Destroyed.class);
 		registerTrait("water", CBT_Water.class);
-	};
+	}
 
 	private static void registerTrait(String name, Class<? extends CelestialBodyTrait> clazz) {
 		traitList.add(clazz);
@@ -42,5 +36,6 @@ public abstract class CelestialBodyTrait {
 
 	public void readFromBytes(ByteBuf buf) { }
 	public void writeToBytes(ByteBuf buf) { }
+	public void update(boolean isremote) { }
 
 }

@@ -57,7 +57,7 @@ public class CommandSpaceTP extends CommandBase {
                 }
 
                 BlockPos pos = player.getPosition();
-                player.changeDimension(dimensionId, new DebugTeleporter(sourceServer, targetWorld, player, pos.getX(), pos.getY(), pos.getZ(), true));
+                player.changeDimension(dimensionId, new CelestialTeleporter(sourceServer, targetWorld, player, pos.getX(), pos.getY(), pos.getZ(), true));
             }
         } else {
             throw new CommandException("commands.dimtp.not_player");

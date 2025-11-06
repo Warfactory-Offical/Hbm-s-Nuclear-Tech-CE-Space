@@ -5,7 +5,7 @@ import com.hbmspace.dim.CelestialBody;
 import com.hbmspace.dim.SolarSystem;
 import com.hbmspace.dim.WorldProviderCelestial;
 import com.hbmspace.dim.trait.CBT_Atmosphere;
-import com.hbmspace.dim.trait.CelestialBodyTrait.CBT_Destroyed;
+import com.hbmspace.dim.trait.CBT_Destroyed;
 import com.hbmspace.handler.atmosphere.ChunkAtmosphereManager;
 import com.hbm.lib.Library;
 import com.hbm.util.AstronomyUtil;

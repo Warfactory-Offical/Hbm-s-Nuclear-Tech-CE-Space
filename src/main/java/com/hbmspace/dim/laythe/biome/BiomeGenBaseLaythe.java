@@ -12,6 +12,7 @@ import com.hbmspace.dim.BiomeDecoratorCelestial;
 import com.hbmspace.dim.BiomeGenBaseCelestial;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.BiomeDictionary;
 
 public abstract class BiomeGenBaseLaythe extends BiomeGenBaseCelestial {
 

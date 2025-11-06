@@ -322,7 +322,7 @@ public class ChunkAtmosphereHandler {
 
 		for(Pair<ExplosionEvent.Detonate, List<ThreeInts>> pair : explosions) {
 			ExplosionEvent.Detonate event = pair.key;
-			ThreeInts explosion = new ThreeInts(MathHelper.floor(event.getExplosion().getExplosivePlacedBy().posX), MathHelper.floor(event.getExplosion().getExplosivePlacedBy().posY), MathHelper.floor(event.getExplosion().getExplosivePlacedBy().posZ));
+			ThreeInts explosion = new ThreeInts(MathHelper.floor(event.getExplosion().getPosition().x), MathHelper.floor(event.getExplosion().getPosition().y), MathHelper.floor(event.getExplosion().getPosition().z));
 			Explosion explosion1 = event.getExplosion();
 			List<AtmosphereBlob> nearbyBlobs = getBlobsWithinRadius(event.getWorld(), explosion, MAX_BLOB_RADIUS + MathHelper.ceil(explosion1.size));
 	

@@ -230,9 +230,9 @@ public class SolarSystem {
 			return body;
 		}
 
-		public int getProcessingLevel() {
+		public int getProcessingLevel(CelestialBody from) {
 			if(this == ORBIT) return 0;
-			return getBody().processingLevel;
+			return getBody().getProcessingLevel(from);
 		}
 
 		public String getStoneTexture() {

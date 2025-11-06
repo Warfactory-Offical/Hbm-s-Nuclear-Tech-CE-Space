@@ -1,6 +1,5 @@
 package com.hbmspace.dim;
 
-import com.hbm.config.WorldConfig;
 import com.hbmspace.dim.Ike.BiomeGenIke;
 import com.hbmspace.dim.dres.biome.BiomeGenBaseDres;
 import com.hbmspace.dim.duna.biome.BiomeGenBaseDuna;
@@ -10,13 +9,16 @@ import com.hbmspace.dim.minmus.biome.BiomeGenBaseMinmus;
 import com.hbmspace.dim.moho.biome.BiomeGenBaseMoho;
 import com.hbmspace.dim.moon.BiomeGenMoon;
 import com.hbmspace.dim.orbit.BiomeGenOrbit;
-import com.hbm.world.biome.BiomeGenCraterBase;
+import com.hbmspace.main.RefStrings;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
-@Mod.EventBusSubscriber
+@Mod.EventBusSubscriber(modid = RefStrings.MODID)
 public class ModBiomesInit {
     @SubscribeEvent
     public static void registerBiomes(RegistryEvent.Register<Biome> evt){
@@ -44,13 +46,33 @@ public class ModBiomesInit {
                 new BiomeGenMoon(new Biome.BiomeProperties("Mun")).setRegistryName("hbm", "moon"),
                 new BiomeGenOrbit(new Biome.BiomeProperties("Orbit")).setRegistryName("hbm", "orbit")
         );
-        if(WorldConfig.enableCraterBiomes){
-            evt.getRegistry().registerAll(
-                    BiomeGenCraterBase.craterBiome.setRegistryName("hbm", "crater"),
-                    BiomeGenCraterBase.craterInnerBiome.setRegistryName("hbm", "crater_inner"),
-                    BiomeGenCraterBase.craterOuterBiome.setRegistryName("hbm", "crater_outer")
-            );
-            BiomeGenCraterBase.initDictionary();
+
+        addTypes();
+        for (Biome biome : ForgeRegistries.BIOMES.getValuesCollection()) {
+            ResourceLocation rl = biome.getRegistryName();
+            if (rl != null && "hbm".equals(rl.getNamespace()) && BiomeDictionary.getTypes(biome).isEmpty()) {
+                BiomeDictionary.addTypes(biome, BiomeDictionary.Type.DEAD);
+            }
         }
+    }
+
+    public static void addTypes()
+    {
+        BiomeDictionary.addTypes(BiomeGenBaseDuna.dunaPlains, BiomeDictionary.Type.COLD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD);
+        BiomeDictionary.addTypes(BiomeGenBaseDuna.dunaLowlands, BiomeDictionary.Type.COLD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD);
+        BiomeDictionary.addTypes(BiomeGenBaseDuna.dunaPolar, BiomeDictionary.Type.COLD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SNOWY);
+        BiomeDictionary.addTypes(BiomeGenBaseDuna.dunaHills, BiomeDictionary.Type.COLD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.HILLS);
+        BiomeDictionary.addTypes(BiomeGenBaseDuna.dunaPolarHills, BiomeDictionary.Type.COLD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SNOWY, BiomeDictionary.Type.MOUNTAIN);
+        BiomeDictionary.addTypes(BiomeGenBaseEve.evePlains, BiomeDictionary.Type.HOT, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SPOOKY);
+        BiomeDictionary.addTypes(BiomeGenBaseEve.eveSeismicPlains, BiomeDictionary.Type.HOT, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SPOOKY);
+        BiomeDictionary.addTypes(BiomeGenBaseEve.eveOcean, BiomeDictionary.Type.HOT, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SPOOKY);
+        BiomeDictionary.addTypes(BiomeGenBaseEve.eveRiver, BiomeDictionary.Type.HOT, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SPOOKY);
+        BiomeDictionary.addTypes(BiomeGenBaseEve.eveMountains, BiomeDictionary.Type.HOT, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SPOOKY);
+        BiomeDictionary.addTypes(BiomeGenBaseLaythe.laytheIsland, BiomeDictionary.Type.COLD, BiomeDictionary.Type.WET, BiomeDictionary.Type.DENSE, BiomeDictionary.Type.SPOOKY);
+        BiomeDictionary.addTypes(BiomeGenBaseLaythe.laytheOcean, BiomeDictionary.Type.COLD, BiomeDictionary.Type.WET, BiomeDictionary.Type.DENSE, BiomeDictionary.Type.SPOOKY);
+        BiomeDictionary.addTypes(BiomeGenBaseLaythe.laythePolar, BiomeDictionary.Type.COLD, BiomeDictionary.Type.WET, BiomeDictionary.Type.DENSE, BiomeDictionary.Type.SPOOKY);
+        BiomeDictionary.addTypes(BiomeGenBaseMinmus.minmusCanyon, BiomeDictionary.Type.COLD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SNOWY, BiomeDictionary.Type.MOUNTAIN);
+        BiomeDictionary.addTypes(BiomeGenBaseMinmus.minmusPlains, BiomeDictionary.Type.COLD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SNOWY, BiomeDictionary.Type.MOUNTAIN);
+
     }
 }

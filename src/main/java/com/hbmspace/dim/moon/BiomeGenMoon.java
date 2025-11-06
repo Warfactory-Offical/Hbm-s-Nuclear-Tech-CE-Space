@@ -3,7 +3,7 @@ package com.hbmspace.dim.moon;
 import com.hbm.blocks.ModBlocks;
 import com.hbmspace.blocks.ModBlocksSpace;
 import com.hbmspace.dim.BiomeGenBaseCelestial;
-import com.hbm.entity.mob.EntityMoonCow;
+import com.hbmspace.entity.mob.EntityMoonCow;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;

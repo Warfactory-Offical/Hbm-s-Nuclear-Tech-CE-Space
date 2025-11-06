@@ -3,12 +3,12 @@ package com.hbmspace.dim;
 import com.hbm.capability.HbmLivingProps;
 import com.hbmspace.dim.SolarSystem.AstroMetric;
 import com.hbmspace.dim.trait.CBT_Atmosphere;
-import com.hbmspace.dim.trait.CelestialBodyTrait.CBT_Destroyed;
 import com.hbm.lib.RefStrings;
 import com.hbm.render.Shader;
 import com.hbm.saveddata.satellites.Satellite;
 import com.hbm.saveddata.satellites.SatelliteSavedData;
 import com.hbm.util.BobMathUtil;
+import com.hbmspace.dim.trait.CBT_Destroyed;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -60,24 +60,20 @@ public class SkyProviderCelestial extends IRenderHandler {
 
 	@Override
 	public void render(float partialTicks, WorldClient world, Minecraft mc) {
-		float fogIntensity = 0;
+		if(!(world.provider instanceof WorldProviderCelestial)) return;
 
-		if(world.provider instanceof WorldProviderCelestial) {
-			DynamicTexture lightmapTexture = mc.entityRenderer.lightmapTexture;
-			int[] lightmapColors = mc.entityRenderer.lightmapColors;
-			// Without mixins, we have to resort to some very wacky ways of checking that the lightmap needs to be updated
-			// fortunately, thanks to torch flickering, we can just check to see if the brightest pixel has been modified
-			if(lastBrightestPixel != lightmapColors[255] + lightmapColors[250]) {
-				if(((WorldProviderCelestial)world.provider).updateLightmap(lightmapColors)) {
-					lightmapTexture.updateDynamicTexture();
-				}
-
-				lastBrightestPixel = lightmapColors[255] + lightmapColors[250];
+		DynamicTexture lightmapTexture = mc.entityRenderer.lightmapTexture;
+		int[] lightmapColors = mc.entityRenderer.lightmapColors;
+		// Without mixins, we have to resort to some very wacky ways of checking that the lightmap needs to be updated
+		// fortunately, thanks to torch flickering, we can just check to see if the brightest pixel has been modified
+		if(lastBrightestPixel != lightmapColors[255] + lightmapColors[250]) {
+			if(((WorldProviderCelestial)world.provider).updateLightmap(lightmapColors)) {
+				lightmapTexture.updateDynamicTexture();
 			}
 
-			fogIntensity = ((WorldProviderCelestial) world.provider).fogDensity() * 30;
+			lastBrightestPixel = lightmapColors[255] + lightmapColors[250];
 		}
-
+		float fogIntensity = ((WorldProviderCelestial) world.provider).fogDensity() * 30;
 		CelestialBody body = CelestialBody.getBody(world);
 		CelestialBody sun = body.getStar();
 		CBT_Atmosphere atmosphere = body.getTrait(CBT_Atmosphere.class);
@@ -327,7 +323,7 @@ public class SkyProviderCelestial extends IRenderHandler {
 					float angle = (float)j * 3.1415927F * 2.0F / (float)segments;
 					float sinAngle = MathHelper.sin(angle);
 					float cosAngle = MathHelper.cos(angle);
-					bufferBuilder.pos((double)(sinAngle * 120.0F), (double)(cosAngle * 120.0F), (double)(-cosAngle * 40.0F * sunsetColor[3]))
+					bufferBuilder.pos((sinAngle * 120.0F), (cosAngle * 120.0F), (-cosAngle * 40.0F * sunsetColor[3]))
 							.color(sunsetColor[0], sunsetColor[1], sunsetColor[2], 0.0F).endVertex();
 				}
 
@@ -647,7 +643,7 @@ public class SkyProviderCelestial extends IRenderHandler {
 					GlStateManager.disableTexture2D();
 
 					// Draw another layer on top to blend with the atmosphere
-					GlStateManager.color((float)(planetTint.x - blendDarken), (float)(planetTint.y - blendDarken), (float)(planetTint.z - blendDarken), (float)(1 - blendAmount * visibility));
+					GlStateManager.color((float)(planetTint.x - blendDarken), (float)(planetTint.y - blendDarken), (float)(planetTint.z - blendDarken), (1 - blendAmount * visibility));
 					GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
 
 					bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);

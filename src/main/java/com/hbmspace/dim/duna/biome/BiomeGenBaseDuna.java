@@ -5,6 +5,7 @@ import com.hbmspace.blocks.ModBlocksSpace;
 import com.hbmspace.dim.BiomeDecoratorCelestial;
 import com.hbmspace.dim.BiomeGenBaseCelestial;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.BiomeDictionary;
 
 public abstract class BiomeGenBaseDuna extends BiomeGenBaseCelestial {
     

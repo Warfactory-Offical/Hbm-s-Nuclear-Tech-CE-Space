@@ -1,6 +1,8 @@
 package com.hbmspace.entity.mob;
 
+import com.hbm.interfaces.IRadiationImmune;
 import com.hbm.items.ModItems;
+import com.hbmspace.api.entity.ISuffocationImmune;
 import com.hbmspace.entity.mob.ai.EntityMoonWalkHelper;
 import com.hbmspace.interfaces.AutoRegister;
 import net.minecraft.entity.EntityAgeable;
@@ -9,8 +11,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
 
-@AutoRegister(name = "entity_moon_cow", trackingRange = 80)
-public class EntityMoonCow extends EntityCow {
+@AutoRegister(name = "entity_moon_cow", trackingRange = 80, eggColors = {0xECD376, 0x262A44})
+public class EntityMoonCow extends EntityCow implements IRadiationImmune, ISuffocationImmune {
 
     public EntityMoonCow(World world) {
         super(world);
