@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -74,6 +75,21 @@ public class ModEventHandler {
                     event.getEntityLiving().motionY *= 0.98F;
                 }
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEntityFall(LivingFallEvent event) {
+
+        EntityLivingBase e = event.getEntityLiving();
+
+        float gravity = CelestialBody.getGravity(e);
+
+        // Reduce fall damage on low gravity bodies
+        if(gravity < 0.3F) {
+            event.setDistance(0);
+        } else if(gravity < 1.5F) {
+            event.setDistance(event.getDistance() * gravity / AstronomyUtil.STANDARD_GRAVITY);
         }
     }
 

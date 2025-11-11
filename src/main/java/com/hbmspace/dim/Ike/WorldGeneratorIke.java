@@ -4,6 +4,7 @@ import com.hbm.blocks.ModBlocks;
 import com.hbmspace.blocks.ModBlocksSpace;
 import com.hbm.config.SpaceConfig;
 import com.hbm.config.WorldConfig;
+import com.hbmspace.blocks.generic.BlockOre;
 import com.hbmspace.dim.CelestialBody;
 import com.hbm.world.generator.DungeonToolbox;
 import net.minecraft.world.World;
@@ -26,7 +27,7 @@ public class WorldGeneratorIke implements IWorldGenerator {
 		int meta = CelestialBody.getMeta(world);
 
 		DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.asbestosSpawn, 8, 3, 22, ModBlocks.ore_asbestos, ModBlocksSpace.ike_stone);
-		DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.copperSpawn, 9, 4, 27, ModBlocks.ore_copper, ModBlocksSpace.ike_stone);
+		DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.copperSpawn, 9, 4, 27, ModBlocksSpace.ore_copper.getDefaultState().withProperty(BlockOre.META, meta), ModBlocksSpace.ike_stone);
 		//DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.ironClusterSpawn,  8, 1, 33, ModBlocksSpace.ore_iron, ModBlocksSpace.ike_stone);
 		//DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.lithiumSpawn,  6, 4, 8, ModBlocksSpace.ore_lithium, ModBlocksSpace.ike_stone);
 		DungeonToolbox.generateOre(world, rand, i, j, 2, 4, 15, 40, ModBlocks.ore_coltan, ModBlocksSpace.ike_stone);

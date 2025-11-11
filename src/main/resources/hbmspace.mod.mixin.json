@@ -11,8 +11,11 @@
     "hbm.MixinPermaSyncHandler",
     "hbm.MixinModItems",
     "hbm.MixinArmorFSB",
+    "hbm.MixinBlockNTMOre",
     "hbm.MixinHBMSoundHandler",
-    "hbm.MixinEntityEffectHandler"
+    "hbm.MixinEntityEffectHandler",
+    "hbm.MixinAssemblyRecipes",
+    "hbm.MixinDictFrame"
   ],
   "server": [],
   "setSourceFile": true,

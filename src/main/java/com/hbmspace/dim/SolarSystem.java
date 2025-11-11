@@ -42,7 +42,7 @@ public class SolarSystem {
 					.withSemiMajorAxis(5_263_138)
 					.withRotationalPeriod(210_000)
 					.withColor(0.4863F, 0.4F, 0.3456F)
-					.withBlockTextures(RefStrings.MODID + ":moho_stone", "", "", "")
+					.withBlockTextures(RefStrings.MODID + ":blocks/moho_stone", "", "", "")
 					.withAxialTilt(30F)
 					.withProcessingLevel(1)
 					.withTraits(new CBT_Temperature(200)),
@@ -52,7 +52,7 @@ public class SolarSystem {
 					.withSemiMajorAxis(9_832_684)
 					.withRotationalPeriod(80_500)
 					.withColor(0.408F, 0.298F, 0.553F)
-					.withBlockTextures(RefStrings.MODID + ":eve_stone_2", "", "", "")
+					.withBlockTextures(RefStrings.MODID + ":blocks/eve_stone_2", "", "", "")
 					.withProcessingLevel(2)
 					.withTraits(new CBT_Atmosphere(Fluids.EVEAIR, 5D), new CBT_Temperature(400), new CBT_Water(Fluids.MERCURY))
 					.withSatellites(
@@ -78,13 +78,13 @@ public class SolarSystem {
 							.withSemiMajorAxis(12_000)
 							.withRotationalPeriod(138_984)
 							.withTidalLockingTo("kerbin")
-							.withBlockTextures(RefStrings.MODID + ":moon_rock", "", "", ""),
+							.withBlockTextures(RefStrings.MODID + ":blocks/moon_rock", "", "", ""),
 
 						new CelestialBody("minmus", SpaceConfig.minmusDimension, Body.MINMUS)
 							.withMassRadius(2.646e19F, 60)
 							.withSemiMajorAxis(47_000)
 							.withRotationalPeriod(40_400)
-							.withBlockTextures(RefStrings.MODID + ":minmus_stone", "", "", "")
+							.withBlockTextures(RefStrings.MODID + ":blocks/minmus_stone", "", "", "")
 							.withTraits(new CBT_Water(Fluids.MILK))
 
 					),
@@ -95,7 +95,7 @@ public class SolarSystem {
 					.withRotationalPeriod(65_518)
 					.withTidalLockingTo("ike")
 					.withColor(0.6471f, 0.2824f, 0.1608f)
-					.withBlockTextures(RefStrings.MODID + ":duna_rock", "", "", "")
+					.withBlockTextures(RefStrings.MODID + ":blocks/duna_rock", "", "", "")
 					.withProcessingLevel(1)
 					.withTraits(new CBT_Atmosphere(Fluids.DUNAAIR, 0.1D))
 					.withProcessingLevel(1)
@@ -104,7 +104,7 @@ public class SolarSystem {
 						new CelestialBody("ike", SpaceConfig.ikeDimension, Body.IKE)
 							.withMassRadius(2.782e20F, 130)
 							.withSemiMajorAxis(3_200)
-							.withBlockTextures(RefStrings.MODID + ":ike_stone", "", "", "")
+							.withBlockTextures(RefStrings.MODID + ":blocks/ike_stone", "", "", "")
 							.withProcessingLevel(1)
 							.withRotationalPeriod(65_518)
 							.withTidalLockingTo("duna")
@@ -117,7 +117,7 @@ public class SolarSystem {
 					.withMassRadius(3.219e20F, 138)
 					.withSemiMajorAxis(40_839_348)
 					.withRotationalPeriod(34_800)
-					.withBlockTextures(RefStrings.MODID + ":dresbase", "", "", "")
+					.withBlockTextures(RefStrings.MODID + ":blocks/dresbase", "", "", "")
 					.withProcessingLevel(2),
 					
 
@@ -236,7 +236,7 @@ public class SolarSystem {
 		}
 
 		public String getStoneTexture() {
-			if(this == ORBIT) return null;
+			if(this == ORBIT) return "";
 			return getBody().stoneTexture;
 		}
 

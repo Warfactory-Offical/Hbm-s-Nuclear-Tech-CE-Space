@@ -446,7 +446,7 @@ public class EntityRideableRocket extends EntityMissileBaseNT implements ILookOv
     }
 
     @Override
-    protected void onImpact(RayTraceResult mop) {
+    public void onMissileImpact(RayTraceResult mop) {
         RocketState state = getState();
         if(state != RocketState.LANDING && state != RocketState.DOCKING)
             return;
@@ -468,10 +468,6 @@ public class EntityRideableRocket extends EntityMissileBaseNT implements ILookOv
         }
 
         posY = world.getHeight((int)posX, (int)posZ);
-    }
-
-    @Override
-    public void onImpact() {
     }
 
     @Override

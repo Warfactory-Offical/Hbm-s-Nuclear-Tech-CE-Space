@@ -1,8 +1,8 @@
 package com.hbmspace.main;
 
-import com.hbm.hfr.render.loader.HFRWavefrontObject;
 import com.hbm.lib.RefStrings;
-import com.hbm.render.amlfrom1710.IModelCustom;
+import com.hbm.render.loader.HFRWavefrontObject;
+import com.hbm.render.loader.IModelCustom;
 import net.minecraft.util.ResourceLocation;
 
 public class ResourceManagerSpace {

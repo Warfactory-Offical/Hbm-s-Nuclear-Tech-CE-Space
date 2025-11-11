@@ -37,14 +37,23 @@ public class SpaceConfig {
     public static int laytheOceanBiome = 124;
     public static int laythePolarBiome = 126;
     public static int ikeBiome = 127;
-    public static int tektoPolyvinyl = 100;
-    public static int HalogenHill = 101;
-    public static int TektoRiver = 102;
+    public static int tektoPolyvinylBiome = 92;
+    public static int tektoHalogenHillBiome = 91;
+    public static int tektoRiverBiome = 90;
+    public static int tektoForestBiome = 89;
+    public static int tektoVinylIslandBiome = 88;
+
+    public static int thatmoBiome = 87;
     public static boolean allowNetherPortals = false;
 
     public static boolean enableVolcanoGen = true;
 
+    public static boolean crashOnBiomeConflict = true;
+
+    public static boolean showOreLocations = true;
+
     public static int maxProbeDistance = 32_000;
+    public static int maxStationDistance = 32_000;
 
     public SpaceConfig() {
     }
@@ -66,7 +75,10 @@ public class SpaceConfig {
 
         final String CATEGORY_GENERAL = "01_general";
         maxProbeDistance = CommonConfig.createConfigInt(config, CATEGORY_GENERAL, "1.90_maxProbeDistance", "How far from the center of the dimension can probes generate landing coordinates", maxProbeDistance);
+        maxStationDistance = CommonConfig.createConfigInt(config, CATEGORY_GENERAL, "1.93_maxStationDistance", "How far from the center of the dimension can orbital stations be generated", maxStationDistance);
         enableVolcanoGen = CommonConfig.createConfigBool(config, CATEGORY_GENERAL, "1.91_enableVolcanoGen", "Should volcanoes be active when spawning, disabling will prevent natural volcanoes from spewing lava and growing", enableVolcanoGen);
+        crashOnBiomeConflict = CommonConfig.createConfigBool(config, CATEGORY_GENERAL, "1.92_crashOnBiomeConflict", "To avoid biome ID collisions, the game will crash if one occurs, and give instructions on how to fix. Only disable this if you know what you're doing!", crashOnBiomeConflict);
+        showOreLocations = CommonConfig.createConfigBool(config, CATEGORY_GENERAL, "1.93_showOreLocations", "Should ores indicate which planets they can be found on.", showOreLocations);
 
         final String CATEGORY_BIOME = "16_biomes";
         moonBiome = CommonConfig.createConfigInt(config, CATEGORY_BIOME, "16.02_moonBiome", "Mun Biome ID", moonBiome);
@@ -91,5 +103,11 @@ public class SpaceConfig {
         dresBasins = CommonConfig.createConfigInt(config, CATEGORY_BIOME, "16.21_dresBasinsBiome", "Dres Basins Biome ID", dresBasins);
         mohoBasaltBiome = CommonConfig.createConfigInt(config, CATEGORY_BIOME, "16.22_mohoBasaltBiome", "Moho Basalt Biome ID", mohoBasaltBiome);
         orbitBiome = CommonConfig.createConfigInt(config, CATEGORY_BIOME, "16.23_orbitBiome", "Space Biome ID", orbitBiome);
+        tektoPolyvinylBiome = CommonConfig.createConfigInt(config, CATEGORY_BIOME, "16.27_tektoPolyvinylBiome", "Tekto Polyvinyl Biome ID", tektoPolyvinylBiome);
+        tektoHalogenHillBiome = CommonConfig.createConfigInt(config, CATEGORY_BIOME, "16.28_tektoHalogenHillBiome", "Tekto Halogen Hills Biome ID", tektoHalogenHillBiome);
+        tektoRiverBiome = CommonConfig.createConfigInt(config, CATEGORY_BIOME, "16.29_tektoRiverBiome", "Tekto River Biome ID", tektoRiverBiome);
+        tektoForestBiome = CommonConfig.createConfigInt(config, CATEGORY_BIOME, "16.30_tektoForestBiome", "Tekto Forest Biome ID", tektoForestBiome);
+        tektoVinylIslandBiome = CommonConfig.createConfigInt(config, CATEGORY_BIOME, "16.31_tektoVinylSandsBiome", "Tekto Vinyl Sands Biome ID", tektoVinylIslandBiome);
+        thatmoBiome = CommonConfig.createConfigInt(config, CATEGORY_BIOME, "16.32_thatmoBiome", "Thatmo Biome ID", thatmoBiome);
     }
 }

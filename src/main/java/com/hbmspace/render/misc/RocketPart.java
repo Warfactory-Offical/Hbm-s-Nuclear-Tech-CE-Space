@@ -3,7 +3,7 @@ package com.hbmspace.render.misc;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.ItemMissile;
 import com.hbm.main.ResourceManager;
-import com.hbm.render.amlfrom1710.IModelCustom;
+import com.hbm.render.loader.IModelCustom;
 import com.hbm.render.misc.MissilePart;
 import com.hbmspace.main.ResourceManagerSpace;
 import com.hbmspace.render.entity.rocket.part.RenderDropPod;

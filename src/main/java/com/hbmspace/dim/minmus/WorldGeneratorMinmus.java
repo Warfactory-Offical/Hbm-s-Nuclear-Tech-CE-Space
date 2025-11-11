@@ -4,6 +4,7 @@ import com.hbm.blocks.ModBlocks;
 import com.hbmspace.blocks.ModBlocksSpace;
 import com.hbm.config.SpaceConfig;
 import com.hbm.config.WorldConfig;
+import com.hbmspace.blocks.generic.BlockOre;
 import com.hbmspace.dim.CelestialBody;
 import com.hbm.world.generator.DungeonToolbox;
 import net.minecraft.world.World;
@@ -25,7 +26,7 @@ public class WorldGeneratorMinmus implements IWorldGenerator {
 	private void generateMinmus(World world, Random rand, int i, int j) {
 		int meta = CelestialBody.getMeta(world);
         //DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.malachiteSpawn, 16, 6, 40, ModBlocksSpace.stone_resource, EnumStoneType.MALACHITE.ordinal(), ModBlocksSpace.minmus_stone);
-        DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.copperSpawn * 3, 12, 8, 56, ModBlocks.ore_copper, ModBlocksSpace.minmus_stone);
+        DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.copperSpawn * 3, 12, 8, 56, ModBlocksSpace.ore_copper.getDefaultState().withProperty(BlockOre.META, meta), ModBlocksSpace.minmus_stone);
 	}
 
 

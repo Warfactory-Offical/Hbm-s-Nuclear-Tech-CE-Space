@@ -2,19 +2,22 @@ package com.hbmspace.dim;
 
 import com.google.common.base.Predicate;
 import com.hbm.blocks.ModBlocks;
-import com.hbmspace.blocks.ModBlocksSpace;
 import com.hbm.config.GeneralConfig;
 import com.hbm.config.WorldConfig;
-import com.hbmspace.dim.laythe.biome.BiomeGenBaseLaythe;
 import com.hbm.main.MainRegistry;
 import com.hbm.world.feature.DepthDeposit;
 import com.hbm.world.generator.CellularDungeonFactory;
 import com.hbm.world.generator.DungeonToolbox;
 import com.hbm.world.generator.MeteorDungeonStructure;
+import com.hbmspace.blocks.ModBlocksSpace;
+import com.hbmspace.blocks.generic.BlockOre;
+import com.hbmspace.config.WorldConfigSpace;
+import com.hbmspace.dim.laythe.biome.BiomeGenBaseLaythe;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.init.Biomes;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -29,25 +32,41 @@ import java.util.Random;
 
 public class WorldGeneratorCelestial implements IWorldGenerator {
 
+    public WorldGeneratorCelestial() {
+        // Specify which ores spawn where
+        BlockOre.addAllBodies(ModBlocksSpace.ore_iron);
+        BlockOre.addAllBodies(ModBlocksSpace.ore_gold);
+        BlockOre.addAllBodies(ModBlocksSpace.ore_diamond);
+        BlockOre.addAllBodies(ModBlocksSpace.ore_redstone);
+
+        //BlockOre.addValidBody(ModBlocks.ore_emerald, SolarSystem.Body.KERBIN);
+        //BlockOre.addValidBody(ModBlocks.ore_lapis, SolarSystem.Body.KERBIN);
+
+        BlockOre.addValidBody(ModBlocks.ore_asbestos, SolarSystem.Body.KERBIN);
+        BlockOre.addValidBody(ModBlocks.ore_lignite, SolarSystem.Body.KERBIN);
+        BlockOre.addValidBody(ModBlocks.ore_oil, SolarSystem.Body.KERBIN);
+        BlockOre.addValidBody(ModBlocks.ore_bedrock_oil, SolarSystem.Body.KERBIN);
+        BlockOre.addValidBody(ModBlocks.ore_coltan, SolarSystem.Body.KERBIN);
+
+        BlockOre.addAllExcept(ModBlocksSpace.ore_nickel, SolarSystem.Body.KERBIN);
+    }
+
     @Override
     public void generate(Random rand, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-        if(!(world.provider instanceof WorldProviderCelestial))
+        if(!(world.provider instanceof WorldProviderCelestial celestialProvider))
             return;
 
         if(world.provider.getDimension() == 0)
             return;
 
-        WorldProviderCelestial celestialProvider = (WorldProviderCelestial)world.provider;
         Block blockToReplace = celestialProvider.getStone();
         int meta = CelestialBody.getMeta(world);
 
         generateStructures(world, rand, chunkX * 16, chunkZ * 16);
 
-        // Generate vanilla ores too
-        // Ho-ho-ho! No.
-        //if(blockToReplace != Blocks.STONE) {
-            //generateVanillaOres(world, rand, chunkX * 16, chunkZ * 16, blockToReplace, meta);
-        //}
+        if(blockToReplace != Blocks.STONE) {
+            generateVanillaOres(world, rand, chunkX * 16, chunkZ * 16, blockToReplace, meta);
+        }
 
         generateNTMOres(world, rand, chunkX * 16, chunkZ * 16, blockToReplace, meta);
         //generateBedrockOres(world, rand, chunkX * 16, chunkZ * 16, blockToReplace);
@@ -87,7 +106,8 @@ public class WorldGeneratorCelestial implements IWorldGenerator {
         DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.titaniumSpawn, 6, 5, 30, ModBlocks.ore_titanium, planetStone);
         DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.sulfurSpawn, 8, 5, 30, ModBlocks.ore_sulfur, planetStone);
         DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.aluminiumSpawn, 6, 5, 40, ModBlocks.ore_aluminium, planetStone);
-        DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.copperSpawn, 6, 5, 45, ModBlocks.ore_copper, planetStone);
+        DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.copperSpawn, 6, 5, 45, ModBlocksSpace.ore_copper.getDefaultState().withProperty(BlockOre.META, meta), planetStone);
+        DungeonToolbox.generateOre(world, rand, x, z, WorldConfigSpace.nickelSpawn, 6, 5, 10, ModBlocksSpace.ore_nickel.getDefaultState().withProperty(BlockOre.META, meta), planetStone);
         //DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.mineralSpawn, 10, 12, 32, ModBlocks.ore_mineral, meta, planetStone);
         DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.fluoriteSpawn, 4, 5, 45, ModBlocks.ore_fluorite, planetStone);
         DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.niterSpawn, 6, 5, 30, ModBlocks.ore_niter, planetStone);
@@ -116,7 +136,6 @@ public class WorldGeneratorCelestial implements IWorldGenerator {
             //if(BedrockOre.weightedPlanetOres.containsKey(bodyEnum))
                 //list = BedrockOre.weightedPlanetOres.get(bodyEnum);
 
-            @SuppressWarnings("unchecked")
             //WeightedRandomGeneric<BedrockOreDefinition> item = (WeightedRandomGeneric<BedrockOreDefinition>) WeightedRandom.getRandomItem(rand, list);
             //BedrockOreDefinition def = item.get();
             
@@ -127,15 +146,14 @@ public class WorldGeneratorCelestial implements IWorldGenerator {
     //}
 
     // This will generate vanilla ores for the chunk when the biome decorator fails to find any regular stone
-    //public void generateVanillaOres(World world, Random rand, int x, int z, Block planetStone, int meta) {
-        //genVanillaOre(world, rand, x, z, 0, 64, 20, 8, ModBlocks.ore_iron, planetStone, meta);
-        //genVanillaOre(world, rand, x, z, 0, 32, 2, 8, ModBlocks.ore_gold, planetStone, meta);
-        //genVanillaOre(world, rand, x, z, 0, 16, 8, 7, ModBlocks.ore_redstone, planetStone, meta);
-        //genVanillaOre(world, rand, x, z, 0, 16, 1, 7, ModBlocks.ore_diamond, planetStone, meta);
+    public void generateVanillaOres(World world, Random rand, int x, int z, Block planetStone, int meta) {
+        genVanillaOre(world, rand, x, z, 0, 64, 20, 8, ModBlocksSpace.ore_iron, planetStone, meta);
+        genVanillaOre(world, rand, x, z, 0, 32, 2, 8, ModBlocksSpace.ore_gold, planetStone, meta);
+        genVanillaOre(world, rand, x, z, 0, 16, 8, 7, ModBlocksSpace.ore_redstone, planetStone, meta);
+        genVanillaOre(world, rand, x, z, 0, 16, 1, 7, ModBlocksSpace.ore_diamond, planetStone, meta);
         // what the fuck is a lapis lazuli
         // emeralds also spawn in a special way but... like... fuck emeralds
-            // haha no, fuck all ores. for now.
-    //}
+    }
 
     // Called by ModEventHandler to handle vanilla ore generation events
     public static void onGenerateOre(GenerateMinable event) {
@@ -147,7 +165,7 @@ public class WorldGeneratorCelestial implements IWorldGenerator {
 
     // A simple reimplementation of `genStandardOre1` without needing to instance a BiomeDecorator
     private void genVanillaOre(World world, Random rand, int x, int z, int yMin, int yMax, int count, int numberOfBlocks, Block ore, Block target, int meta) {
-        IBlockState oreState = ore.getDefaultState();
+        IBlockState oreState = ore.getDefaultState().withProperty(BlockOre.META, meta);
         Predicate<IBlockState> targetPredicate = BlockMatcher.forBlock(target);
 
         WorldGenMinable worldGenMinable = new WorldGenMinable(oreState, numberOfBlocks, targetPredicate);

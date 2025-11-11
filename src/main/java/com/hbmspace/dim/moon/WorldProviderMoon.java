@@ -1,23 +1,25 @@
 package com.hbmspace.dim.moon;
 
-import com.hbmspace.blocks.ModBlocksSpace;
 import com.hbm.config.SpaceConfig;
+import com.hbmspace.blocks.ModBlocksSpace;
 import com.hbmspace.dim.WorldProviderCelestial;
 import net.minecraft.block.Block;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProviderSingle;
 import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 public class WorldProviderMoon extends WorldProviderCelestial {
 
 	@Override
 	public void init() {
-		this.biomeProvider = new BiomeProviderSingle(new BiomeGenMoon(new Biome.BiomeProperties("Mun").setBaseHeight(0.125F).setHeightVariation(0.05F).setRainDisabled()));
+		this.biomeProvider = new BiomeProviderSingle(ForgeRegistries.BIOMES.getValue(new ResourceLocation("hbm", "moon")));
 	}
 	
 	@Override
-	public IChunkGenerator createChunkGenerator() {
+	public @NotNull IChunkGenerator createChunkGenerator() {
 		return new ChunkProviderMoon(this.world, this.getSeed(), false);
 	}
 
@@ -27,6 +29,6 @@ public class WorldProviderMoon extends WorldProviderCelestial {
 	}
 
 	@Override
-	public DimensionType getDimensionType(){return DimensionType.getById(SpaceConfig.moonDimension);}
+	public @NotNull DimensionType getDimensionType(){return DimensionType.getById(SpaceConfig.moonDimension);}
 
 }

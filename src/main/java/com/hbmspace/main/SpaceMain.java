@@ -1,11 +1,14 @@
 package com.hbmspace.main;
 
 import com.hbm.handler.GuiHandler;
+import com.hbm.inventory.OreDictManager;
 import com.hbmspace.blocks.ModBlocksSpace;
 import com.hbmspace.capability.HbmLivingCapabilitySpace;
 import com.hbmspace.config.SpaceConfig;
+import com.hbmspace.config.WorldConfigSpace;
 import com.hbmspace.dim.CommandSpaceTP;
 import com.hbmspace.dim.SolarSystem;
+import com.hbmspace.inventory.OreDictManagerSpace;
 import com.hbmspace.items.ModItemsSpace;
 import com.hbmspace.items.weapon.ItemCustomMissilePart;
 import com.hbmspace.world.PlanetGen;
@@ -51,6 +54,8 @@ public class SpaceMain {
 
         CapabilityManager.INSTANCE.register(HbmLivingCapabilitySpace.IEntityHbmProps.class, new HbmLivingCapabilitySpace.EntityHbmPropsStorage(), HbmLivingCapabilitySpace.EntityHbmProps.FACTORY);
 
+        SolarSystem.init();
+
         ModItemsSpace.preInit();
         ModBlocksSpace.preInit();
 
@@ -61,6 +66,8 @@ public class SpaceMain {
         AutoRegistrySpace.loadAuxiliaryData();
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 
+        OreDictManagerSpace.registerOres();
+
         int i = 0;
         AutoRegistrySpace.registerEntities(i);
         ItemCustomMissilePart.initSpaceThrusters();
@@ -70,6 +77,7 @@ public class SpaceMain {
     public static void reloadConfig() {
         Configuration config = new Configuration(new File(proxy.getDataDir().getPath() + "/config/hbm/hbm_space.cfg"));
         config.load();
+        WorldConfigSpace.loadFromConfig(config);
         SpaceConfig.loadFromConfig(config);
         config.save();
     }
@@ -80,7 +88,6 @@ public class SpaceMain {
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        SolarSystem.init();
         PlanetGen.init();
     }
 

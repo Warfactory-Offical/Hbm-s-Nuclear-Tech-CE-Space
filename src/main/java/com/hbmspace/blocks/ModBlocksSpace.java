@@ -1,14 +1,17 @@
 package com.hbmspace.blocks;
 
+import com.hbm.blocks.ModBlocks;
+import com.hbm.blocks.OreEnumUtil;
 import com.hbm.blocks.generic.BlockNTMOre;
-import com.hbm.lib.RefStrings;
-import com.hbmspace.blocks.bomb.LaunchPadRocket;
-import com.hbmspace.blocks.generic.BlockNTMOreSpace;
-import com.hbmspace.blocks.machine.*;
 import com.hbm.main.MainRegistry;
+import com.hbmspace.blocks.bomb.LaunchPadRocket;
+import com.hbmspace.blocks.generic.BlockOre;
+import com.hbmspace.blocks.machine.*;
+import com.hbmspace.util.OreEnumUtilSpace;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.util.ArrayList;
@@ -34,7 +37,34 @@ public class ModBlocksSpace {
     public static final Block minmus_regolith = new BlockBaseSpace(Material.ROCK, "minmus_regolith").setSoundType(SoundType.STONE).setCreativeTab(MainRegistry.resourceTab).setHardness(1.5F).setResistance(10.0F);
     public static final Block minmus_stone = new BlockBaseSpace(Material.ROCK, "minmus_stone").setSoundType(SoundType.STONE).setCreativeTab(MainRegistry.resourceTab).setHardness(1.5F).setResistance(10.0F);
     public static final Block minmus_smooth = new BlockBaseSpace(Material.ROCK, "minmus_smooth").setSoundType(SoundType.STONE).setCreativeTab(MainRegistry.resourceTab).setHardness(1.5F).setResistance(10.0F);
-    public static final Block ore_gas = new BlockNTMOreSpace("ore_gas", 3).setCreativeTab(MainRegistry.resourceTab).setBlockUnbreakable().setHardness(5.0F).setResistance(10.0F);
+    public static final Block block_nickel = new BlockBakeBaseSpace(Material.IRON, "block_nickel").setSoundType(SoundType.METAL).setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_iron = new BlockOre("ore_iron", null, Blocks.IRON_ORE).setCreativeTab(MainRegistry.blockTab).setHardness(3.0F).setResistance(5.0F);
+    public static final Block ore_gold = new BlockOre("ore_gold", null, Blocks.GOLD_ORE).setCreativeTab(MainRegistry.blockTab).setHardness(3.0F).setResistance(5.0F);
+    public static final Block ore_redstone = new BlockOre("ore_redstone", OreEnumUtilSpace.SpaceOreEnum.REDSTONE, Blocks.REDSTONE_ORE).setCreativeTab(MainRegistry.blockTab).setHardness(3.0F).setResistance(5.0F);
+    public static final Block ore_diamond = new BlockOre("ore_diamond", OreEnumUtil.OreEnum.DIAMOND, Blocks.DIAMOND_ORE).setCreativeTab(MainRegistry.blockTab).setHardness(3.0F).setResistance(5.0F);
+    public static final Block ore_nickel = new BlockOre("ore_nickel", null, 2).setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_copper = new BlockOre("ore_copper", null, 1).setNTMAlt(ModBlocks.ore_copper).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_schrabidium = new BlockOre("ore_schrabidium", null, 3, 300).setNTMAlt(ModBlocks.ore_schrabidium).setHardness(15.0F).setResistance(600.0F).setCreativeTab(MainRegistry.resourceTab);
+    public static final Block ore_thorium = new BlockOre("ore_thorium", null, 2).setNTMAlt(ModBlocks.ore_thorium).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_titanium = new BlockOre("ore_titanium", null, 2).setNTMAlt(ModBlocks.ore_titanium).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_sulfur = new BlockOre("ore_sulfur", OreEnumUtil.OreEnum.SULFUR, 1).setNTMAlt(ModBlocks.ore_sulfur).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_niter = new BlockOre("ore_niter", OreEnumUtil.OreEnum.NITER, 1).setNTMAlt(ModBlocks.ore_niter).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_tungsten = new BlockOre("ore_tungsten", null, 2).setNTMAlt(ModBlocks.ore_tungsten).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_aluminium = new BlockOre("ore_aluminium", null, 1).setNTMAlt(ModBlocks.ore_aluminium).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_fluorite = new BlockOre("ore_fluorite", OreEnumUtil.OreEnum.FLUORITE,  1).setNTMAlt(ModBlocks.ore_fluorite).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_lead = new BlockOre("ore_lead", null, 2).setNTMAlt(ModBlocks.ore_lead).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_beryllium = new BlockOre("ore_beryllium", null, 2).setNTMAlt(ModBlocks.ore_beryllium).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(15.0F);
+    public static final Block ore_rare = new BlockOre("ore_rare", OreEnumUtil.OreEnum.RARE_EARTHS, 2, 12).setNTMAlt(ModBlocks.ore_rare).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_cobalt = new BlockOre("ore_cobalt", OreEnumUtil.OreEnum.COBALT, 3, 15).setNTMAlt(ModBlocks.ore_cobalt).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_cinnabar = new BlockOre("ore_cinnabar", OreEnumUtil.OreEnum.CINNABAR, 1).setNTMAlt(ModBlocks.ore_cinnabar).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(10.0F);
+
+    public static final Block ore_reiium = new BlockOre("ore_reiium", null, 4, 100).setNTMAlt(ModBlocks.ore_reiium).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_weidanium = new BlockOre("ore_weidanium", null, 4, 100).setNTMAlt(ModBlocks.ore_weidanium).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_australium = new BlockOre("ore_australium", null, 4, 100).setNTMAlt(ModBlocks.ore_australium).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_verticium = new BlockOre("ore_verticium", null, 4, 100).setNTMAlt(ModBlocks.ore_verticium).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_unobtainium = new BlockOre("ore_unobtainium", null, 4, 100).setNTMAlt(ModBlocks.ore_unobtainium).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_daffergon = new BlockOre("ore_daffergon", null, 4, 100).setNTMAlt(ModBlocks.ore_daffergon).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_gas = new BlockOre("ore_gas", null, 3).setCreativeTab(MainRegistry.resourceTab).setBlockUnbreakable().setHardness(5.0F).setResistance(10.0F);
     public static final Block ore_gas_empty = new BlockBaseSpace(Material.ROCK, "ore_gas_empty").setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(10.0F);
 
     public static final Block machine_lpw2 = new MachineLPW2("machine_lpw2").setHardness(5.0F).setResistance(100.0F).setCreativeTab(MainRegistry.machineTab);
