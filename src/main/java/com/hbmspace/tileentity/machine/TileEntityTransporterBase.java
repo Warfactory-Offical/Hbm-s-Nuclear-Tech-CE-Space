@@ -11,11 +11,11 @@ import com.hbm.lib.DirPos;
 import com.hbm.lib.ForgeDirection;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.toserver.NBTControlPacket;
-import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.util.BufferUtil;
 import com.hbm.util.InventoryUtil;
 import com.hbmspace.items.tool.ItemTransporterLinker;
+import com.hbmspace.tileentity.ISpaceGuiProvider;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -33,7 +33,7 @@ import net.minecraftforge.items.IItemHandler;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
-public abstract class TileEntityTransporterBase extends TileEntityMachineBase implements ITickable, IGUIProvider, IControlReceiver, IFluidStandardTransceiver {
+public abstract class TileEntityTransporterBase extends TileEntityMachineBase implements ITickable, ISpaceGuiProvider, IControlReceiver, IFluidStandardTransceiver {
 
     private String name = "Transporter";
 

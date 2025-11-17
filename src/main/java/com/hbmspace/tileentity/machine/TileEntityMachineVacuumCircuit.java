@@ -10,7 +10,6 @@ import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.Library;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.toclient.AuxParticlePacketNT;
-import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.IUpgradeInfoProvider;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.util.I18nUtil;
@@ -21,6 +20,7 @@ import com.hbmspace.interfaces.AutoRegister;
 import com.hbmspace.inventory.container.ContainerVacuumCircuit;
 import com.hbmspace.inventory.gui.GUIVacuumCircuit;
 import com.hbmspace.inventory.recipes.VacuumCircuitRecipes;
+import com.hbmspace.tileentity.ISpaceGuiProvider;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -44,7 +44,7 @@ import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.List;
 @AutoRegister
-public class TileEntityMachineVacuumCircuit extends TileEntityMachineBase implements ITickable, IEnergyReceiverMK2, IGUIProvider, IUpgradeInfoProvider {
+public class TileEntityMachineVacuumCircuit extends TileEntityMachineBase implements ITickable, IEnergyReceiverMK2, ISpaceGuiProvider, IUpgradeInfoProvider {
 
     public long power;
     public long maxPower = 2_000;

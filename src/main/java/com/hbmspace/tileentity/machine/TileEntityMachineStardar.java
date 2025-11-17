@@ -1,10 +1,9 @@
 package com.hbmspace.tileentity.machine;
 
-import com.hbmspace.config.SpaceConfig;
 import com.hbm.handler.CompatHandler;
 import com.hbm.interfaces.IControlReceiver;
-import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.TileEntityMachineBase;
+import com.hbmspace.config.SpaceConfig;
 import com.hbmspace.dim.CelestialBody;
 import com.hbmspace.dim.SolarSystemWorldSavedData;
 import com.hbmspace.dim.orbit.OrbitalStation;
@@ -13,6 +12,7 @@ import com.hbmspace.inventory.container.ContainerStardar;
 import com.hbmspace.inventory.gui.GUIMachineStardar;
 import com.hbmspace.items.ItemVOTVdrive;
 import com.hbmspace.items.ModItemsSpace;
+import com.hbmspace.tileentity.ISpaceGuiProvider;
 import io.netty.buffer.ByteBuf;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
@@ -40,7 +40,7 @@ import java.util.List;
 
 @Optional.InterfaceList({@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "opencomputers")})
 @AutoRegister
-public class TileEntityMachineStardar extends TileEntityMachineBase implements ITickable, IGUIProvider, IControlReceiver, SimpleComponent, CompatHandler.OCComponent {
+public class TileEntityMachineStardar extends TileEntityMachineBase implements ITickable, ISpaceGuiProvider, IControlReceiver, SimpleComponent, CompatHandler.OCComponent {
 
     private static long pointAtTime = 0;
 

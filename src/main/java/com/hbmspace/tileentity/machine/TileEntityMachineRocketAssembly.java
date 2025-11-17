@@ -4,7 +4,6 @@ import com.hbm.blocks.BlockDummyable;
 import com.hbm.interfaces.IControlReceiver;
 import com.hbm.items.ISatChip;
 import com.hbm.lib.ForgeDirection;
-import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.util.BobMathUtil;
 import com.hbmspace.blocks.ModBlocksSpace;
@@ -14,6 +13,7 @@ import com.hbmspace.inventory.container.ContainerMachineRocketAssembly;
 import com.hbmspace.inventory.gui.GUIMachineRocketAssembly;
 import com.hbmspace.items.ItemVOTVdrive;
 import com.hbmspace.items.weapon.ItemCustomRocket;
+import com.hbmspace.tileentity.ISpaceGuiProvider;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
@@ -34,7 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 @AutoRegister
-public class TileEntityMachineRocketAssembly extends TileEntityMachineBase implements ITickable, IGUIProvider, IControlReceiver {
+public class TileEntityMachineRocketAssembly extends TileEntityMachineBase implements ITickable, ISpaceGuiProvider, IControlReceiver {
 
     public RocketStruct rocket;
 

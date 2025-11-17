@@ -4,7 +4,6 @@ import com.hbm.api.energymk2.IEnergyReceiverMK2;
 import com.hbm.interfaces.IControlReceiver;
 import com.hbm.lib.ForgeDirection;
 import com.hbm.lib.Library;
-import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.util.BufferUtil;
 import com.hbm.util.EnumUtil;
@@ -15,6 +14,7 @@ import com.hbmspace.inventory.gui.GUIMachineDriveProcessor;
 import com.hbmspace.items.ItemEnumsSpace;
 import com.hbmspace.items.ItemVOTVdrive;
 import com.hbmspace.items.ModItemsSpace;
+import com.hbmspace.tileentity.ISpaceGuiProvider;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,7 +30,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 
 @AutoRegister
-public class TileEntityMachineDriveProcessor extends TileEntityMachineBase implements ITickable, IGUIProvider, IControlReceiver, IEnergyReceiverMK2 {
+public class TileEntityMachineDriveProcessor extends TileEntityMachineBase implements ITickable, ISpaceGuiProvider, IControlReceiver, IEnergyReceiverMK2 {
 
     public long power;
     public long maxPower = 2_000;

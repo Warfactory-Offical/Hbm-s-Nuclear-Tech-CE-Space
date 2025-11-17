@@ -1,13 +1,13 @@
 package com.hbmspace.tileentity.machine;
 
 import com.hbm.interfaces.IControlReceiver;
-import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbmspace.dim.CelestialBody;
 import com.hbmspace.dim.orbit.OrbitalStation;
 import com.hbmspace.interfaces.AutoRegister;
 import com.hbmspace.inventory.container.ContainerOrbitalStationComputer;
 import com.hbmspace.inventory.gui.GUIOrbitalStationComputer;
+import com.hbmspace.tileentity.ISpaceGuiProvider;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
 @AutoRegister
-public class TileEntityOrbitalStationComputer extends TileEntityMachineBase implements ITickable, IGUIProvider, IControlReceiver {
+public class TileEntityOrbitalStationComputer extends TileEntityMachineBase implements ITickable, ISpaceGuiProvider, IControlReceiver {
 
     public boolean hasDrive;
 
