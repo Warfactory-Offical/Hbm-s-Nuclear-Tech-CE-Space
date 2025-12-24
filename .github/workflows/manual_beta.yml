@@ -58,7 +58,7 @@ jobs:
       #          fi
       #
       - name: Build with Gradle
-        run: ./gradlew clean build --no-daemon
+        run: ./gradlew build --no-daemon
       #
       - name: Find mod jar (non-dev/non-sources/non-api)
         run: |
