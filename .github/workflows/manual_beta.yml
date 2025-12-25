@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up JDK 25
         uses: actions/setup-java@v4
@@ -50,16 +52,9 @@ jobs:
           echo "TAG=v${MOD_VERSION}" >> "$GITHUB_ENV"
           echo "tag=v${MOD_VERSION}" >> "$GITHUB_OUTPUT"
 
-      #      - name: Ensure tag doesn't already exist on origin
-      #        run: |
-      #          set -euo pipefail
-      #          if git ls-remote --exit-code --tags origin "refs/tags/${TAG}" >/dev/null 2>&1; then
-      #            echo "::error::Tag ${TAG} already exists on origin. Canceling."; exit 1
-      #          fi
-      #
       - name: Build with Gradle
         run: ./gradlew build --no-daemon
-      #
+
       - name: Find mod jar (non-dev/non-sources/non-api)
         run: |
           set -euo pipefail
@@ -69,22 +64,53 @@ jobs:
           fi
           echo "FILE=${FILE}" >> "$GITHUB_ENV"
 
-      - name: Create and push tag
+      - name: Check if tag exists on origin
+        id: tagcheck
+        run: |
+          set -euo pipefail
+          if git ls-remote --exit-code --tags origin "refs/tags/${TAG}" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Push tag if it doesn't exist
         run: |
           set -euo pipefail
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git tag "${TAG}"
-          git push origin "${TAG}"
 
-      - name: Create GitHub Release
+          if [[ "${{ steps.tagcheck.outputs.exists }}" == "true" ]]; then
+            echo "Skipping tag push"
+          else
+            echo "Creating new tag ${TAG}"
+            git tag "${TAG}" "${GITHUB_SHA}"
+            git push origin "refs/tags/${TAG}"
+          fi
+
+      - name: Create/update GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ env.TAG }}
+          tag: ${{ env.TAG }}
           name: "Beta ${{ env.TAG }}"
-          prerelease: false
-          generate_release_notes: true
-          files: ${{ env.FILE }}
+          prerelease: true
+          allowUpdates: true
+          replacesArtifacts: true
+          generateReleaseNotes: true
+          artifacts: "build/libs/*.jar"
+          body: |
+            ⚠️ **Beta-version build** — should be stable in terms of crashes but not in anything else. Use at your own risk.
+
+            ## Which JAR should I download?
+
+            - **NTM-CE-1.12.2-${{ env.MOD_VERSION }}.jar** — **Java 8+** (recommended for most Forge users)
+            - **NTM-CE-1.12.2-${{ env.MOD_VERSION }}-java25.jar** — **Java 25+** (Cleanroom; may be more efficient)
+            - **NTM-CE-1.12.2-${{ env.MOD_VERSION }}-downgraded.jar** — **Java 8+**, but **does not** shade the JVMDG `java-api` (useful if you provide a custom one)
+            - **NTM-CE-1.12.2-${{ env.MOD_VERSION }}-dev.jar** — **Java 8+**, unobfuscated (for developers)
+            - **NTM-CE-1.12.2-${{ env.MOD_VERSION }}-dev-java25.jar** — **Java 25+**, unobfuscated (for developers on the JVMDG/Cleanroom toolchain)
+
+            **Commit:** `${{ github.sha }}`
+            **Workflow run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 #      - name: Publish to CurseForge
