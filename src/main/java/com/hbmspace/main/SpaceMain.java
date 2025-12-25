@@ -42,7 +42,7 @@ import java.util.List;
  *
  * @author Th3_Sl1ze
 */
-@Mod(modid = Tags.MODID, version = Tags.VERSION, name = Tags.MODNAME, acceptedMinecraftVersions = "[1.12.2]", dependencies = "required-after:hbm@[1.2.5.1,)")
+@Mod(modid = Tags.MODID, version = Tags.VERSION, name = Tags.MODNAME, acceptedMinecraftVersions = "[1.12.2]", dependencies = "required-after:hbm@[1.2.5.1,);required-after:mixinbooter@[10.6,)")
 public class SpaceMain {
 
     @SidedProxy(clientSide = "com.hbmspace.main.ClientProxy", serverSide = "com.hbmspace.main.ServerProxy")
