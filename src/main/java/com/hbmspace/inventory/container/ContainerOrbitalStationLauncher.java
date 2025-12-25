@@ -16,7 +16,7 @@ import net.minecraftforge.items.SlotItemHandler;
 public class ContainerOrbitalStationLauncher extends ContainerBase {
 
     public ContainerOrbitalStationLauncher(InventoryPlayer invPlayer, TileEntityOrbitalStationLauncher machine) {
-        super(invPlayer, machine);
+        super(invPlayer, machine.inventory);
 
         int slotId = 0;
 
@@ -41,8 +41,8 @@ public class ContainerOrbitalStationLauncher extends ContainerBase {
 
         // Drives
         for(int i = 0; i < RocketStruct.MAX_STAGES; i++) {
-            addSlotToContainer(new SlotRocket.SlotDrive(machine, slotId++, 161, 54, i));
-            addSlotToContainer(new SlotRocket.SlotDrive(machine, slotId++, 170, 87, i));
+            addSlotToContainer(new SlotRocket.SlotDrive((SlotRocket.IStage) machine.inventory, slotId++, 161, 54, i));
+            addSlotToContainer(new SlotRocket.SlotDrive((SlotRocket.IStage) machine.inventory, slotId++, 170, 87, i));
         }
 
         addSlots(invPlayer, 9, 8, 142, 3, 9); // Player inventory

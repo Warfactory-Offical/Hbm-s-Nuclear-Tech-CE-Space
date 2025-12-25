@@ -40,13 +40,15 @@ import net.minecraft.world.World;
 import com.hbmspace.tileentity.bomb.TileEntityLaunchPadRocket.SolidFuelTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @AutoRegister
-public class TileEntityOrbitalStationLauncher extends TileEntityOrbStation implements ITickable, ISpaceGuiProvider, IControlReceiver, SlotRocket.IStage, IFluidStandardReceiverMK2 {
+public class TileEntityOrbitalStationLauncher extends TileEntityOrbStation implements ITickable, ISpaceGuiProvider, IControlReceiver, IFluidStandardReceiverMK2 {
 
     public RocketStruct rocket;
 
@@ -75,6 +77,11 @@ public class TileEntityOrbitalStationLauncher extends TileEntityOrbStation imple
 
         tanks = new FluidTankNTM[RocketStruct.MAX_STAGES * 2]; // enough tanks for any combination of rocket stages
         for(int i = 0; i < tanks.length; i++) tanks[i] = new FluidTankNTM(Fluids.NONE, 64_000);
+    }
+
+    @Override
+    protected ItemStackHandler getNewInventory(int scount, final int slotlimit) {
+        return new LauncherInventory(scount);
     }
 
     @Override
@@ -180,32 +187,6 @@ public class TileEntityOrbitalStationLauncher extends TileEntityOrbStation imple
     public void enterCapsule(EntityPlayer player) {
         if (docked == null || docked.isBeingRidden()) return;
         docked.processInitialInteract(player, EnumHand.MAIN_HAND);
-    }
-
-    @Override
-    public int getSlots() {
-        return 1 + 1 + 1 +
-                1 + RocketStruct.MAX_STAGES * 3 + RocketStruct.MAX_STAGES * 2;
-    }
-
-    @Override
-    public @NotNull ItemStack getStackInSlot(int slot) {
-        return inventory.getStackInSlot(slot);
-    }
-
-    @Override
-    public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-        return inventory.insertItem(slot, stack, simulate);
-    }
-
-    @Override
-    public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
-        return inventory.extractItem(slot, amount, simulate);
-    }
-
-    @Override
-    public int getSlotLimit(int slot) {
-        return 64;
     }
 
     public void dockRocket(EntityRideableRocket rocket) {
@@ -413,11 +394,6 @@ public class TileEntityOrbitalStationLauncher extends TileEntityOrbStation imple
     }
 
     @Override
-    public void setCurrentStage(int stage) {
-        currentStage = stage;
-    }
-
-    @Override
     public FluidTankNTM[] getAllTanks() {
         return tanks;
     }
@@ -427,4 +403,33 @@ public class TileEntityOrbitalStationLauncher extends TileEntityOrbStation imple
         return tanks;
     }
 
+    private class LauncherInventory extends ItemStackHandler implements SlotRocket.IStage {
+        private final int scount;
+
+        public LauncherInventory(int scount) {
+            super(scount);
+            this.scount = scount;
+        }
+
+        @Override
+        protected void onContentsChanged(int slot) {
+            super.onContentsChanged(slot);
+            markDirty();
+        }
+
+        @Override
+        public int getSlots() {
+            return scount;
+        }
+
+        @Override
+        public int getSlotLimit(int slot) {
+            return 64;
+        }
+
+        @Override
+        public void setCurrentStage(int stage) {
+            currentStage = stage;
+        }
+    }
 }

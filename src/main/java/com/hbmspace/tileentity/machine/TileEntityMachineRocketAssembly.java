@@ -31,11 +31,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 @AutoRegister
-public class TileEntityMachineRocketAssembly extends TileEntityMachineBase implements ITickable, ISpaceGuiProvider, IControlReceiver, SlotRocket.IStage {
+public class TileEntityMachineRocketAssembly extends TileEntityMachineBase implements ITickable, ISpaceGuiProvider, IControlReceiver {
 
     public RocketStruct rocket;
 
@@ -50,17 +51,6 @@ public class TileEntityMachineRocketAssembly extends TileEntityMachineBase imple
 
     public TileEntityMachineRocketAssembly() {
         super(1 + RocketStruct.MAX_STAGES * 3 + 1 + RocketStruct.MAX_STAGES * 2, false, false); // capsule + stages + result + drives
-        inventory = new ItemStackHandler(1 + RocketStruct.MAX_STAGES * 3 + 1 + RocketStruct.MAX_STAGES * 2){
-            @Override
-            public int getSlots() {
-                if(isBreaking) return super.getSlots() - RocketStruct.MAX_STAGES * 2;
-                return super.getSlots();
-            }
-            @Override
-            public int getSlotLimit(int slot) {
-                return 8;
-            }
-        };
     }
 
     @Override
@@ -68,7 +58,10 @@ public class TileEntityMachineRocketAssembly extends TileEntityMachineBase imple
         return "container.machineRocketAssembly";
     }
 
-
+    @Override
+    protected ItemStackHandler getNewInventory(int scount, final int slotlimit) {
+        return new RocketAssemblyInventory(scount);
+    }
 
     @Override
     public void update() {
@@ -329,34 +322,34 @@ public class TileEntityMachineRocketAssembly extends TileEntityMachineBase imple
         }
     }
 
-    @Override
-    public void setCurrentStage(int stage) {
-        currentStage = stage;
-    }
+    private class RocketAssemblyInventory extends ItemStackHandler implements SlotRocket.IStage {
+        private final int scount;
 
-    @Override
-    public int getSlots() {
-        if(isBreaking) return (1 + RocketStruct.MAX_STAGES * 3 + 1 + RocketStruct.MAX_STAGES * 2) - RocketStruct.MAX_STAGES * 2;
-        return 1 + RocketStruct.MAX_STAGES * 3 + 1 + RocketStruct.MAX_STAGES * 2;
-    }
+        public RocketAssemblyInventory(int scount) {
+            super(scount);
+            this.scount = scount;
+        }
 
-    @Override
-    public @NotNull ItemStack getStackInSlot(int slot) {
-        return inventory.getStackInSlot(slot);
-    }
+        @Override
+        protected void onContentsChanged(int slot) {
+            super.onContentsChanged(slot);
+            markDirty();
+        }
 
-    @Override
-    public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-        return inventory.insertItem(slot, stack, simulate);
-    }
+        @Override
+        public int getSlots() {
+            if(isBreaking) return (1 + RocketStruct.MAX_STAGES * 3 + 1 + RocketStruct.MAX_STAGES * 2) - RocketStruct.MAX_STAGES * 2;
+            return scount;
+        }
 
-    @Override
-    public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
-        return inventory.extractItem(slot, amount, simulate);
-    }
+        @Override
+        public int getSlotLimit(int slot) {
+            return 8;
+        }
 
-    @Override
-    public int getSlotLimit(int slot) {
-        return 8;
+        @Override
+        public void setCurrentStage(int stage) {
+            currentStage = stage;
+        }
     }
 }

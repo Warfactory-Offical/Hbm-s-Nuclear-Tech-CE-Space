@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.util.Constants;
+import org.jetbrains.annotations.Contract;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -318,6 +319,7 @@ public class RocketStruct {
         }
     }
 
+    @Contract("_ -> new")
     public static RocketStruct readFromByteBuffer(ByteBuf buf) {
         RocketStruct rocket = new RocketStruct();
 

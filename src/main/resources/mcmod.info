@@ -4,7 +4,7 @@
     "name": "HBM's Nuclear Tech - Space Addon",
     "description": "Space Addon, ported right from 1.7.10, now for NTM:CE",
     "version": "${version}",
-    "credits": "\n\nHBMMods: original creator\nMellow&JamesH2: 1.7.10 space fork author",
+    "credits": "\n\nHBMMods: original creator\nMellow&JameH2: 1.7.10 space fork author",
     "logoFile": "assets/hbmspace/textures/logo.png",
     "mcversion": "${mcversion}",
     "url": "https://github.com/Warfactory-Offical/Hbm-s-Nuclear-Tech-CE-Space",
@@ -13,7 +13,7 @@
       "Th3_Sl1ze",
       "Movblock",
       "Mellow",
-      "JamesH2",
+      "JameH2",
       "HBMMods/The Bobcat"
     ],
     "parent": "",

@@ -17,6 +17,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.items.IItemHandler;
 
 import java.io.IOException;
 import java.util.List;
@@ -103,9 +104,10 @@ public class GUIOrbitalStationLauncher extends GuiInfoContainerLayered {
 
             GlStateManager.translate(0, 0, 150);
             GlStateManager.scale(0.5F, 0.5F, 0.5F);
+            IItemHandler inv = machine.inventory;
 
-            ItemStack fromStack = machine.getStackInSlot(machine.getSlots() - (RocketStruct.MAX_STAGES - currentLayer) * 2);
-            ItemStack toStack = machine.getStackInSlot(machine.getSlots() - (RocketStruct.MAX_STAGES - currentLayer) * 2 + 1);
+            ItemStack fromStack = inv.getStackInSlot(inv.getSlots() - (RocketStruct.MAX_STAGES - currentLayer) * 2);
+            ItemStack toStack = inv.getStackInSlot(inv.getSlots() - (RocketStruct.MAX_STAGES - currentLayer) * 2 + 1);
 
             ItemVOTVdrive.Target from = ItemVOTVdrive.getTarget(fromStack, machine.getWorld());
             ItemVOTVdrive.Target to = ItemVOTVdrive.getTarget(toStack, machine.getWorld());

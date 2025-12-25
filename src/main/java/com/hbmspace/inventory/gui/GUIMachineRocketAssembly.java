@@ -57,6 +57,7 @@ public class GUIMachineRocketAssembly extends GuiInfoContainerLayered {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+        if (machine.rocket == null) return; // can be null for a very brief moment, before the first packet is sent
 
         int stage = Math.max(machine.rocket.stages.size() - 1 - getLayer(), -1);
 

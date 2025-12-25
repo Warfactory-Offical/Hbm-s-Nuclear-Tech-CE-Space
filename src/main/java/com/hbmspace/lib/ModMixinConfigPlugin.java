@@ -1,4 +1,4 @@
-package com.hbmspace.mixin.mod;
+package com.hbmspace.lib;
 
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.tree.ClassNode;
