@@ -22,10 +22,10 @@ import static com.hbmspace.inventory.OreDictManagerSpace.ZI;
 public class MixinCrystallizerRecipes {
 
     @Shadow
-    public static void registerRecipe(Object input, CrystallizerRecipes.CrystallizerRecipe recipe) { throw new AssertionError(); }
+    public static void registerRecipe(Object input, CrystallizerRecipes.CrystallizerRecipe recipe) { }
 
     @Shadow
-    public static void registerRecipe(Object input, CrystallizerRecipes.CrystallizerRecipe recipe, FluidStack stack) { throw new AssertionError(); }
+    public static void registerRecipe(Object input, CrystallizerRecipes.CrystallizerRecipe recipe, FluidStack stack) { }
 
     @Inject(method = "registerDefaults", at = @At("TAIL"))
     public void registerSpace(CallbackInfo ci) {

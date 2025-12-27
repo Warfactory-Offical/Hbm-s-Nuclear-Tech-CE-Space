@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.Unique;
 public abstract class MixinDictFrame implements IDictFrameAddon {
 
     @Shadow
-    private float hazMult;
+    float hazMult;
     @Shadow
     public abstract void registerStack(String tag, ItemStack stack);
     @Unique

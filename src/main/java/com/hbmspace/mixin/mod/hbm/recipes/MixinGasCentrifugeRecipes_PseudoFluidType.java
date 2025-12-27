@@ -16,7 +16,7 @@ public abstract class MixinGasCentrifugeRecipes_PseudoFluidType {
     @Invoker("<init>")
     private static GasCentrifugeRecipes.PseudoFluidType hbm$ctor(String name, int fluidConsumed, int fluidProduced,
                                                                  GasCentrifugeRecipes.PseudoFluidType outputFluid, boolean isHighSpeed, ItemStack[] output) {
-        throw new AssertionError();
+        return null;
     }
 
     @Inject(method = "<clinit>", at = @At("TAIL"))

@@ -1,10 +1,8 @@
 package com.hbmspace.mixin.mod.hbm.recipes;
 
-import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.RecipesCommon;
 import com.hbm.inventory.material.Mats;
 import com.hbm.inventory.recipes.CentrifugeRecipes;
-import com.hbm.items.ItemEnums;
 import com.hbm.items.ModItems;
 import com.hbmspace.blocks.ModBlocksSpace;
 import com.hbmspace.inventory.materials.MatsSpace;

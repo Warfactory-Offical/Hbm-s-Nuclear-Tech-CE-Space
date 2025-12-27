@@ -26,8 +26,7 @@ public class MixinBlockNTMOre {
     private void showOreLocations(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced, CallbackInfo ci) {
         if (!SpaceConfig.showOreLocations) return;
 
-        Block block = (Block)(Object)this;
-        Set<SolarSystem.Body> bodies = BlockOre.spawnMap.get(block);
+        Set<SolarSystem.Body> bodies = BlockOre.spawnMap.get(this);
         if (bodies == null || bodies.isEmpty()) {
             return;
         }
