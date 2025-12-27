@@ -33,6 +33,7 @@ import com.hbmspace.render.tileentity.IItemRendererProviderSpace;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneOre;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -157,18 +158,15 @@ public class ModEventHandlerClient {
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void thickenFog(EntityViewRenderEvent.FogDensity event) {
-        if(event.getEntity().world.provider instanceof WorldProviderCelestial provider) {
+        if (event.getEntity().world.provider instanceof WorldProviderCelestial provider) {
             float fogDensity = provider.fogDensity();
-
-            if(fogDensity > 0) {
-                if(GLContext.getCapabilities().GL_NV_fog_distance) {
-                    GL11.glFogi(34138, 34139);
+            if (fogDensity > 0) {
+                if (GLContext.getCapabilities().GL_NV_fog_distance) {
+                    GlStateManager.glFogi(34138, 34139);
                 }
-                GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
-
+                GlStateManager.setFog(GlStateManager.FogMode.EXP);
                 event.setDensity(fogDensity);
                 event.setCanceled(true);
-
             }
         }
     }
