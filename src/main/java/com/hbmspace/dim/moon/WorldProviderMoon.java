@@ -15,7 +15,7 @@ public class WorldProviderMoon extends WorldProviderCelestial {
 
 	@Override
 	public void init() {
-		this.biomeProvider = new BiomeProviderSingle(ForgeRegistries.BIOMES.getValue(new ResourceLocation("hbm", "moon")));
+		this.biomeProvider = new BiomeProviderSingle(BiomeGenMoon.biome);
 	}
 	
 	@Override

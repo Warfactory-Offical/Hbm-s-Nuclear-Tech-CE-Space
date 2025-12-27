@@ -14,7 +14,7 @@ public class WorldProviderIke extends WorldProviderCelestial {
 	
 	@Override
 	public void init() {
-		this.biomeProvider = new BiomeProviderSingle(new BiomeGenIke(new Biome.BiomeProperties("Ike").setBaseHeight(0.325F).setHeightVariation(0.05F).setRainDisabled()));
+		this.biomeProvider = new BiomeProviderSingle(BiomeGenIke.biome);
 	}
 	
 	@Override

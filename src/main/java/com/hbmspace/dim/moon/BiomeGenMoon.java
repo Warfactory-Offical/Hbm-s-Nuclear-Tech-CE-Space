@@ -8,13 +8,16 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
 
 import java.util.Random;
 
 public class BiomeGenMoon extends BiomeGenBaseCelestial {
 
-	public BiomeGenMoon(BiomeProperties properties) {
+    public static final BiomeGenMoon biome = new BiomeGenMoon(new Biome.BiomeProperties("Mun"));
+
+	private BiomeGenMoon(BiomeProperties properties) {
 		super(properties);
 		properties.setBaseBiome("Mun");
 		properties.setRainDisabled();

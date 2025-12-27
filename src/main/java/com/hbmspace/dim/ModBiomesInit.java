@@ -35,7 +35,7 @@ public class ModBiomesInit {
                 BiomeGenBaseEve.eveMountains.setRegistryName("hbm", "eve_mountains"),
                 BiomeGenBaseEve.eveSeismicPlains.setRegistryName("hbm", "eve_seismic_plains"),
                 BiomeGenBaseEve.eveRiver.setRegistryName("hbm", "eve_river"),
-                new BiomeGenIke(new Biome.BiomeProperties("Ike")).setRegistryName("hbm", "ike"),
+                BiomeGenIke.biome.setRegistryName("hbm", "ike"),
                 BiomeGenBaseLaythe.laytheIsland.setRegistryName("hbm", "laythe_island"),
                 BiomeGenBaseLaythe.laytheOcean.setRegistryName("hbm", "laythe_ocean"),
                 BiomeGenBaseLaythe.laythePolar.setRegistryName("hbm", "laythe_polar"),
@@ -44,7 +44,7 @@ public class ModBiomesInit {
                 BiomeGenBaseMoho.mohoCrag.setRegistryName("hbm", "moho_crag"),
                 BiomeGenBaseMoho.mohoBasalt.setRegistryName("hbm", "moho_basalt"),
                 BiomeGenBaseMoho.mohoLavaSea.setRegistryName("hbm", "moho_lava_sea"),
-                new BiomeGenMoon(new Biome.BiomeProperties("Mun")).setRegistryName("hbm", "moon"),
+                BiomeGenMoon.biome.setRegistryName("hbm", "moon"),
                 BiomeGenOrbit.biome.setRegistryName("hbm", "orbit")
         );
 

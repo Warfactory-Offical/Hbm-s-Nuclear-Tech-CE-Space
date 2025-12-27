@@ -8,13 +8,16 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
 
 import java.util.Random;
 
 public class BiomeGenIke extends BiomeGenBaseCelestial {
 
-    public BiomeGenIke(BiomeProperties properties) {
+    public static final BiomeGenIke biome = new BiomeGenIke(new Biome.BiomeProperties("Ike").setBaseHeight(0.325F).setHeightVariation(0.05F).setRainDisabled());
+
+    private BiomeGenIke(BiomeProperties properties) {
         super(properties);
         properties.setBaseBiome("Ike");
         properties.setRainDisabled();
