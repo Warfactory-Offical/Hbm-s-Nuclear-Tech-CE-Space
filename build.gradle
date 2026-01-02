@@ -1665,20 +1665,13 @@ jvmdg {
 // End JVMDG configuration
 
 def ntmCeJarFile = file("libs/NTM-CE.jar")
-def refreshNtmCe = (project.findProperty("refreshNtmCe")?.toString()?.toBoolean() ?: false)
 
 tasks.register("downloadNtmCe") {
     outputs.file(ntmCeJarFile)
-    outputs.upToDateWhen { ntmCeJarFile.exists() && !refreshNtmCe }
-
+    outputs.upToDateWhen { false }
 
     doLast {
-        logger.lifecycle("[downloadNtmCe] refreshNtmCe=${refreshNtmCe}, target=${ntmCeJarFile}")
-
-        if (ntmCeJarFile.exists() && !refreshNtmCe) {
-            logger.lifecycle("[downloadNtmCe] Already present (${ntmCeJarFile.length()} bytes), skipping.")
-            return
-        }
+        logger.lifecycle("[downloadNtmCe] Checking latest release, target=${ntmCeJarFile}")
 
         def ghToken = System.getenv("GITHUB_TOKEN")
         def apiUrlStr = "https://api.github.com/repos/Warfactory-Offical/Hbm-s-Nuclear-Tech-CE/releases"
@@ -1742,6 +1735,69 @@ tasks.register("downloadNtmCe") {
         logger.lifecycle("[downloadNtmCe] Selected release tag=${chosenRelease?.tag_name}, name=${chosenRelease?.name}, prerelease=${chosenRelease?.prerelease}")
         logger.lifecycle("[downloadNtmCe] Selected asset name=${chosenAsset?.name}, size=${chosenAsset?.size}, url=${chosenAsset?.browser_download_url}")
 
+        def extractRemoteVersion = { def rel, def asset ->
+            def an = (asset?.name ?: "") as String
+            def m1 = (an =~ /^NTM-CE-1\.12\.2-(.+)-dev\.jar$/)
+            if (m1.matches()) return m1[0][1]
+
+            def rn = (rel?.name ?: "") as String
+            def m2 = (rn =~ /(?i)\bNightly Build v([0-9]+(?:\.[0-9]+)*)\b/)
+            if (m2.find()) return m2.group(1)
+
+            return null
+        }
+
+        def extractLocalVersion = { File jarFile ->
+            if (!jarFile.exists()) return null
+            def jar = new java.util.jar.JarFile(jarFile)
+            try {
+                def e = jar.getEntry("mcmod.info")
+                if (e != null) {
+                    def txt = jar.getInputStream(e).getText("UTF-8")
+                    def parsed = new groovy.json.JsonSlurper().parseText(txt)
+
+                    def list =
+                            (parsed instanceof List) ? parsed :
+                                    (parsed?.modList instanceof List) ? parsed.modList :
+                                            [parsed]
+
+                    def ent = list.find { ((it?.modid ?: "") as String) == "hbm" } ?: (list ? list[0] : null)
+                    def v = ((ent?.version ?: "") as String).trim()
+                    if (v && !v.contains("\${")) return v
+                }
+
+                def mf = jar.manifest
+                def v = mf?.mainAttributes?.getValue("Implementation-Version") ?: mf?.mainAttributes?.getValue("Specification-Version")
+                if (v) return ((v as String).trim())
+
+                return null
+            } finally {
+                jar.close()
+            }
+        }
+
+        def remoteVersion = extractRemoteVersion(chosenRelease, chosenAsset)
+        logger.lifecycle("[downloadNtmCe] Remote version parsed=${remoteVersion ?: "UNKNOWN"}")
+
+        if (ntmCeJarFile.exists()) {
+            def localVersion = null
+            try {
+                localVersion = extractLocalVersion(ntmCeJarFile)
+            } catch (Throwable t) {
+                logger.lifecycle("[downloadNtmCe] Local jar exists but failed to read version (${t.class.simpleName}: ${t.message}); will re-download.")
+            }
+
+            logger.lifecycle("[downloadNtmCe] Local version parsed=${localVersion ?: "UNKNOWN"}")
+
+            if (remoteVersion != null && localVersion != null && remoteVersion == localVersion) {
+                logger.lifecycle("[downloadNtmCe] Local jar is already latest (${localVersion}); skipping download.")
+                return
+            }
+            logger.lifecycle("[downloadNtmCe] Local jar is not latest (local=${localVersion}, remote=${remoteVersion}); downloading.")
+        } else {
+            logger.lifecycle("[downloadNtmCe] No local jar; downloading.")
+        }
+
         def downloadUrlStr = chosenAsset.browser_download_url as String
 
         def openFollowRedirects = { String urlStr ->
@@ -1802,7 +1858,6 @@ tasks.register("downloadNtmCe") {
         }
         boolean isZip = (sig[0] == (byte)0x50 && sig[1] == (byte)0x4B && (sig[2] == (byte)0x03 || sig[2] == (byte)0x05 || sig[2] == (byte)0x07) && (sig[3] == (byte)0x04 || sig[3] == (byte)0x06 || sig[3] == (byte)0x08))
         if (!isZip) {
-            String headText = new String(sig, "ISO-8859-1")
             throw new GradleException("[downloadNtmCe] Downloaded file is not a ZIP/JAR (signature bytes=${sig.collect{String.format('%02X', it)}.join(' ')}).")
         }
 

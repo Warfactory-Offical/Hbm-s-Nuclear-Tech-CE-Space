@@ -32,7 +32,8 @@ jobs:
             **/buildscript.properties
             **/gradle-wrapper.properties
             **/gradle.lockfile
-            src/main/resources/hbm_at.cfg
+            libs/NTM-CE.jar
+            src/main/resources/hbmspace_at.cfg
 
       - name: Make gradlew executable
         run: chmod +x ./gradlew

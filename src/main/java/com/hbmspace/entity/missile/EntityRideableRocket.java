@@ -1,6 +1,7 @@
 package com.hbmspace.entity.missile;
 
 import com.hbm.blocks.ILookOverlay;
+import com.hbm.handler.threading.PacketThreading;
 import com.hbmspace.config.SpaceConfig;
 import com.hbm.entity.missile.EntityMissileBaseNT;
 import com.hbm.explosion.ExplosionLarge;
@@ -440,7 +441,7 @@ public class EntityRideableRocket extends EntityMissileBaseNT implements ILookOv
                 }
 
                 if(rider instanceof EntityPlayerMP) {
-                    PacketDispatcher.wrapper.sendTo(new EntityBufPacket(getEntityId(), this), (EntityPlayerMP) rider);
+                    PacketThreading.createSendToThreadedPacket(new EntityBufPacket(getEntityId(), this), (EntityPlayerMP) rider);
                 }
             } else {
                 rocketVelocity = 0.0D;
@@ -1095,5 +1096,9 @@ public class EntityRideableRocket extends EntityMissileBaseNT implements ILookOv
         }
         Entity entity = passengers.getFirst();
         return entity instanceof EntityPlayer ? (EntityPlayer) entity : null;
+    }
+
+    @Override // dummy method to satisfy IBufPacketReceiver
+    public void networkPackNT(int range) {
     }
 }
