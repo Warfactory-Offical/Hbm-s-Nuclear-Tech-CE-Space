@@ -7,13 +7,13 @@ import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.deco.TileEntityLanternBehemoth;
 import com.hbm.util.LootGenerator;
 import com.hbm.world.gen.nbt.NBTStructure;
-import com.hbm.world.generator.DungeonToolbox;
 import com.hbmspace.blocks.ModBlocksSpace;
 import com.hbmspace.blocks.generic.BlockOre;
 import com.hbmspace.config.SpaceConfig;
 import com.hbmspace.config.WorldConfigSpace;
 import com.hbmspace.dim.CelestialBody;
 import com.hbmspace.dim.SolarSystem;
+import com.hbmspace.dim.WorldGeneratorCelestial;
 import com.hbmspace.dim.WorldProviderCelestial;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
@@ -50,15 +50,15 @@ public class WorldGeneratorDuna implements IWorldGenerator {
         int meta = CelestialBody.getMeta(world);
         Block stone = ((WorldProviderCelestial) world.provider).getStone();
 
-        DungeonToolbox.generateOre(world, rand, i, j, WorldConfigSpace.ironSpawn, 8, 32, 64, ModBlocksSpace.ore_iron.getStateFromMeta(meta), stone);
-        DungeonToolbox.generateOre(world, rand, i, j, WorldConfigSpace.zincSpawn, 9, 4, 27, ModBlocksSpace.ore_zinc.getStateFromMeta(meta), stone);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, WorldConfigSpace.ironSpawn, 8, 32, 64, ModBlocksSpace.ore_iron.getStateFromMeta(meta), stone);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, WorldConfigSpace.zincSpawn, 9, 4, 27, ModBlocksSpace.ore_zinc.getStateFromMeta(meta), stone);
 
         // Basalt rich in minerals, but only in basaltic caves!
-        /*DungeonToolbox.generateOre(world, rand, i, j, 12, 6, 0, 16, ModBlocksSpace.ore_basalt, 0, ModBlocks.basalt);
-        DungeonToolbox.generateOre(world, rand, i, j, 8, 8, 0, 16, ModBlocksSpace.ore_basalt, 1, ModBlocks.basalt);
-        DungeonToolbox.generateOre(world, rand, i, j, 8, 9, 0, 16, ModBlocksSpace.ore_basalt, 2, ModBlocks.basalt);
-        DungeonToolbox.generateOre(world, rand, i, j, 2, 4, 0, 16, ModBlocksSpace.ore_basalt, 3, ModBlocks.basalt);
-        DungeonToolbox.generateOre(world, rand, i, j, 6, 10, 0, 16, ModBlocksSpace.ore_basalt, 4, ModBlocks.basalt);*/
+        /*WorldGeneratorCelestial.generateOre(world, rand, i, j, 12, 6, 0, 16, ModBlocksSpace.ore_basalt, 0, ModBlocks.basalt);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, 8, 8, 0, 16, ModBlocksSpace.ore_basalt, 1, ModBlocks.basalt);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, 8, 9, 0, 16, ModBlocksSpace.ore_basalt, 2, ModBlocks.basalt);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, 2, 4, 0, 16, ModBlocksSpace.ore_basalt, 3, ModBlocks.basalt);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, 6, 10, 0, 16, ModBlocksSpace.ore_basalt, 4, ModBlocks.basalt);*/
 
 
         /*if(i == 0 && j == 0 && world.getWorldInfo().getTerrainType() == WorldTypeTeleport.martian) {

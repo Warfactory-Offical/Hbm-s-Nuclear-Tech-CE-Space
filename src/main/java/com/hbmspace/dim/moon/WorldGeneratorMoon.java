@@ -1,14 +1,13 @@
 package com.hbmspace.dim.moon;
 
-import com.hbm.blocks.ModBlocks;
 import com.hbm.world.gen.nbt.NBTStructure;
 import com.hbmspace.blocks.ModBlocksSpace;
 import com.hbmspace.config.SpaceConfig;
 import com.hbm.config.WorldConfig;
 import com.hbmspace.blocks.generic.BlockOre;
 import com.hbmspace.dim.CelestialBody;
-import com.hbm.world.generator.DungeonToolbox;
 import com.hbmspace.dim.SolarSystem;
+import com.hbmspace.dim.WorldGeneratorCelestial;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
@@ -65,11 +64,11 @@ public class WorldGeneratorMoon implements IWorldGenerator {
 	private void generateMoon(World world, Random rand, int i, int j) {
 		int meta = CelestialBody.getMeta(world);
 
-		DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.lithiumSpawn,  6, 4, 8, ModBlocksSpace.ore_lithium.getStateFromMeta(meta), ModBlocksSpace.moon_rock);
-		DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.aluminiumSpawn,  6, 5, 40, ModBlocksSpace.ore_aluminium.getStateFromMeta(meta), ModBlocksSpace.moon_rock);
-        DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.fluoriteSpawn, 4, 5, 45, ModBlocksSpace.ore_fluorite.getStateFromMeta(meta), ModBlocksSpace.moon_rock);
-        DungeonToolbox.generateOre(world, rand, i, j, 10, 13, 5, 64, ModBlocksSpace.ore_quartz.getStateFromMeta(meta), ModBlocksSpace.moon_rock);
+		WorldGeneratorCelestial.generateOre(world, rand, i, j, WorldConfig.lithiumSpawn,  6, 4, 8, ModBlocksSpace.ore_lithium.getStateFromMeta(meta), ModBlocksSpace.moon_rock);
+		WorldGeneratorCelestial.generateOre(world, rand, i, j, WorldConfig.aluminiumSpawn,  6, 5, 40, ModBlocksSpace.ore_aluminium.getStateFromMeta(meta), ModBlocksSpace.moon_rock);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, WorldConfig.fluoriteSpawn, 4, 5, 45, ModBlocksSpace.ore_fluorite.getStateFromMeta(meta), ModBlocksSpace.moon_rock);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, 10, 13, 5, 64, ModBlocksSpace.ore_quartz.getStateFromMeta(meta), ModBlocksSpace.moon_rock);
 
-        DungeonToolbox.generateOre(world, rand, i, j, 1, 12, 8, 32, ModBlocksSpace.ore_shale.getStateFromMeta(meta), ModBlocksSpace.moon_rock);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, 1, 12, 8, 32, ModBlocksSpace.ore_shale.getStateFromMeta(meta), ModBlocksSpace.moon_rock);
 	}
 }

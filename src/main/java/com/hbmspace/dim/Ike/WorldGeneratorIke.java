@@ -9,8 +9,8 @@ import com.hbm.config.WorldConfig;
 import com.hbmspace.blocks.generic.BlockOre;
 import com.hbmspace.config.WorldConfigSpace;
 import com.hbmspace.dim.CelestialBody;
-import com.hbm.world.generator.DungeonToolbox;
 import com.hbmspace.dim.SolarSystem;
+import com.hbmspace.dim.WorldGeneratorCelestial;
 import com.hbmspace.dim.WorldProviderCelestial;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
@@ -50,17 +50,17 @@ public class WorldGeneratorIke implements IWorldGenerator {
 		int meta = CelestialBody.getMeta(world);
         Block stone = ((WorldProviderCelestial) world.provider).getStone();
 
-        DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.asbestosSpawn, 8, 3, 22, ModBlocksSpace.ore_asbestos.getStateFromMeta(meta), stone);
-        DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.copperSpawn, 9, 4, 27, ModBlocksSpace.ore_copper.getStateFromMeta(meta), stone);
-        DungeonToolbox.generateOre(world, rand, i, j, WorldConfigSpace.ironSpawn,  8, 1, 33, ModBlocksSpace.ore_iron.getStateFromMeta(meta), stone);
-        DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.lithiumSpawn,  6, 4, 8, ModBlocksSpace.ore_lithium.getStateFromMeta(meta), stone);
-        DungeonToolbox.generateOre(world, rand, i, j, 2, 4, 15, 40, ModBlocks.ore_coltan.getStateFromMeta(meta), stone);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, WorldConfig.asbestosSpawn, 8, 3, 22, ModBlocksSpace.ore_asbestos.getStateFromMeta(meta), stone);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, WorldConfig.copperSpawn, 9, 4, 27, ModBlocksSpace.ore_copper.getStateFromMeta(meta), stone);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, WorldConfigSpace.ironSpawn,  8, 1, 33, ModBlocksSpace.ore_iron.getStateFromMeta(meta), stone);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, WorldConfig.lithiumSpawn,  6, 4, 8, ModBlocksSpace.ore_lithium.getStateFromMeta(meta), stone);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, 2, 4, 15, 40, ModBlocks.ore_coltan.getStateFromMeta(meta), stone);
 		
 		//okay okay okay, lets say on duna you DO make solvent, this is now awesome because you can now make gallium arsenide to then head to
 		//dres and the likes :)
 	
 		
-        DungeonToolbox.generateOre(world, rand, i, j, WorldConfigSpace.mineralSpawn, 10, 12, 32, ModBlocksSpace.ore_mineral.getStateFromMeta(meta), ModBlocksSpace.moho_stone);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, WorldConfigSpace.mineralSpawn, 10, 12, 32, ModBlocksSpace.ore_mineral.getStateFromMeta(meta), ModBlocksSpace.moho_stone);
 
         if(WorldConfig.pyramidStructure > 0 && rand.nextInt(WorldConfig.pyramidStructure) == 0) {
             int x = i + rand.nextInt(16);

@@ -5,20 +5,12 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.config.WorldConfig;
 import com.hbm.inventory.fluid.FluidStack;
 import com.hbm.items.ModItems;
-import com.hbm.main.StructureManager;
 import com.hbm.world.feature.BedrockOre;
 import com.hbm.world.feature.DepthDeposit;
-import com.hbm.world.gen.component.Component;
-import com.hbm.world.gen.nbt.JigsawPiece;
-import com.hbm.world.gen.nbt.JigsawPool;
-import com.hbm.world.gen.nbt.NBTStructure;
-import com.hbm.world.gen.nbt.SpawnCondition;
-import com.hbm.world.generator.DungeonToolbox;
 import com.hbmspace.blocks.BlockEnumsSpace;
 import com.hbmspace.blocks.ModBlocksSpace;
 import com.hbmspace.blocks.generic.BlockOre;
 import com.hbmspace.config.WorldConfigSpace;
-import com.hbmspace.world.PlanetGen;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockMatcher;
@@ -29,13 +21,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.feature.WorldGenMinable;
-import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 public class WorldGeneratorCelestial implements IWorldGenerator {
@@ -109,31 +98,31 @@ public class WorldGeneratorCelestial implements IWorldGenerator {
         DepthDeposit.generateCondition(world, x, 0, 3, z, 5, 0.8D, ModBlocks.ore_depth_zirconium, rand, 16, planetStone, ModBlocks.stone_depth);
         DepthDeposit.generateCondition(world, x, 0, 3, z, 5, 0.8D, ModBlocks.ore_depth_borax, rand, 16, planetStone, ModBlocks.stone_depth);
 
-        DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.uraniumSpawn, 5, 5, 20, ModBlocksSpace.ore_uranium.getStateFromMeta(meta), planetStone);
-        DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.thoriumSpawn, 5, 5, 25, ModBlocksSpace.ore_thorium.getStateFromMeta(meta), planetStone);
-        DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.titaniumSpawn, 6, 5, 30, ModBlocksSpace.ore_titanium.getStateFromMeta(meta), planetStone);
-        DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.sulfurSpawn, 8, 5, 30, ModBlocksSpace.ore_sulfur.getStateFromMeta(meta), planetStone);
-        DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.aluminiumSpawn, 6, 5, 40, ModBlocksSpace.ore_aluminium.getStateFromMeta(meta), planetStone);
-        DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.copperSpawn, 6, 5, 45, ModBlocksSpace.ore_copper.getStateFromMeta(meta), planetStone);
-        DungeonToolbox.generateOre(world, rand, x, z, WorldConfigSpace.nickelSpawn, 6, 5, 10, ModBlocksSpace.ore_nickel.getStateFromMeta(meta), planetStone);
-        DungeonToolbox.generateOre(world, rand, x, z, WorldConfigSpace.zincSpawn, 6, 5, 32, ModBlocksSpace.ore_zinc.getStateFromMeta(meta), planetStone);
-        //DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.mineralSpawn, 10, 12, 32, ModBlocks.ore_mineral, meta, planetStone);
-        DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.fluoriteSpawn, 4, 5, 45, ModBlocksSpace.ore_fluorite.getStateFromMeta(meta), planetStone);
-        DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.niterSpawn, 6, 5, 30, ModBlocksSpace.ore_niter.getStateFromMeta(meta), planetStone);
-        DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.tungstenSpawn, 8, 5, 30, ModBlocksSpace.ore_tungsten.getStateFromMeta(meta), planetStone);
-        DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.leadSpawn, 9, 5, 30, ModBlocksSpace.ore_lead.getStateFromMeta(meta), planetStone);
-        DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.berylliumSpawn, 4, 5, 30, ModBlocksSpace.ore_beryllium.getStateFromMeta(meta), planetStone);
-        DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.rareSpawn, 5, 5, 20, ModBlocksSpace.ore_rare.getStateFromMeta(meta), planetStone);
-        // DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.asbestosSpawn, 4, 16, 16, ModBlocks.ore_asbestos, meta, planetStone);
-        DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.cinnabarSpawn, 4, 8, 16, ModBlocksSpace.ore_cinnabar.getStateFromMeta(meta), planetStone);
-        DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.cobaltSpawn, 4, 4, 8, ModBlocksSpace.ore_cobalt.getStateFromMeta(meta), planetStone);
+        generateOre(world, rand, x, z, WorldConfig.uraniumSpawn, 5, 5, 20, ModBlocksSpace.ore_uranium.getStateFromMeta(meta), planetStone);
+        generateOre(world, rand, x, z, WorldConfig.thoriumSpawn, 5, 5, 25, ModBlocksSpace.ore_thorium.getStateFromMeta(meta), planetStone);
+        generateOre(world, rand, x, z, WorldConfig.titaniumSpawn, 6, 5, 30, ModBlocksSpace.ore_titanium.getStateFromMeta(meta), planetStone);
+        generateOre(world, rand, x, z, WorldConfig.sulfurSpawn, 8, 5, 30, ModBlocksSpace.ore_sulfur.getStateFromMeta(meta), planetStone);
+        generateOre(world, rand, x, z, WorldConfig.aluminiumSpawn, 6, 5, 40, ModBlocksSpace.ore_aluminium.getStateFromMeta(meta), planetStone);
+        generateOre(world, rand, x, z, WorldConfig.copperSpawn, 6, 5, 45, ModBlocksSpace.ore_copper.getStateFromMeta(meta), planetStone);
+        generateOre(world, rand, x, z, WorldConfigSpace.nickelSpawn, 6, 5, 10, ModBlocksSpace.ore_nickel.getStateFromMeta(meta), planetStone);
+        generateOre(world, rand, x, z, WorldConfigSpace.zincSpawn, 6, 5, 32, ModBlocksSpace.ore_zinc.getStateFromMeta(meta), planetStone);
+        //generateOre(world, rand, x, z, WorldConfig.mineralSpawn, 10, 12, 32, ModBlocks.ore_mineral, meta, planetStone);
+        generateOre(world, rand, x, z, WorldConfig.fluoriteSpawn, 4, 5, 45, ModBlocksSpace.ore_fluorite.getStateFromMeta(meta), planetStone);
+        generateOre(world, rand, x, z, WorldConfig.niterSpawn, 6, 5, 30, ModBlocksSpace.ore_niter.getStateFromMeta(meta), planetStone);
+        generateOre(world, rand, x, z, WorldConfig.tungstenSpawn, 8, 5, 30, ModBlocksSpace.ore_tungsten.getStateFromMeta(meta), planetStone);
+        generateOre(world, rand, x, z, WorldConfig.leadSpawn, 9, 5, 30, ModBlocksSpace.ore_lead.getStateFromMeta(meta), planetStone);
+        generateOre(world, rand, x, z, WorldConfig.berylliumSpawn, 4, 5, 30, ModBlocksSpace.ore_beryllium.getStateFromMeta(meta), planetStone);
+        generateOre(world, rand, x, z, WorldConfig.rareSpawn, 5, 5, 20, ModBlocksSpace.ore_rare.getStateFromMeta(meta), planetStone);
+        // generateOre(world, rand, x, z, WorldConfig.asbestosSpawn, 4, 16, 16, ModBlocks.ore_asbestos, meta, planetStone);
+        generateOre(world, rand, x, z, WorldConfig.cinnabarSpawn, 4, 8, 16, ModBlocksSpace.ore_cinnabar.getStateFromMeta(meta), planetStone);
+        generateOre(world, rand, x, z, WorldConfig.cobaltSpawn, 4, 4, 8, ModBlocksSpace.ore_cobalt.getStateFromMeta(meta), planetStone);
 
-        DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.ironClusterSpawn, 6, 15, 45, ModBlocksSpace.cluster_iron.getStateFromMeta(meta), planetStone);
-        DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.titaniumClusterSpawn, 6, 15, 30, ModBlocksSpace.cluster_titanium.getStateFromMeta(meta), planetStone);
-        DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.aluminiumClusterSpawn, 6, 15, 35, ModBlocksSpace.cluster_aluminium.getStateFromMeta(meta), planetStone);
-        DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.copperClusterSpawn, 6, 15, 20, ModBlocksSpace.cluster_copper.getStateFromMeta(meta), planetStone);
+        generateOre(world, rand, x, z, WorldConfig.ironClusterSpawn, 6, 15, 45, ModBlocksSpace.cluster_iron.getStateFromMeta(meta), planetStone);
+        generateOre(world, rand, x, z, WorldConfig.titaniumClusterSpawn, 6, 15, 30, ModBlocksSpace.cluster_titanium.getStateFromMeta(meta), planetStone);
+        generateOre(world, rand, x, z, WorldConfig.aluminiumClusterSpawn, 6, 15, 35, ModBlocksSpace.cluster_aluminium.getStateFromMeta(meta), planetStone);
+        generateOre(world, rand, x, z, WorldConfig.copperClusterSpawn, 6, 15, 20, ModBlocksSpace.cluster_copper.getStateFromMeta(meta), planetStone);
 
-        DungeonToolbox.generateOre(world, rand, x, z, WorldConfig.limestoneSpawn, 12, 25, 30, ModBlocksSpace.stone_resource.getStateFromMeta(BlockEnumsSpace.EnumStoneType.CALCIUM.ordinal()), planetStone);
+        generateOre(world, rand, x, z, WorldConfig.limestoneSpawn, 12, 25, 30, ModBlocksSpace.stone_resource.getStateFromMeta(BlockEnumsSpace.EnumStoneType.CALCIUM.ordinal()), planetStone);
 
         if(rand.nextInt(4) == 0) {
             int rx = x + rand.nextInt(16) + 8;
@@ -191,6 +180,23 @@ public class WorldGeneratorCelestial implements IWorldGenerator {
             int genY = rand.nextInt(yMax); // millenial supremacy
             int genZ = z + rand.nextInt(16);
             worldGenMinable.generate(world, rand, new BlockPos(genX, genY, genZ));
+        }
+    }
+
+    public static void generateOre(World world, Random rand, int chunkX, int chunkZ, int veinCount, int amount, int minHeight, int variance, IBlockState ore, Block target) {
+        Predicate<IBlockState> targetPredicate = BlockMatcher.forBlock(target);
+
+        WorldGenMinable worldGenMinable = new WorldGenMinable(ore, amount, targetPredicate);
+        if (veinCount > 0) {
+            for (int i = 0; i < veinCount; i++) {
+
+                int x = chunkX + rand.nextInt(16);
+                int y = minHeight + (variance > 0 ? rand.nextInt(variance) : 0);
+                int z = chunkZ + rand.nextInt(16);
+                // Th3_Sl1ze: problem of WorldGenMinableNonCascade is that it doesn't work
+                // I mean, post-generate doesn't even occur. I'll sacrifice optimization for now..
+                worldGenMinable.generate(world, rand, new BlockPos(x, y, z));
+            }
         }
     }
 

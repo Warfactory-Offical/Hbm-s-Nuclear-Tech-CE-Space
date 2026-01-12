@@ -6,8 +6,8 @@ import com.hbmspace.blocks.generic.BlockOre;
 import com.hbmspace.config.SpaceConfig;
 import com.hbm.config.WorldConfig;
 import com.hbmspace.dim.CelestialBody;
-import com.hbm.world.generator.DungeonToolbox;
 import com.hbmspace.dim.SolarSystem;
+import com.hbmspace.dim.WorldGeneratorCelestial;
 import com.hbmspace.dim.WorldProviderCelestial;
 import com.hbmspace.util.GenUtil;
 import net.minecraft.block.Block;
@@ -64,9 +64,9 @@ public class WorldGeneratorLaythe implements IWorldGenerator {
 			GenUtil.spawnOil(world, randPosX, randPosY, randPosZ, 10 + rand.nextInt(7), ModBlocks.ore_oil, meta, Blocks.STONE);
 		}
 
-        DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.asbestosSpawn, 4, 16, 16, ModBlocksSpace.ore_asbestos.getStateFromMeta(meta), stone);
-        DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.berylliumSpawn, 4, 5, 30, ModBlocksSpace.ore_beryllium.getStateFromMeta(meta), stone);
-        DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.rareSpawn, 5, 5, 20, ModBlocksSpace.ore_rare.getStateFromMeta(meta), stone);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, WorldConfig.asbestosSpawn, 4, 16, 16, ModBlocksSpace.ore_asbestos.getStateFromMeta(meta), stone);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, WorldConfig.berylliumSpawn, 4, 5, 30, ModBlocksSpace.ore_beryllium.getStateFromMeta(meta), stone);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, WorldConfig.rareSpawn, 5, 5, 20, ModBlocksSpace.ore_rare.getStateFromMeta(meta), stone);
 
     }
     

@@ -9,8 +9,8 @@ import com.hbmspace.blocks.generic.BlockOre;
 import com.hbmspace.config.SpaceConfig;
 import com.hbmspace.config.WorldConfigSpace;
 import com.hbmspace.dim.CelestialBody;
-import com.hbm.world.generator.DungeonToolbox;
 import com.hbmspace.dim.SolarSystem;
+import com.hbmspace.dim.WorldGeneratorCelestial;
 import com.hbmspace.dim.WorldProviderCelestial;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -78,22 +78,22 @@ public class WorldGeneratorMoho implements IWorldGenerator {
 		int meta = CelestialBody.getMeta(world);
         Block stone = ((WorldProviderCelestial) world.provider).getStone();
 
-        DungeonToolbox.generateOre(world, rand, i, j, WorldConfigSpace.mineralSpawn, 10, 12, 32, ModBlocksSpace.ore_mineral.getStateFromMeta(meta), stone);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, WorldConfigSpace.mineralSpawn, 10, 12, 32, ModBlocksSpace.ore_mineral.getStateFromMeta(meta), stone);
 
-        DungeonToolbox.generateOre(world, rand, i, j, 14, 12, 5, 30, ModBlocksSpace.ore_glowstone.getStateFromMeta(meta), stone);
-        DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.netherPhosphorusSpawn, 6, 8, 64, ModBlocksSpace.ore_fire.getStateFromMeta(meta), stone);
-        DungeonToolbox.generateOre(world, rand, i, j, 8, 4, 0, 24, ModBlocksSpace.ore_australium.getStateFromMeta(meta), stone);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, 14, 12, 5, 30, ModBlocksSpace.ore_glowstone.getStateFromMeta(meta), stone);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, WorldConfig.netherPhosphorusSpawn, 6, 8, 64, ModBlocksSpace.ore_fire.getStateFromMeta(meta), stone);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, 8, 4, 0, 24, ModBlocksSpace.ore_australium.getStateFromMeta(meta), stone);
 
-        DungeonToolbox.generateOre(world, rand, i, j, 1, 12, 8, 32, ModBlocksSpace.ore_shale.getStateFromMeta(meta), stone);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, 1, 12, 8, 32, ModBlocksSpace.ore_shale.getStateFromMeta(meta), stone);
 
-        DungeonToolbox.generateOre(world, rand, i, j, 10, 32, 0, 128, ModBlocks.basalt.getDefaultState(), stone);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, 10, 32, 0, 128, ModBlocks.basalt.getDefaultState(), stone);
 		
 		// More basalt ores!
-		//DungeonToolbox.generateOre(world, rand, i, j, 16, 6, 16, 64, ModBlocksSpace.ore_basalt, 0, ModBlocksSpace.basalt);
-		//DungeonToolbox.generateOre(world, rand, i, j, 12, 8, 8, 32, ModBlocksSpace.ore_basalt, 1, ModBlocksSpace.basalt);
-		//DungeonToolbox.generateOre(world, rand, i, j, 8, 9, 8, 48, ModBlocksSpace.ore_basalt, 2, ModBlocksSpace.basalt);
-		//DungeonToolbox.generateOre(world, rand, i, j, 2, 4, 0, 24, ModBlocksSpace.ore_basalt, 3, ModBlocksSpace.basalt);
-		//DungeonToolbox.generateOre(world, rand, i, j, 8, 10, 16, 64, ModBlocksSpace.ore_basalt, 4, ModBlocksSpace.basalt);
+		//WorldGeneratorCelestial.generateOre(world, rand, i, j, 16, 6, 16, 64, ModBlocksSpace.ore_basalt, 0, ModBlocksSpace.basalt);
+		//WorldGeneratorCelestial.generateOre(world, rand, i, j, 12, 8, 8, 32, ModBlocksSpace.ore_basalt, 1, ModBlocksSpace.basalt);
+		//WorldGeneratorCelestial.generateOre(world, rand, i, j, 8, 9, 8, 48, ModBlocksSpace.ore_basalt, 2, ModBlocksSpace.basalt);
+		//WorldGeneratorCelestial.generateOre(world, rand, i, j, 2, 4, 0, 24, ModBlocksSpace.ore_basalt, 3, ModBlocksSpace.basalt);
+		//WorldGeneratorCelestial.generateOre(world, rand, i, j, 8, 10, 16, 64, ModBlocksSpace.ore_basalt, 4, ModBlocksSpace.basalt);
 
 		for(int k = 0; k < 2; k++){
 			int x = i + rand.nextInt(16);

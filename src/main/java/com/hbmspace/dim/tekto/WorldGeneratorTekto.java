@@ -3,9 +3,9 @@ package com.hbmspace.dim.tekto;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.config.WorldConfig;
 import com.hbm.world.gen.nbt.NBTStructure;
-import com.hbm.world.generator.DungeonToolbox;
 import com.hbmspace.config.SpaceConfig;
 import com.hbmspace.dim.CelestialBody;
+import com.hbmspace.dim.WorldGeneratorCelestial;
 import com.hbmspace.dim.WorldProviderCelestial;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
@@ -36,7 +36,7 @@ public class WorldGeneratorTekto implements IWorldGenerator {
         int meta = CelestialBody.getMeta(world);
         Block stone = ((WorldProviderCelestial) world.provider).getStone();
 
-        DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.cobaltSpawn * 2, 6, 4, 8, ModBlocks.ore_cobalt.getStateFromMeta(meta), stone);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, WorldConfig.cobaltSpawn * 2, 6, 4, 8, ModBlocks.ore_cobalt.getStateFromMeta(meta), stone);
 
         Biome biome = world.getBiome(new BlockPos(i + 16, 0, j + 16));
         // TODO

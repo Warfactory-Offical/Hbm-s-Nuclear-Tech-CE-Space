@@ -1,20 +1,16 @@
 package com.hbmspace.dim.eve;
 
-import com.hbm.blocks.ModBlocks;
-import com.hbm.world.OilBubble;
 import com.hbm.world.gen.nbt.NBTStructure;
-import com.hbm.world.generator.DungeonToolbox;
 import com.hbmspace.blocks.ModBlocksSpace;
 import com.hbmspace.blocks.generic.BlockOre;
 import com.hbmspace.config.SpaceConfig;
-import com.hbm.config.WorldConfig;
 import com.hbmspace.dim.CelestialBody;
 import com.hbmspace.dim.SolarSystem;
+import com.hbmspace.dim.WorldGeneratorCelestial;
 import com.hbmspace.dim.WorldProviderCelestial;
 import com.hbmspace.dim.eve.GenLayerEve.WorldGenElectricVolcano;
 import com.hbmspace.dim.eve.GenLayerEve.WorldGenEveSpike;
 import com.hbmspace.dim.eve.biome.BiomeGenBaseEve;
-import com.hbmspace.util.GenUtil;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -49,9 +45,9 @@ public class WorldGeneratorEve implements IWorldGenerator {
 		int meta = CelestialBody.getMeta(world);
         Block stone = ((WorldProviderCelestial) world.provider).getStone();
 
-        DungeonToolbox.generateOre(world, rand, i, j, 12,  8, 1, 33, ModBlocksSpace.ore_niobium.getStateFromMeta(meta), stone);
-        DungeonToolbox.generateOre(world, rand, i, j, 8,  4, 5, 48, ModBlocksSpace.ore_iodine.getStateFromMeta(meta), stone);
-        DungeonToolbox.generateOre(world, rand, i, j, 1,  4, 1, 16, ModBlocksSpace.ore_schrabidium.getStateFromMeta(meta), stone);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, 12,  8, 1, 33, ModBlocksSpace.ore_niobium.getStateFromMeta(meta), stone);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, 8,  4, 5, 48, ModBlocksSpace.ore_iodine.getStateFromMeta(meta), stone);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, 1,  4, 1, 16, ModBlocksSpace.ore_schrabidium.getStateFromMeta(meta), stone);
 
 		int x = i + rand.nextInt(16);
 		int z = j + rand.nextInt(16);

@@ -21,6 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static com.hbm.inventory.OreDictManager.*;
 import static com.hbm.inventory.OreDictManager.ANY_PLASTIC;
 import static com.hbm.inventory.OreDictManager.ASBESTOS;
+import static com.hbmspace.inventory.OreDictManagerSpace.ZI;
 
 @Mixin(value = ChemicalPlantRecipes.class, remap = false)
 public abstract class MixinChemicalPlantRecipes extends GenericRecipes<GenericRecipe> {
@@ -31,6 +32,12 @@ public abstract class MixinChemicalPlantRecipes extends GenericRecipes<GenericRe
         removeRecipeByName("chem.xenon");
         removeRecipeByName("chem.xenonoxy");
         removeRecipeByName("chem.birkeland");
+        removeRecipeByName("chem.rubber");
+
+        this.register(new GenericRecipe("chem.rubber").setup(100, 200)
+                .inputItems(new RecipesCommon.OreDictStack(S.dust()), new RecipesCommon.OreDictStack(ZI.dust()))
+                .inputFluids(new FluidStack(Fluids.UNSATURATEDS, 500, GeneralConfig.enable528 ? 2 : 0)) // enable528PressurizedRecipes gosh I need to finish with the 528...
+                .outputItems(new ItemStack(ModItems.ingot_rubber)));
 
         register(new GenericRecipe("chem.vinylrubber").setup(100, 400)
                 .inputFluids(new FluidStack(com.hbmspace.inventory.fluid.Fluids.VINYL, 500), new FluidStack(Fluids.UNSATURATEDS, 400, GeneralConfig.enable528 ? 2 : 0))

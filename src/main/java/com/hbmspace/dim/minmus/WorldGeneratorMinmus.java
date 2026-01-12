@@ -7,7 +7,7 @@ import com.hbmspace.config.SpaceConfig;
 import com.hbm.config.WorldConfig;
 import com.hbmspace.config.WorldConfigSpace;
 import com.hbmspace.dim.CelestialBody;
-import com.hbm.world.generator.DungeonToolbox;
+import com.hbmspace.dim.WorldGeneratorCelestial;
 import com.hbmspace.dim.WorldProviderCelestial;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
@@ -68,10 +68,10 @@ public class WorldGeneratorMinmus implements IWorldGenerator {
 		int meta = CelestialBody.getMeta(world);
         Block stone = ((WorldProviderCelestial) world.provider).getStone();
 
-        DungeonToolbox.generateOre(world, rand, i, j, WorldConfigSpace.nickelSpawn, 8, 1, 43, ModBlocksSpace.ore_nickel.getStateFromMeta(meta), stone);
-        DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.titaniumSpawn, 12, 4, 27, ModBlocksSpace.ore_titanium.getStateFromMeta(meta), stone);
-        DungeonToolbox.generateOre(world, rand, i, j, 1, 16, 6, 40, ModBlocksSpace.stone_resource.getStateFromMeta(BlockEnums.EnumStoneType.MALACHITE.ordinal()), stone);
-        DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.copperSpawn * 3, 12, 8, 56, ModBlocksSpace.ore_copper.getStateFromMeta(meta), stone);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, WorldConfigSpace.nickelSpawn, 8, 1, 43, ModBlocksSpace.ore_nickel.getStateFromMeta(meta), stone);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, WorldConfig.titaniumSpawn, 12, 4, 27, ModBlocksSpace.ore_titanium.getStateFromMeta(meta), stone);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, 1, 16, 6, 40, ModBlocksSpace.stone_resource.getStateFromMeta(BlockEnums.EnumStoneType.MALACHITE.ordinal()), stone);
+        WorldGeneratorCelestial.generateOre(world, rand, i, j, WorldConfig.copperSpawn * 3, 12, 8, 56, ModBlocksSpace.ore_copper.getStateFromMeta(meta), stone);
 	}
 
 
