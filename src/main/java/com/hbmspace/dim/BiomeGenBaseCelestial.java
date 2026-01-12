@@ -5,6 +5,7 @@ import net.minecraft.world.biome.Biome;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class BiomeGenBaseCelestial extends Biome {
@@ -27,6 +28,7 @@ public abstract class BiomeGenBaseCelestial extends Biome {
             case CREATURE -> (List) creatures.clone();
             case WATER_CREATURE -> (List) waterCreatures.clone();
             case AMBIENT -> (List) caveCreatures.clone();
+            default -> Collections.emptyList();
         };
     }
     
