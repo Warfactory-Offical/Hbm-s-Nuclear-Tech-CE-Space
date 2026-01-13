@@ -16,7 +16,11 @@ import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.event.terraingen.ChunkGeneratorEvent;
 import net.minecraftforge.event.terraingen.InitNoiseGensEvent;
+import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
 import java.util.ArrayList;
@@ -185,6 +189,16 @@ public abstract class ChunkProviderCelestial implements IChunkGenerator {
 
 	// Fills up a buffer with "chances for this block to be stone" using 3D noise and biome specific information
 	protected void generateNoiseField(int x, int y, int z) {
+		ChunkGeneratorEvent.InitNoiseField event = new ChunkGeneratorEvent.InitNoiseField(this, terrainBuffer, x, y, z, 5, 33, 5);
+		MinecraftForge.EVENT_BUS.post(event);
+		if(event.getResult() == net.minecraftforge.fml.common.eventhandler.Event.Result.DENY) {
+			double[] noise = event.getNoisefield();
+			if(noise != terrainBuffer && noise.length == terrainBuffer.length) {
+				System.arraycopy(noise, 0, terrainBuffer, 0, terrainBuffer.length);
+			}
+			return;
+		}
+
 		firstOrderBuffer = firstOrder.generateNoiseOctaves(firstOrderBuffer, x, y, z, 5, 33, 5, firstOrderFreq.x, firstOrderFreq.y, firstOrderFreq.z);
 		secondOrderBuffer = secondOrder.generateNoiseOctaves(secondOrderBuffer, x, y, z, 5, 33, 5, secondOrderFreq.x, secondOrderFreq.y, secondOrderFreq.z);
 		thirdOrderBuffer = thirdOrder.generateNoiseOctaves(thirdOrderBuffer, x, y, z, 5, 33, 5, thirdOrderFreq.x, thirdOrderFreq.y, thirdOrderFreq.z);
@@ -286,6 +300,7 @@ public abstract class ChunkProviderCelestial implements IChunkGenerator {
 	}
 
 	protected void replaceBlocksForBiome(int x, int z, ChunkPrimer chunkPrimer, Biome[] biomes) {
+		if(!ForgeEventFactory.onReplaceBiomeBlocks(this, x, z, chunkPrimer, this.worldObj)) return;
 		double d0 = 0.03125D;
 		stoneNoise = realPerlin.getRegion(stoneNoise, (double) (x * 16), (double) (z * 16), 16, 16, d0 * 2.0D, d0 * 2.0D, 1.0D);
 
@@ -327,8 +342,33 @@ public abstract class ChunkProviderCelestial implements IChunkGenerator {
 		long i1 = rand.nextLong() / 2L * 2L + 1L;
 		long j1 = rand.nextLong() / 2L * 2L + 1L;
 		rand.setSeed((long) x * i1 + (long) z * j1 ^ worldObj.getSeed());
+
+		ForgeEventFactory.onChunkPopulate(true, this, this.worldObj, this.rand, x, z, false);
+
 		biome.decorate(this.worldObj, this.rand, blockpos);
-		WorldEntitySpawner.performWorldGenSpawning(this.worldObj, biome, k + 8, l + 8, 16, 16, this.rand);
+		if(TerrainGen.populate(this, this.worldObj, this.rand, x, z, false, PopulateChunkEvent.Populate.EventType.ANIMALS)) {
+			WorldEntitySpawner.performWorldGenSpawning(this.worldObj, biome, k + 8, l + 8, 16, 16, this.rand);
+		}
+		blockpos = blockpos.add(8, 0, 8);
+
+		if(TerrainGen.populate(this, this.worldObj, this.rand, x, z, false, PopulateChunkEvent.Populate.EventType.ICE)) {
+			for(int i2 = 0; i2 < 16; ++i2) {
+				for(int j2 = 0; j2 < 16; ++j2) {
+					BlockPos blockpos1 = this.worldObj.getPrecipitationHeight(blockpos.add(i2, 0, j2));
+					BlockPos blockpos2 = blockpos1.down();
+
+					if(this.worldObj.canBlockFreezeWater(blockpos2)) {
+						this.worldObj.setBlockState(blockpos2, Blocks.ICE.getDefaultState(), 2);
+					}
+
+					if(this.worldObj.canSnowAt(blockpos1, true)) {
+						this.worldObj.setBlockState(blockpos1, Blocks.SNOW_LAYER.getDefaultState(), 2);
+					}
+				}
+			}
+		}
+
+		ForgeEventFactory.onChunkPopulate(false, this, this.worldObj, this.rand, x, z, false);
 
 		BlockFalling.fallInstantly = false;
 	}
