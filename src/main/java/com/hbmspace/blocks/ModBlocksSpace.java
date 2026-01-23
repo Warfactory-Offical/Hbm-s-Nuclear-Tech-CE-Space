@@ -1,12 +1,16 @@
 package com.hbmspace.blocks;
 
+import com.hbm.blocks.BlockBase;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.OreEnumUtil;
 import com.hbm.inventory.fluid.Fluids;
+import com.hbm.lib.ModDamageSource;
 import com.hbm.main.MainRegistry;
 import com.hbmspace.blocks.bomb.LaunchPadRocket;
+import com.hbmspace.blocks.fluid.GenericFluidBlockSpace;
 import com.hbmspace.blocks.generic.*;
 import com.hbmspace.blocks.machine.*;
+import com.hbmspace.blocks.machine.rbmk.RBMKBurner;
 import com.hbmspace.util.OreEnumUtilSpace;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -16,6 +20,8 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.hbmspace.blocks.fluid.ModFluidsSpace.ccl_fluid;
 
 public class ModBlocksSpace {
     public static List<Block> ALL_BLOCKS = new ArrayList<>();
@@ -39,6 +45,8 @@ public class ModBlocksSpace {
     public static final Block minmus_stone = new BlockBaseSpace(Material.ROCK, "minmus_stone").setSoundType(SoundType.STONE).setCreativeTab(MainRegistry.resourceTab).setHardness(1.5F).setResistance(10.0F);
     public static final Block minmus_smooth = new BlockBaseSpace(Material.ROCK, "minmus_smooth").setSoundType(SoundType.STONE).setCreativeTab(MainRegistry.resourceTab).setHardness(1.5F).setResistance(10.0F);
     public static final Block block_nickel = new BlockBakeBaseSpace(Material.IRON, "block_nickel").setSoundType(SoundType.METAL).setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block block_osmiridium = new BlockBakeBaseSpace(Material.IRON, "block_osmiridium").setCreativeTab(MainRegistry.blockTab).setSoundType(SoundType.METAL).setHardness(5.0F).setResistance(10.0F);
+    public static final Block deco_stainless = new BlockBaseSpace(Material.IRON, "deco_stainless").setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
     public static final Block ore_iron = new BlockOre("ore_iron", null, Blocks.IRON_ORE).setCreativeTab(MainRegistry.blockTab).setHardness(3.0F).setResistance(5.0F);
     public static final Block ore_gold = new BlockOre("ore_gold", null, Blocks.GOLD_ORE).setCreativeTab(MainRegistry.blockTab).setHardness(3.0F).setResistance(5.0F);
     public static final Block ore_redstone = new BlockOre("ore_redstone", OreEnumUtilSpace.SpaceOreEnum.REDSTONE, Blocks.REDSTONE_ORE, 2).setCreativeTab(MainRegistry.blockTab).setHardness(3.0F).setResistance(5.0F);
@@ -71,14 +79,26 @@ public class ModBlocksSpace {
     public static final Block ore_niobium = new BlockOre("ore_niobium", null, 2).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(10.0F);
     public static final Block ore_iodine = new BlockOre("ore_iodine", null, 2).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(10.0F);
     public static final Block ore_lanthanium = new BlockOre("ore_lanthanium", null, 2).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(10.0F);
-    public static final Block ore_gas = new BlockOre("ore_gas", null, 3).setCreativeTab(MainRegistry.resourceTab).setBlockUnbreakable().setHardness(5.0F).setResistance(10.0F);
-    public static final Block ore_gas_empty = new BlockBaseSpace(Material.ROCK, "ore_gas_empty").setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_oil_empty = new BlockOre("ore_oil_empty", null, 3).setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_oil = new BlockOreFluid("ore_oil", ore_oil_empty, BlockOreFluid.ReserveType.OIL).setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_bedrock_oil = new BlockOreFluid("ore_bedrock_oil", null, BlockOreFluid.ReserveType.OIL).setCreativeTab(MainRegistry.blockTab).setBlockUnbreakable().setResistance(1_000_000);
+    public static final Block ore_gas_empty = new BlockOre("ore_gas_empty", null, 3).setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_gas = new BlockOreFluid("ore_gas", ore_gas_empty, BlockOreFluid.ReserveType.GAS).setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_brine_empty = new BlockOre("ore_brine_empty", null, 3).setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_brine = new BlockOreFluid("ore_brine", ore_brine_empty, BlockOreFluid.ReserveType.BRINE).setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_tekto_empty = new BlockOre("ore_tekto_empty", null, 3).setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_tekto = new BlockOreFluid("ore_tekto", ore_tekto_empty, BlockOreFluid.ReserveType.OIL).setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
     public static final Block cluster_iron = new BlockCluster("cluster_iron", OreEnumUtil.OreEnum.CLUSTER_IRON).setNTMAlt(ModBlocks.cluster_iron).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(35.0F);
     public static final Block cluster_titanium = new BlockCluster("cluster_titanium", OreEnumUtil.OreEnum.CLUSTER_TITANIUM).setNTMAlt(ModBlocks.cluster_titanium).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(35.0F);
     public static final Block cluster_aluminium = new BlockCluster("cluster_aluminium", OreEnumUtil.OreEnum.CLUSTER_ALUMINIUM).setNTMAlt(ModBlocks.cluster_aluminium).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(35.0F);
     public static final Block cluster_copper = new BlockCluster("cluster_copper", OreEnumUtil.OreEnum.CLUSTER_COPPER).setNTMAlt(ModBlocks.cluster_copper).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(35.0F);
     public static final Block ore_uranium = new BlockOreOutgas(true, 20, true, "ore_uranium").setNTMAlt(ModBlocks.ore_uranium).setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.resourceTab);
     public static final Block ore_asbestos = new BlockOreOutgas(true, 5, true, "ore_asbestos").setNTMAlt(ModBlocks.ore_asbestos).setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.resourceTab);
+    public static final Block ore_plutonium = new BlockOreOutgas(true, 5, true, "ore_plutonium").setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_palladium = new BlockOre("ore_palladium", null, 2).setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_arsenic = new BlockOre("ore_arsenic", null, 2).setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_cadmium = new BlockOre("ore_cadmium", null, 2).setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
+    public static final Block ore_silicon = new BlockOre("ore_silicon", null, 2).setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
 
     public static final Block stone_resource = new BlockEnumMetaSpace<>(Material.ROCK, SoundType.STONE, "stone_resource", BlockEnumsSpace.EnumStoneType.VALUES, true, true).setCreativeTab(MainRegistry.resourceTab).setHardness(5.0F).setResistance(10.0F);
 
@@ -117,6 +137,8 @@ public class ModBlocksSpace {
     public static final Block machine_radiator = new MachineRadiator(Material.IRON, "machine_radiator").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
     public static final Block machine_dish_controller = new MachineDishControl(Material.IRON, "dish_control").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
     public static final Block machine_discharger = new MachineDischarger(Material.IRON, "machine_discharger").setHardness(5.0F).setResistance(100.0F).setCreativeTab(MainRegistry.machineTab);
+    public static final Block gas_dock = new MachineGasDock(Material.IRON, "gas_dock").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.missileTab);
+    public static final Block rbmk_burner = new RBMKBurner("rbmk_burner", "rbmk_burner").setCreativeTab(MainRegistry.machineTab);
 
     public static final Block dyson_launcher = new MachineDysonLauncher(Material.IRON, "dyson_launcher").setHardness(10.0F).setResistance(20.0F).setCreativeTab(MainRegistry.machineTab);
     public static final Block dyson_receiver = new MachineDysonReceiver(Material.IRON, "dyson_receiver").setHardness(10.0F).setResistance(20.0F).setCreativeTab(MainRegistry.machineTab);
@@ -128,9 +150,14 @@ public class ModBlocksSpace {
     public static final Block crop_mint = new BlockCrop(Blocks.FARMLAND, (atmosphere) -> atmosphere.hasFluid(com.hbmspace.inventory.fluid.Fluids.EARTHAIR, 0.1) || atmosphere.hasFluid(Fluids.OXYGEN, 0.1), true, "crop_mint", "mint").setSoundType(SoundType.PLANT).setHardness(0.0F);
     public static final Block crop_coffee = new BlockCrop(Blocks.FARMLAND, (atmosphere) -> atmosphere.hasFluid(com.hbmspace.inventory.fluid.Fluids.EARTHAIR, 0.1) || atmosphere.hasFluid(Fluids.OXYGEN, 0.1), true, "crop_coffee", "coffee").setSoundType(SoundType.PLANT).setHardness(0.0F);
     public static final Block crop_tea = new BlockCrop(Blocks.FARMLAND, (atmosphere) -> atmosphere.hasFluid(com.hbmspace.inventory.fluid.Fluids.EARTHAIR, 0.1) || atmosphere.hasFluid(Fluids.OXYGEN, 0.1), true, "crop_tea", "tea").setSoundType(SoundType.PLANT).setHardness(0.0F);
-
+    public static final Block crop_paraffin = new BlockCrop(ModBlocksSpace.rubber_farmland, (atmosphere) -> atmosphere.hasFluid(Fluids.TEKTOAIR, 0.1) || atmosphere.hasFluid(Fluids.CHLORINE, 0.1), false, "crop_paraffin", "paraffin").setSoundType(SoundType.PLANT).setHardness(0.0F);
+    public static final Block rubber_farmland = new BlockRubberFarm("rubber_farmland").setSoundType(SoundType.GROUND).setCreativeTab(MainRegistry.blockTab).setHardness(1.0F).setResistance(1.0F);
+    public static final Block rubber_silt = new BlockBakeBaseSpace(Material.SAND, "rubber_silt").setSoundType(SoundType.GROUND).setCreativeTab(MainRegistry.blockTab).setHardness(1.0F).setResistance(1.0F);
+    public static final Block ccl_block = new GenericFluidBlockSpace(ccl_fluid, Material.WATER, "ccl_block").setDamage(ModDamageSource.lead, 1F).setResistance(500.0F);
     public static final Block dummy_beam = new BlockDummyableBeam(Material.IRON, "dummy_beam").setHardness(10.0F).setResistance(20.0F);
 
+    public static final Block furnace = new BlockFurnaceSpace(false).setHardness(3.5F).setSoundType(SoundType.STONE);
+    public static final Block lit_furnace = new BlockFurnaceSpace(true).setHardness(3.5F).setSoundType(SoundType.STONE).setLightLevel(0.875F);
 
     public static void preInit(){
         for(Block block : ALL_BLOCKS){

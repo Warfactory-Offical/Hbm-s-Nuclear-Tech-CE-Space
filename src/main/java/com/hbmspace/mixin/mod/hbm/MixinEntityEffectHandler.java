@@ -1,7 +1,10 @@
 package com.hbmspace.mixin.mod.hbm;
 
+import com.hbm.entity.mob.EntityCyberCrab;
+import com.hbm.entity.mob.glyphid.EntityGlyphid;
 import com.hbm.handler.EntityEffectHandler;
 import com.hbm.handler.threading.PacketThreading;
+import com.hbm.lib.ModDamageSource;
 import com.hbmspace.api.entity.ISuffocationImmune;
 import com.hbmspace.capability.HbmLivingCapabilitySpace;
 import com.hbmspace.capability.HbmLivingPropsSpace;
@@ -33,6 +36,7 @@ public class MixinEntityEffectHandler {
             }
             CBT_Atmosphere atmosphere = getAtmosphereCached(entity);
             handleOxy(entity, atmosphere);
+            handleCorrosion(entity, atmosphere);
         }
     }
 
@@ -58,6 +62,21 @@ public class MixinEntityEffectHandler {
             HbmLivingPropsSpace.setOxy(entity, HbmLivingPropsSpace.getOxy(entity) - 1);
         } else {
             HbmLivingPropsSpace.setOxy(entity, 100); // 5 seconds until vacuum damage
+        }
+    }
+
+    // Corrosive atmospheres melt your suit, without appropriate protection
+    @Unique
+    private static void handleCorrosion(EntityLivingBase entity, CBT_Atmosphere atmosphere) {
+        if(entity.world.isRemote) return;
+        if(entity instanceof EntityGlyphid) return;
+        if(entity instanceof EntityCyberCrab) return;
+        if(entity.getRidingEntity() != null && entity.getRidingEntity() instanceof EntityRideableRocket) return;
+
+        // If we should corrode but we have armor, damage it heavily
+        // once it runs out of juice, fizzle it and start damaging the player
+        if(ArmorUtilSpace.checkForCorrosion(entity, atmosphere)) {
+            entity.attackEntityFrom(ModDamageSource.acid, 1);
         }
     }
 }

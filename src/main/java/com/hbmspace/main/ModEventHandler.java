@@ -2,7 +2,7 @@ package com.hbmspace.main;
 
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.toclient.PlayerInformPacketLegacy;
-import com.hbm.util.AstronomyUtil;
+import com.hbmspace.util.AstronomyUtil;
 import com.hbm.util.ChatBuilder;
 import com.hbm.util.ParticleUtil;
 import com.hbmspace.Tags;
@@ -16,12 +16,10 @@ import com.hbmspace.dim.trait.CBT_Atmosphere;
 import com.hbmspace.dim.trait.CBT_Lights;
 import com.hbmspace.dim.trait.CelestialBodyTrait;
 import com.hbmspace.entity.missile.EntityRideableRocket;
-import com.hbmspace.handler.INetherAccessor;
 import com.hbmspace.handler.atmosphere.ChunkAtmosphereManager;
 import com.hbmspace.items.ModItemsSpace;
 import com.hbmspace.lib.HBMSpaceSoundHandler;
 import com.hbmspace.lib.ModDamageSourceSpace;
-import com.hbmspace.world.PlanetGen;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.BlockFire;
@@ -35,9 +33,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -52,6 +52,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.UseHoeEvent;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -106,10 +107,10 @@ public class ModEventHandler {
         }
 
         // sneaky sneaky space furnace
-        /*if (block == Blocks.FURNACE) {
-            world.setBlockState(pos, ModBlocks.furnace.getDefaultState(), 2);
-            ModBlocks.furnace.onBlockPlacedBy(world, pos, event.getPlayer(), event.getItemInHand());
-        }*/
+        if (block == Blocks.FURNACE) {
+            world.setBlockState(pos, ModBlocksSpace.furnace.getDefaultState(), 3);
+            ModBlocksSpace.furnace.onBlockPlacedBy(world, pos, ModBlocksSpace.furnace.getDefaultState(), event.getPlayer(), event.getItemInHand());
+        }
 
         if (pos.getY() >= world.provider.getHorizon()) {
             if (block.getLightValue(world.getBlockState(pos), world, pos) > 10) {
@@ -121,6 +122,21 @@ public class ModEventHandler {
 
                 body.modifyTraits(lights);
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onUseHoe(UseHoeEvent event) {
+        World world = event.getWorld();
+        BlockPos pos = event.getPos();
+
+        Block block = world.getBlockState(pos).getBlock();
+
+        if(/*block == ModBlocksSpace.rubber_grass ||*/ block == ModBlocksSpace.rubber_silt) {
+            world.setBlockState(pos, ModBlocksSpace.rubber_farmland.getDefaultState());
+            world.playSound(null, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1F, 1F);
+            event.getCurrent().damageItem(1, event.getEntityPlayer());
+            event.setResult(Event.Result.ALLOW);
         }
     }
 

@@ -86,7 +86,7 @@ public class BlockOre extends net.minecraft.block.BlockOre implements ICustomBlo
     }
 
     @Override
-    public int getExpDrop(IBlockState state, IBlockAccess world, BlockPos pos, int fortune) {
+    public int getExpDrop(@NotNull IBlockState state, @NotNull IBlockAccess world, @NotNull BlockPos pos, int fortune) {
         if (this.getItemDropped(state, RANDOM, fortune) != Item.getItemFromBlock(this))
             return xp;
         return 0;
@@ -121,11 +121,19 @@ public class BlockOre extends net.minecraft.block.BlockOre implements ICustomBlo
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
+    public void getSubBlocks(@NotNull CreativeTabs tab, @NotNull NonNullList<ItemStack> items) {
         if (tab == this.getCreativeTab() || tab == CreativeTabs.SEARCH) {
-            for (int i = 0; i < getSubCount(); i++)
-                // 0, 1, 6 metas aren't used in generation at all + meta 6 doesn't have a texture
-                if(!Set.of(0, 1, 6).contains(i)) items.add(new ItemStack(this, 1, i));
+            Set<SolarSystem.Body> validBodies = spawnMap.get(this);
+
+            if (validBodies != null && !validBodies.isEmpty()) {
+                SolarSystem.Body[] bodies = SolarSystem.Body.values();
+
+                for (int i = 0; i < bodies.length; i++) {
+                    if (validBodies.contains(bodies[i]) && i != 0 && i != 1) {
+                        items.add(new ItemStack(this, 1, i));
+                    }
+                }
+            }
         }
     }
 
@@ -135,20 +143,8 @@ public class BlockOre extends net.minecraft.block.BlockOre implements ICustomBlo
             ItemStack s = oreEnum.getDropFunction().apply(state, rand);
             return s.isEmpty() ? Item.getItemFromBlock(this) : s.getItem();
         }
-        /*if (this == ModBlocks.ore_glowstone) return Items.GLOWSTONE_DUST;
-        if (this == ModBlocks.ore_fire) return rand != null && rand.nextInt(10) == 0 ? ModItems.ingot_phosphorus : ModItems.powder_fire;
-        if (this == ModBlocks.ore_lapis) return Items.DYE;
-        if (this == ModBlocks.ore_emerald) return Items.EMERALD;
-        if (this == ModBlocks.ore_quartz) return Items.QUARTZ;
-        if (this == ModBlocks.ore_diamond) return Items.DIAMOND;*/
         return Item.getItemFromBlock(this);
     }
-
-    /*@Override
-    public int quantityDropped(Random rand) {
-        if (this == ModBlocks.ore_lapis) return 4 + rand.nextInt(5);
-        return 1;
-    }*/
 
     @Override
     public int quantityDroppedWithBonus(int fortune, @NotNull Random rand) {
@@ -168,13 +164,12 @@ public class BlockOre extends net.minecraft.block.BlockOre implements ICustomBlo
     @Override
     public int damageDropped(@NotNull IBlockState state) {
         if (this == ModBlocks.ore_rare) return ItemEnums.EnumChunkType.RARE.ordinal();
-        //if (this == ModBlocks.ore_lapis) return 4;
         if (getItemDropped(state, RANDOM, 0) != Item.getItemFromBlock(this)) return 0;
         return rectify(state.getValue(META));
     }
 
     @Override
-    public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+    public @NotNull List<ItemStack> getDrops(@NotNull IBlockAccess world, @NotNull BlockPos pos, @NotNull IBlockState state, int fortune) {
         Random rand = world instanceof World ? ((World) world).rand : new Random();
 
         if (oreEnum != null) {
@@ -193,14 +188,11 @@ public class BlockOre extends net.minecraft.block.BlockOre implements ICustomBlo
         }
 
         int count = quantityDroppedWithBonus(fortune, rand);
-        /*if (this == ModBlocks.ore_lapis) {
-            return Collections.singletonList(new ItemStack(Items.DYE, count, 4));
-        }*/
         return Collections.singletonList(new ItemStack(item, count, 0));
     }
 
     @Override
-    public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
+    public void addInformation(@NotNull ItemStack stack, World world, @NotNull List<String> tooltip, @NotNull ITooltipFlag flag) {
         if (!SpaceConfig.showOreLocations) return;
         Set<SolarSystem.Body> bodies = spawnMap.get(this);
         if (bodies == null || bodies.isEmpty()) return;
@@ -224,7 +216,7 @@ public class BlockOre extends net.minecraft.block.BlockOre implements ICustomBlo
     }
 
     @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
+    public void onBlockPlacedBy(World world, @NotNull BlockPos pos, IBlockState state, @NotNull EntityLivingBase player, ItemStack stack) {
         int meta = stack.getItemDamage();
         world.setBlockState(pos, state.withProperty(META, rectify(meta)), 2);
     }
@@ -232,18 +224,18 @@ public class BlockOre extends net.minecraft.block.BlockOre implements ICustomBlo
     // Blockstate and meta
 
     @Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing,
-                                            float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+    public @NotNull IBlockState getStateForPlacement(@NotNull World worldIn, @NotNull BlockPos pos, @NotNull EnumFacing facing,
+                                                     float hitX, float hitY, float hitZ, int meta, @NotNull EntityLivingBase placer, @NotNull EnumHand hand) {
         return this.getDefaultState().withProperty(META, rectify(meta));
     }
 
     @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+    public @NotNull ItemStack getPickBlock(IBlockState state, @NotNull RayTraceResult target, @NotNull World world, @NotNull BlockPos pos, @NotNull EntityPlayer player) {
         return new ItemStack(Item.getItemFromBlock(this), 1, state.getValue(META));
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
+    protected @NotNull BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, META);
     }
 
@@ -253,7 +245,7 @@ public class BlockOre extends net.minecraft.block.BlockOre implements ICustomBlo
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta) {
+    public @NotNull IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState().withProperty(META, rectify(meta));
     }
 
@@ -314,7 +306,7 @@ public class BlockOre extends net.minecraft.block.BlockOre implements ICustomBlo
     public StateMapperBase getStateMapper(ResourceLocation loc) {
         return new StateMapperBase() {
             @Override
-            protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+            protected @NotNull ModelResourceLocation getModelResourceLocation(@NotNull IBlockState state) {
                 int meta = state.getValue(META);
                 if (meta < META_COUNT) return new ModelResourceLocation(loc, "meta=" + meta);
                 else return new ModelResourceLocation(loc, "meta=0");
@@ -345,7 +337,7 @@ public class BlockOre extends net.minecraft.block.BlockOre implements ICustomBlo
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+    public boolean canRenderInLayer(@NotNull IBlockState state, @NotNull BlockRenderLayer layer) {
         return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT_MIPPED;
     }
 
@@ -360,7 +352,7 @@ public class BlockOre extends net.minecraft.block.BlockOre implements ICustomBlo
         }
 
         @Override
-        public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
+        public @NotNull List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
             List<BakedQuad> quads = new ArrayList<>(base.getQuads(state, side, rand));
             quads.addAll(overlay.getQuads(state, side, rand));
             return quads;
@@ -382,17 +374,17 @@ public class BlockOre extends net.minecraft.block.BlockOre implements ICustomBlo
         }
 
         @Override
-        public TextureAtlasSprite getParticleTexture() {
+        public @NotNull TextureAtlasSprite getParticleTexture() {
             return base.getParticleTexture();
         }
 
         @Override
-        public ItemOverrideList getOverrides() {
+        public @NotNull ItemOverrideList getOverrides() {
             return ItemOverrideList.NONE;
         }
 
         @Override
-        public ItemCameraTransforms getItemCameraTransforms() {
+        public @NotNull ItemCameraTransforms getItemCameraTransforms() {
             return base.getItemCameraTransforms();
         }
     }

@@ -2,9 +2,12 @@ package com.hbmspace.main;
 
 import com.hbm.entity.logic.IChunkLoader;
 import com.hbm.handler.GuiHandler;
+import com.hbm.items.ModItems;
 import com.hbmspace.Tags;
+import com.hbmspace.accessors.IHaveCorrosionProtAccessor;
 import com.hbmspace.blocks.BlockEnumsSpace;
 import com.hbmspace.blocks.ModBlocksSpace;
+import com.hbmspace.blocks.fluid.ModFluidsSpace;
 import com.hbmspace.capability.HbmLivingCapabilitySpace;
 import com.hbmspace.config.SpaceConfig;
 import com.hbmspace.config.WorldConfigSpace;
@@ -15,10 +18,10 @@ import com.hbmspace.items.ModItemsSpace;
 import com.hbmspace.items.weapon.ItemCustomMissilePart;
 import com.hbmspace.lib.HBMSpaceSoundHandler;
 import com.hbmspace.packet.PacketRegistry;
+import com.hbmspace.potion.HbmPotion;
 import com.hbmspace.world.PlanetGen;
 import com.hbmspace.world.feature.OreLayer3DSpace;
 import net.minecraft.item.Item;
-import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.config.Configuration;
@@ -35,7 +38,6 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
-import java.util.List;
 
 /**
  * Okay, so if you read this
@@ -63,6 +65,10 @@ public class SpaceMain {
     @SubscribeEvent
     public static void onRegisterItems(RegistryEvent.Register<Item> event) {
         ModItemsSpace.swapStackSizes(event);
+        if (ModItemsSpace.insert_cmb instanceof IHaveCorrosionProtAccessor cmb_corprot) cmb_corprot.withCorrosionProtection();
+        ModItems.ALL_ITEMS.remove(ModItemsSpace.insert_cmb);
+        ModItemsSpace.ALL_ITEMS.add(ModItemsSpace.insert_cmb);
+        event.getRegistry().register(ModItemsSpace.insert_cmb);
     }
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -75,7 +81,8 @@ public class SpaceMain {
         CapabilityManager.INSTANCE.register(HbmLivingCapabilitySpace.IEntityHbmProps.class, new HbmLivingCapabilitySpace.EntityHbmPropsStorage(), HbmLivingCapabilitySpace.EntityHbmProps.FACTORY);
 
         SolarSystem.init();
-
+        HbmPotion.init();
+        ModFluidsSpace.init();
         ModItemsSpace.preInit();
         ModBlocksSpace.preInit();
 
@@ -93,19 +100,15 @@ public class SpaceMain {
         ItemCustomMissilePart.initSpaceThrusters();
         PacketRegistry.preInit();
 
-        ForgeChunkManager.setForcedChunkLoadingCallback(this, new ForgeChunkManager.LoadingCallback() {
+        ForgeChunkManager.setForcedChunkLoadingCallback(this, (tickets, world) -> {
+            for(ForgeChunkManager.Ticket ticket : tickets) {
+                if(ticket.getType() == ForgeChunkManager.Type.NORMAL) {
+                    ChunkLoaderManager.loadTicket(world, ticket);
+                    return;
+                }
 
-            @Override
-            public void ticketsLoaded(List<ForgeChunkManager.Ticket> tickets, World world) {
-                for(ForgeChunkManager.Ticket ticket : tickets) {
-                    if(ticket.getType() == ForgeChunkManager.Type.NORMAL) {
-                        ChunkLoaderManager.loadTicket(world, ticket);
-                        return;
-                    }
-
-                    if(ticket.getEntity() instanceof IChunkLoader) {
-                        ((IChunkLoader) ticket.getEntity()).init(ticket);
-                    }
+                if(ticket.getEntity() instanceof IChunkLoader) {
+                    ((IChunkLoader) ticket.getEntity()).init(ticket);
                 }
             }
         });
@@ -126,6 +129,8 @@ public class SpaceMain {
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
+        ModFluidsSpace.setFromRegistry();
+
         new OreLayer3DSpace(ModBlocksSpace.stone_resource, BlockEnumsSpace.EnumStoneType.CONGLOMERATE.ordinal()).setDimension(SpaceConfig.moonDimension).setScaleH(0.04D).setScaleV(0.25D).setThreshold(220);
         new OreLayer3DSpace(ModBlocksSpace.stone_resource, BlockEnumsSpace.EnumStoneType.CONGLOMERATE.ordinal()).setDimension(SpaceConfig.ikeDimension).setScaleH(0.04D).setScaleV(0.25D).setThreshold(220);
         new OreLayer3DSpace(ModBlocksSpace.stone_resource, BlockEnumsSpace.EnumStoneType.CONGLOMERATE.ordinal()).setDimension(SpaceConfig.minmusDimension).setScaleH(0.04D).setScaleV(0.25D).setThreshold(220);

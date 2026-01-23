@@ -68,7 +68,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 
 import java.util.ArrayList;
@@ -100,6 +99,7 @@ public class ModEventHandlerClient {
         SpaceMain.proxy.registerMissileItems(reg);
 
         swapModels(ModItemsSpace.swarm_member, reg);
+        swapModels(Item.getItemFromBlock(ModBlocksSpace.rbmk_burner), reg);
     }
 
     @SubscribeEvent

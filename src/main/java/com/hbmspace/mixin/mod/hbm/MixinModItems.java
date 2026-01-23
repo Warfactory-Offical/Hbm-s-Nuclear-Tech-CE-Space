@@ -1,6 +1,7 @@
 package com.hbmspace.mixin.mod.hbm;
 
 import com.hbm.items.ModItems;
+import com.hbm.items.armor.ItemModInsert;
 import com.hbm.items.gear.ArmorFSB;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,6 +18,7 @@ public abstract class MixinModItems {
     private static void applySealed(CallbackInfo ci) {
         try {
             Method m = ArmorFSB.class.getMethod("setSealed", boolean.class);
+            Method mC = ItemModInsert.class.getMethod("withCorrosionProtection");
             m.invoke(ModItems.t51_helmet, true);
             m.invoke(ModItems.t51_plate, true);
             m.invoke(ModItems.t51_legs, true);
@@ -61,6 +63,7 @@ public abstract class MixinModItems {
             m.invoke(ModItems.hev_plate, true);
             m.invoke(ModItems.hev_legs, true);
             m.invoke(ModItems.hev_boots, true);
+            mC.invoke(ModItems.insert_yharonite);
         } catch (Throwable ignored) {
         }
     }

@@ -1,79 +1,118 @@
 package com.hbmspace.tileentity.machine;
 
-import com.hbm.tileentity.TileEntityMachineBase;
+import com.hbmspace.blocks.machine.BlockFurnaceSpace;
+import com.hbmspace.interfaces.AutoRegister;
 import com.hbmspace.tileentity.TESpaceUtil;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntityFurnace;
-
-public class TileEntityFurnaceSpace extends TileEntityFurnace {
-
-    /*// Overrides the vanilla furnace TE to check airbreathing
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.MathHelper;
+@AutoRegister
+public class TileEntityFurnaceSpace extends TileEntityFurnace implements ITickable {
 
     @Override
     public void update() {
-        boolean wasBurning = this.isBurning();
+        boolean isBurning = this.isBurning();
         boolean dirty = false;
 
-        if (this.isBurning()) {
-            this.setField(0, this.getField(0) - 1);
+        int burnTime = this.getField(0);
+        if (burnTime > 0) {
+            this.setField(0, burnTime - 1);
         }
 
         if (!this.world.isRemote) {
             ItemStack input = this.getStackInSlot(0);
-            ItemStack fuel  = this.getStackInSlot(1);
+            ItemStack fuel = this.getStackInSlot(1);
+            ItemStack output = this.getStackInSlot(2);
 
-            if (this.isBurning() || (!fuel.isEmpty() && !input.isEmpty())) {
-                if (!this.isBurning() && this.canSmelt()) {
-                    int burnTime = getItemBurnTime(fuel);
+            if (this.getField(0) != 0 || !input.isEmpty() && !fuel.isEmpty()) {
+                if (this.getField(0) == 0 && this.canSmeltCustom(input, output)) {
+                    int itemBurnTime = getItemBurnTime(fuel);
 
-                    // If the machine can't combust, provide no burning (lava works without an atmosphere though!)
-                    if (burnTime > 0
-                            && fuel.getItem() != Items.LAVA_BUCKET
-                            && !TESpaceUtil.breatheAir(this.world, this.pos, 0)) {
-                        burnTime = 0;
+                    if (itemBurnTime > 0 && fuel.getItem() != Items.LAVA_BUCKET && !TESpaceUtil.breatheAir(this.world, this.pos, 0)) {
+                        itemBurnTime = 0;
                     }
 
-                    this.setField(1, burnTime);
-                    this.setField(0, burnTime);
+                    this.setField(0, itemBurnTime);
+                    this.setField(1, itemBurnTime);
 
                     if (this.isBurning()) {
                         dirty = true;
-
                         if (!fuel.isEmpty()) {
-                            ItemStack fuelCopy = fuel.copy();
+                            Item item = fuel.getItem();
                             fuel.shrink(1);
 
                             if (fuel.isEmpty()) {
-                                ItemStack container = fuelCopy.getItem().getContainerItem(fuelCopy);
-                                this.setInventorySlotContents(1, container.isEmpty() ? ItemStack.EMPTY : container);
+                                ItemStack container = item.getContainerItem(fuel);
+                                this.setInventorySlotContents(1, container);
                             }
                         }
                     }
                 }
 
-                if (this.isBurning() && this.canSmelt()) {
-                    this.setField(2, this.getField(2) + 1);
+                if (this.isBurning() && this.canSmeltCustom(input, output)) {
+                    int cookTime = this.getField(2);
+                    this.setField(2, cookTime + 1);
 
-                    if (this.getField(2) == 200) {
+                    if (this.getField(2) == 200) { // Standard total cook time
                         this.setField(2, 0);
-                        this.smeltItem();
+                        this.smeltItemCustom(input, output);
                         dirty = true;
                     }
                 } else {
                     this.setField(2, 0);
                 }
+            } else if (!this.isBurning() && this.getField(2) > 0) {
+                this.setField(2, MathHelper.clamp(this.getField(2) - 2, 0, 200));
             }
 
-            boolean isBurningNow = this.isBurning();
-            if (wasBurning != isBurningNow) {
+            if (isBurning != this.isBurning()) {
                 dirty = true;
-                BlockFurnaceSpace.updateFurnaceBlockState(isBurningNow, this.world, this.pos.getX(), this.pos.getY(), this.pos.getZ());
+                BlockFurnaceSpace.updateFurnaceBlockState(this.isBurning(), this.world, this.pos);
             }
         }
 
         if (dirty) {
             this.markDirty();
         }
-    }*/
+    }
+
+    private boolean canSmeltCustom(ItemStack input, ItemStack output) {
+        if (input.isEmpty()) {
+            return false;
+        } else {
+            ItemStack result = FurnaceRecipes.instance().getSmeltingResult(input);
+
+            if (result.isEmpty()) {
+                return false;
+            } else {
+                if (output.isEmpty()) return true;
+                if (!output.isItemEqual(result)) return false;
+                int res = output.getCount() + result.getCount();
+                return res <= getInventoryStackLimit() && res <= output.getMaxStackSize();
+            }
+        }
+    }
+
+    private void smeltItemCustom(ItemStack input, ItemStack output) {
+        if (this.canSmeltCustom(input, output)) {
+            ItemStack result = FurnaceRecipes.instance().getSmeltingResult(input);
+
+            if (output.isEmpty()) {
+                this.setInventorySlotContents(2, result.copy());
+            } else if (output.getItem() == result.getItem()) {
+                output.grow(result.getCount());
+            }
+
+            if (input.getItem() == Item.getItemFromBlock(Blocks.SPONGE) && input.getMetadata() == 1 && !this.getStackInSlot(1).isEmpty() && this.getStackInSlot(1).getItem() == Items.BUCKET) {
+                this.setInventorySlotContents(1, new ItemStack(Items.WATER_BUCKET));
+            }
+
+            input.shrink(1);
+        }
+    }
 }

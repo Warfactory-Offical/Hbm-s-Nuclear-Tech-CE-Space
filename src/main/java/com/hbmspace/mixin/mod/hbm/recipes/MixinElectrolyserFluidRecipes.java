@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.HashMap;
-import java.util.List;
 
 @Mixin(value = ElectrolyserFluidRecipes.class, remap = false)
 public class MixinElectrolyserFluidRecipes {

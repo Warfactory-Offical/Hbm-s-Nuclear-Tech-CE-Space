@@ -1,4 +1,5 @@
 armor.canSeal=Can be used as a spacesuit (requires PLSS)
+armor.corrosive=Corrosive atmosphere protection
 armor.mustSeal=Must be used with a fully sealed armor set!
 container.cryoDistillator=Cryogenic Distillation Machine
 container.hydrobay=Greenhouse

@@ -17,6 +17,10 @@ public class HBMSpaceSoundHandler {
     public static SoundEvent fireFlash;
     public static SoundEvent dysonBeam;
     public static SoundEvent stationHum;
+    public static SoundEvent oil;
+    public static SoundEvent recordGodSpeed;
+    public static SoundEvent recordGoop;
+    public static SoundEvent recordEthereal;
 
     public static void init() {
         plssBreathing = register("player.plss_breathing");
@@ -26,6 +30,10 @@ public class HBMSpaceSoundHandler {
         fireFlash = register("misc.fireflash");
         dysonBeam = register("block.dysonBeam");
         stationHum = register("misc.stationhum");
+        oil = register("player.oil");
+        recordGodSpeed = register("music.recordGodSpeed");
+        recordGoop = register("music.recordGoop");
+        recordEthereal = register("music.recordEthereal");
     }
 
     public static SoundEvent register(String name) {

@@ -6,7 +6,7 @@ import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.trait.FluidTraitSimple;
 import com.hbm.items.machine.IItemFluidIdentifier;
 import com.hbm.tileentity.TileEntityProxyCombo;
-import com.hbm.util.AstronomyUtil;
+import com.hbmspace.util.AstronomyUtil;
 import com.hbm.util.I18nUtil;
 import com.hbmspace.blocks.BlockDummyableSpace;
 import com.hbmspace.dim.CelestialBody;

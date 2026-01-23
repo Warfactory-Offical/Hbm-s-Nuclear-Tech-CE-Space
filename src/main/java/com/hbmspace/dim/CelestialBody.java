@@ -10,7 +10,7 @@ import com.hbmspace.dim.trait.CBT_Atmosphere.FluidEntry;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbmspace.items.ItemVOTVdrive.Target;
-import com.hbm.util.AstronomyUtil;
+import com.hbmspace.util.AstronomyUtil;
 import com.hbmspace.render.shader.ShaderSpace;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityWaterMob;

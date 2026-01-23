@@ -8,7 +8,7 @@ import com.hbmspace.dim.trait.CBT_Atmosphere;
 import com.hbmspace.dim.trait.CBT_Destroyed;
 import com.hbmspace.handler.atmosphere.ChunkAtmosphereManager;
 import com.hbm.lib.Library;
-import com.hbm.util.AstronomyUtil;
+import com.hbmspace.util.AstronomyUtil;
 import com.hbm.util.BobMathUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;

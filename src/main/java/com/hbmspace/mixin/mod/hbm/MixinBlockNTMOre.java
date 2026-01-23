@@ -5,8 +5,6 @@ import com.hbm.util.I18nUtil;
 import com.hbmspace.blocks.generic.BlockOre;
 import com.hbmspace.config.SpaceConfig;
 import com.hbmspace.dim.SolarSystem;
-import com.hbmspace.main.SpaceMain;
-import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;

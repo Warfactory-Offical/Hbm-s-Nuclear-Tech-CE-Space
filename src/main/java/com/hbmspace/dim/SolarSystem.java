@@ -2,7 +2,7 @@ package com.hbmspace.dim;
 
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.main.MainRegistry;
-import com.hbm.util.AstronomyUtil;
+import com.hbmspace.util.AstronomyUtil;
 import com.hbm.util.BobMathUtil;
 import com.hbmspace.config.SpaceConfig;
 import com.hbmspace.dim.trait.CBT_Atmosphere;
@@ -47,7 +47,7 @@ public class SolarSystem {
 								.withOrbitalParameters(5_263_138, 0.2F, 15.0F, 7.0F, 70.0F)
 								.withRotationalPeriod(210_000)
 								.withColor(0.4863F, 0.4F, 0.3456F)
-								.withBlockTextures("hbm" + ":blocks/moho_stone", "hbm" + ":blocks/moho_regolith")
+								.withBlockTextures("hbm:blocks/moho_stone", "hbm:blocks/moho_regolith")
 								.withAxialTilt(30F)
 								.withTraits(new CBT_Temperature(200)),
 
@@ -56,7 +56,7 @@ public class SolarSystem {
 								.withOrbitalParameters(9_832_684, 0.01F, 0.0F, 2.1F, 15.0F)
 								.withRotationalPeriod(80_500)
 								.withColor(0.408F, 0.298F, 0.553F)
-								.withBlockTextures("hbm" + ":blocks/eve_stone_2", "hbm" + ":blocks/eve_silt")
+								.withBlockTextures("hbm:blocks/eve_stone_2", "hbm:blocks/eve_silt")
 								.withMinProcessingLevel(2)
 								.withTraits(new CBT_Atmosphere(Fluids.EVEAIR, 5D), new CBT_Temperature(400), new CBT_Water(Fluids.MERCURY))
 								.withSatellites(
@@ -85,14 +85,14 @@ public class SolarSystem {
 												.withOrbitalParameters(12_000, 0.054F, 0.0F, 5.15F, 17.0F)
 												.withRotationalPeriod(138_984)
 												.withTidalLockingTo("kerbin")
-												.withBlockTextures("hbm" + ":blocks/moon_rock", "hbm" + ":blocks/moon_turf")
+												.withBlockTextures("hbm:blocks/moon_rock", "hbm:blocks/moon_turf")
 												.withIce(true),
 
 										new CelestialBody("minmus", SpaceConfig.minmusDimension, Body.MINMUS)
 												.withMassRadius(2.646e19F, 60)
 												.withOrbitalParameters(47_000, 0, 38.0F, 6.0F, 78.0F)
 												.withRotationalPeriod(40_400)
-												.withBlockTextures("hbm" + ":blocks/minmus_stone", "hbm" + ":blocks/minmus_regolith")
+												.withBlockTextures("hbm:blocks/minmus_stone", "hbm:blocks/minmus_regolith")
 												.withTraits(new CBT_Water(Fluids.MILK))
 												.withIce(true)
 
@@ -104,7 +104,7 @@ public class SolarSystem {
 								.withRotationalPeriod(65_518)
 								.withTidalLockingTo("ike")
 								.withColor(0.6471f, 0.2824f, 0.1608f)
-								.withBlockTextures("hbm" + ":blocks/duna_rock", "hbm" + ":blocks/duna_sands")
+								.withBlockTextures("hbm:blocks/duna_rock", "hbm:blocks/duna_sands")
 								.withTraits(new CBT_Atmosphere(Fluids.DUNAAIR, 0.1D))
 								.withCityMask(new ResourceLocation("hbm", "textures/misc/space/duna_mask.png"))
 								.withIce(true)
@@ -113,7 +113,7 @@ public class SolarSystem {
 										new CelestialBody("ike", SpaceConfig.ikeDimension, Body.IKE)
 												.withMassRadius(2.782e20F, 130)
 												.withOrbitalParameters(3_200, 0.03F, 0.0F, 0.2F, 0.0F)
-												.withBlockTextures("hbm" + ":blocks/ike_stone", "hbm" + ":blocks/ike_regolith")
+												.withBlockTextures("hbm:blocks/ike_stone", "hbm:blocks/ike_regolith")
 												.withRotationalPeriod(65_518)
 												.withTidalLockingTo("duna")
 												.withTraits(new CBT_Water(Fluids.BROMINE))
@@ -125,7 +125,7 @@ public class SolarSystem {
 								.withMassRadius(3.219e20F, 138)
 								.withOrbitalParameters(40_839_348, 0.145F, 90.0F, 5.0F, 280.0F)
 								.withRotationalPeriod(34_800)
-								.withBlockTextures("hbm" + ":blocks/dresbase", "hbm" + ":blocks/sellafield_slaked")
+								.withBlockTextures("hbm:blocks/dres_rock", "hbm:blocks/sellafield_slaked")
 								.withRings(10.0F, 3, 0.4F, 0.4F, 0.4F)
 								.withMinProcessingLevel(2)
 								.withIce(true),
@@ -146,7 +146,7 @@ public class SolarSystem {
 												.withTidalLockingTo("jool")
 												.withMinProcessingLevel(3)
 												.withTraits(new CBT_Atmosphere(com.hbmspace.inventory.fluid.Fluids.EARTHAIR, 0.45D).and(Fluids.XENON, 0.15D), new CBT_Water())
-												.withBlockTextures("blocks/stone", "hbm" + ":blocks/laythe_silt")
+												.withBlockTextures("stone", "hbm:blocks/laythe_silt")
 												.withCityMask(new ResourceLocation("hbm", "textures/misc/space/laythe_mask.png")),
 
 										new CelestialBody("vall") //probably
@@ -207,7 +207,7 @@ public class SolarSystem {
 												.withAxialTilt(25F)
 												.withMinProcessingLevel(3)
 												.withTraits(new CBT_Atmosphere(Fluids.TEKTOAIR, 1.5F), new CBT_Water(Fluids.CCL)) // :)
-												.withBlockTextures("hbm" + ":blocks/basalt", "hbm" + ":blocks/rubber_silt")
+												.withBlockTextures("hbm:blocks/basalt", "hbm:blocks/rubber_silt")
 
 								),
 

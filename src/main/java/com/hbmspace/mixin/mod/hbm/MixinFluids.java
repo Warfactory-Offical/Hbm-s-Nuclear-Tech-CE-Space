@@ -56,6 +56,7 @@ public abstract class MixinFluids {
         HGAS = space$createFixed("HGAS", 0x999368, 0, 0, 0, EnumSymbol.ACID, idCounter++).addTraits(GASEOUS, new FT_Corrosive(120));
         HALOLIGHT = space$createFixed("HALOLIGHT", 0xB6F9CF, 0, 0, 0, EnumSymbol.NONE, idCounter++).addTraits(LIQUID);
         LITHCARBONATE = space$createFixed("LITHCARBONATE", 0xD1CEBE, 0, 0, 0, EnumSymbol.NONE, idCounter++).addTraits(GASEOUS);
+        TCRUDE = space$createFixed("TCRUDE", 0x051914, 0, 0, 0, EnumSymbol.NONE, idCounter++).addTraits(LIQUID);
 
         metaOrder.add(EARTHAIR);
         metaOrder.add(CCL);
@@ -70,5 +71,6 @@ public abstract class MixinFluids {
         metaOrder.add(HGAS);
         metaOrder.add(HALOLIGHT);
         metaOrder.add(LITHCARBONATE);
+        metaOrder.add(TCRUDE);
     }
 }

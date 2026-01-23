@@ -1,16 +1,20 @@
 package com.hbmspace.main;
 
-import com.hbm.main.ModEventHandlerClient;
+import com.hbm.items.RBMKItemRenderers;
 import com.hbm.main.client.NTMClientRegistry;
 import com.hbm.render.item.ItemRenderMissilePart;
+import com.hbm.render.tileentity.RenderRBMKLid;
 import com.hbm.sound.AudioWrapper;
 import com.hbm.sound.AudioWrapperClient;
+import com.hbmspace.blocks.ModBlocksSpace;
 import com.hbmspace.render.misc.RocketPart;
 import com.hbmspace.render.tileentity.IItemRendererProviderSpace;
 import com.hbmspace.sound.AudioWrapperClientSpace;
+import com.hbmspace.tileentity.machine.rbmk.TileEntityRBMKBurner;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -20,6 +24,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.registry.IRegistry;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fluids.BlockFluidClassic;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import java.io.File;
@@ -37,6 +44,8 @@ public class ClientProxy extends ServerProxy {
             Minecraft.getMinecraft().getFramebuffer().enableStencil();
 
         AutoRegistrySpace.registerRenderInfo();
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKBurner.class, new RenderRBMKLid());
+        ModelLoader.setCustomStateMapper(ModBlocksSpace.ccl_block, new StateMap.Builder().ignore(BlockFluidClassic.LEVEL).build());
     }
     @Override
     public void preInit(FMLPreInitializationEvent evt) {
@@ -57,6 +66,7 @@ public class ClientProxy extends ServerProxy {
                 }
             }
         }
+        Item.getItemFromBlock(ModBlocksSpace.rbmk_burner).setTileEntityItemStackRenderer(RBMKItemRenderers.RBMK_PASSIVE);
     }
 
     @Override

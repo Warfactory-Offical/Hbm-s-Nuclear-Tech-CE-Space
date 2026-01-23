@@ -190,7 +190,7 @@ public class BlockOrbitalStation extends BlockDummyableSpace implements IBlockSe
                     }
                 }
             } else if(!player.isSneaking()) {
-                ItemStack held = player.getHeldItem(player.getActiveHand());
+                ItemStack held = player.getHeldItemMainhand();
                 if(!held.isEmpty()) {
                     if(held.getItem() == ModItemsSpace.rocket_custom && ItemCustomRocket.hasFuel(held)) {
                         text.add(I18nUtil.resolveKey("station.placeRocket"));

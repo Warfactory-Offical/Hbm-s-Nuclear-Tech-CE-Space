@@ -32,6 +32,8 @@ public class JEIConfigSpace implements IModPlugin {
         blacklist.addIngredientToBlacklist(new ItemStack(ModBlocksSpace.orbital_station));
         blacklist.addIngredientToBlacklist(new ItemStack(ModItemsSpace.rocket_custom));
         blacklist.addIngredientToBlacklist(new ItemStack(ModBlocksSpace.machine_htrf4neo)); // it's still in-dev, afaik
+        blacklist.addIngredientToBlacklist(new ItemStack(ModBlocksSpace.furnace));
+        blacklist.addIngredientToBlacklist(new ItemStack(ModBlocksSpace.lit_furnace));
         //blacklist.addIngredientToBlacklist(new ItemStack(ModBlocksSpace.war_controller));
         //blacklist.addIngredientToBlacklist(new ItemStack(ModItemsSpace.sat_war));
     }

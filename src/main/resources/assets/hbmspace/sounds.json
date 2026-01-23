@@ -5,5 +5,9 @@
 	"misc.spincharge": {"category": "block", "sounds": [{"name": "hbmspace:misc/spincharge", "stream": false}]},
 	"misc.fireflash": {"category": "player", "sounds": [{"name": "hbmspace:misc/flashfire", "stream": false}]},
 	"block.dysonBeam": {"category": "block", "sounds": [{"name": "hbmspace:block/dysonBeam", "stream": false}]},
-	"misc.stationhum": {"category": "player", "sounds": [{"name": "hbmspace:misc/stationhum", "stream": false}]}
+	"misc.stationhum": {"category": "player", "sounds": [{"name": "hbmspace:misc/stationhum", "stream": false}]},
+	"player.oil": {"category": "player", "sounds": [{"name": "hbmspace:player/oil", "stream": false}]},
+	"music.recordGodSpeed": {"category": "record", "sounds": [{"name": "hbmspace:music/recordGodSpeed", "stream": true}]},
+	"music.recordGoop": {"category": "record", "sounds": [{"name": "hbmspace:music/recordGoop", "stream": true}]},
+	"music.recordEthereal": {"category": "record", "sounds": [{"name": "hbmspace:music/recordEthereal", "stream": true}]}
 }

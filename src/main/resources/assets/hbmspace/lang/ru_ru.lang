@@ -1,4 +1,5 @@
 armor.canSeal=Обеспечивает герметичность (требуется PLSS)
+armor.corrosive=Защищает от коррозийной атмосферы
 armor.mustSeal=Необходимо использовать$с полностью герметичным набором брони!
 container.cryoDistillator=Криогенный дистиллятор
 container.hydrobay=Теплица

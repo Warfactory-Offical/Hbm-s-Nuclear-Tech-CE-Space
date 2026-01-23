@@ -7,16 +7,19 @@
   "target": "@env(MOD)",
   "client": [
     "hbm.MixinArmorFSBClient",
+    "hbm.MixinItemModInsertClient",
     "hbm.MixinBlockNTMOre"
   ],
   "mixins": [
     "hbm.MixinArmorFSB",
+    "hbm.MixinItemModInsert",
     "hbm.MixinDictFrame",
     "hbm.MixinEntityEffectHandler",
     "hbm.MixinFluids",
     "hbm.MixinMainRegistry",
     "hbm.MixinMatDistribution",
     "hbm.MixinModItems",
+    "hbm.MixinHbmWorldGen",
     "hbm.MixinNTMWorldGenerator",
     "hbm.MixinPermaSyncHandler",
     "hbm.recipes.MixinAnvilRecipes",

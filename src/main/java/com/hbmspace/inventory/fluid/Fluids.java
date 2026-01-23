@@ -53,5 +53,6 @@ public class Fluids {
     public static FluidType HGAS;
     public static FluidType HALOLIGHT;
     public static FluidType LITHCARBONATE;
+    public static FluidType TCRUDE;
 
 }
