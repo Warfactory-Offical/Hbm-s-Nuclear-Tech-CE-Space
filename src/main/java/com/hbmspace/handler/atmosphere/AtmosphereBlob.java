@@ -235,7 +235,7 @@ public class AtmosphereBlob implements Runnable {
 
 				ThreeInts newBlock = blockPos.getPositionAtOffset(direction);
 				if(graph.contains(newBlock) && !graph.doesPathExist(newBlock, handler.getRootPosition()))
-					runEffectOnWorldBlocks(handler.getWorld(), graph.removeAllNodesConnectedTo(newBlock));
+					runEffectOnWorldBlocks(handler.getAtmoWorld(), graph.removeAllNodesConnectedTo(newBlock));
 			}
 		}
 	}
@@ -244,7 +244,7 @@ public class AtmosphereBlob implements Runnable {
 	 * Removes all nodes from the blob
 	 */
 	public void clearBlob() {
-		World world = handler.getWorld();
+		World world = handler.getAtmoWorld();
 
 		runEffectOnWorldBlocks(world, getLocations());
 		
@@ -292,7 +292,7 @@ public class AtmosphereBlob implements Runnable {
 					// Don't path areas we have already scanned
 					if(!alreadyInGraph && !addableBlocks.contains(searchNextPosition)) {
 
-						if(isPositionAllowed(handler.getWorld(), searchNextPosition)) {
+						if(isPositionAllowed(handler.getAtmoWorld(), searchNextPosition)) {
 							if(searchNextPosition.getDistanceSquared(this.getRootPosition()) <= maxSize * maxSize) {
 								stack.push(searchNextPosition);
 								addableBlocks.add(searchNextPosition);
@@ -343,7 +343,7 @@ public class AtmosphereBlob implements Runnable {
 	}
 
     public void decompress(ThreeInts pos, ForgeDirection dir) {
-        World world = handler.getWorld();
+        World world = handler.getAtmoWorld();
 
         EntityDepress depress = new EntityDepress(world, dir.getOpposite().toEnumFacing(), 20);
         depress.posX = pos.x + 0.5;
@@ -356,7 +356,7 @@ public class AtmosphereBlob implements Runnable {
     }
 
     public void checkGrowth() {
-        World world = handler.getWorld();
+        World world = handler.getAtmoWorld();
 
         Iterator<HashMap.Entry<ThreeInts, Integer>> iterator = plants.entrySet().iterator();
         while(iterator.hasNext()) {

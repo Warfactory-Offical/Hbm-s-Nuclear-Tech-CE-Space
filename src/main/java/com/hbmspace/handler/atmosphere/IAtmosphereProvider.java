@@ -6,7 +6,7 @@ import net.minecraft.world.World;
 
 public interface IAtmosphereProvider {
 
-	World getWorld();
+	World getAtmoWorld();
 	
 	// the maximum distance an object can maintain a blob
 	int getMaxBlobRadius();

@@ -62,7 +62,7 @@ public class TileEntityAirPump extends TileEntityMachineBase implements ITickabl
     }
 
     @Override
-    public @NotNull World getWorld() {
+    public @NotNull World getAtmoWorld() {
         return this.world;
     }
 

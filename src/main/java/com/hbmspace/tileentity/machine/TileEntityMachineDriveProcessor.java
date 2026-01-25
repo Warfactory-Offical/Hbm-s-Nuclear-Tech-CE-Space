@@ -153,7 +153,7 @@ public class TileEntityMachineDriveProcessor extends TileEntityMachineBase imple
     private int getProcessingTier() {
         if(inventory.getStackInSlot(2).isEmpty() || inventory.getStackInSlot(2).getItem() != ModItemsSpace.circuit) return 0;
 
-        ItemEnumsSpace.EnumCircuitType num = EnumUtil.grabEnumSafely(ItemEnumsSpace.EnumCircuitType.class, inventory.getStackInSlot(2).getItemDamage());
+        ItemEnumsSpace.EnumCircuitType num = EnumUtil.grabEnumSafely(ItemEnumsSpace.EnumCircuitType.VALUES, inventory.getStackInSlot(2).getItemDamage());
 
         return switch (num) {
             case PROCESST1 -> 1;
