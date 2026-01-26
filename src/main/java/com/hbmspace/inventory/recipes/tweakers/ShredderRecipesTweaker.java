@@ -1,10 +1,9 @@
-package com.hbmspace.mixin.mod.hbm.recipes;
+package com.hbmspace.inventory.recipes.tweakers;
 
 import com.hbm.blocks.BlockEnums;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.OreDictManager;
 import com.hbm.inventory.recipes.ShredderRecipes;
-import com.hbm.items.ItemEnums;
 import com.hbm.items.ModItems;
 import com.hbmspace.blocks.BlockEnumsSpace;
 import com.hbmspace.blocks.ModBlocksSpace;
@@ -15,20 +14,14 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
-@Mixin(value = ShredderRecipes.class, remap = false)
-public class MixinShredderRecipes {
+public class ShredderRecipesTweaker {
 
-    @Inject(method = "registerDefaults", at = @At("TAIL"))
-    public void registerSpace(CallbackInfo ci) {
+    public static void init() {
         // TODO
-        //ShredderRecipes.setRecipe(Items.WHEAT, new ItemStack(ModItemsSpace.flour));
+        ShredderRecipes.setRecipe(Items.WHEAT, new ItemStack(ModItemsSpace.flour));
         ShredderRecipes.setRecipe(ModBlocks.reinforced_light, new ItemStack(Items.GLOWSTONE_DUST, 4));
         ShredderRecipes.setRecipe(new ItemStack(ModBlocksSpace.ore_glowstone, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Items.GLOWSTONE_DUST, 4));
 
@@ -39,7 +32,7 @@ public class MixinShredderRecipes {
 
         ShredderRecipes.setRecipe(new ItemStack(ModBlocksSpace.ore_mineral, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(ModItemsSpace.mineral_dust, 1)); // it was deserved
 
-        //ShredderRecipes.setRecipe(ModItemsSpace.bean_roast,  new ItemStack(ModItemsSpace.powder_coffee, 1));
+        ShredderRecipes.setRecipe(ModItemsSpace.bean_roast,  new ItemStack(ModItemsSpace.powder_coffee, 1));
 
         ShredderRecipes.setRecipe(OreDictManager.DictFrame.fromOne(ModBlocks.stone_resource, BlockEnums.EnumStoneType.LIMESTONE), new ItemStack(ModItems.powder_calcium, 4));
         ShredderRecipes.setRecipe(OreDictManager.DictFrame.fromOne(ModBlocksSpace.stone_resource, BlockEnumsSpace.EnumStoneType.CALCIUM), new ItemStack(ModItems.powder_calcium, 6));

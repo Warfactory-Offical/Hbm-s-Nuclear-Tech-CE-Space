@@ -1,4 +1,4 @@
-package com.hbmspace.mixin.mod.hbm.recipes;
+package com.hbmspace.inventory.recipes.tweakers;
 
 import com.hbm.inventory.RecipesCommon;
 import com.hbm.inventory.fluid.FluidStack;
@@ -9,36 +9,20 @@ import com.hbmspace.blocks.ModBlocksSpace;
 import com.hbmspace.items.ModItemsSpace;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static com.hbm.inventory.OreDictManager.*;
+import static com.hbm.inventory.recipes.CrystallizerRecipes.registerRecipe;
 import static com.hbmspace.inventory.OreDictManagerSpace.ZI;
 
-@Mixin(value = CrystallizerRecipes.class, remap = false)
-public class MixinCrystallizerRecipes {
+public class CrystallizerRecipesTweaker {
 
-    @Shadow
-    public static void registerRecipe(Object input, CrystallizerRecipes.CrystallizerRecipe recipe) { }
-
-    @Shadow
-    public static void registerRecipe(Object input, CrystallizerRecipes.CrystallizerRecipe recipe, FluidStack stack) { }
-
-    @Inject(method = "registerDefaults", at = @At("TAIL"))
-    public void registerSpace(CallbackInfo ci) {
+    public static void init() {
         final int baseTime = 600;
-        final int utilityTime = 100;
-        final int mixingTime = 20;
         FluidStack sulfur = new FluidStack(Fluids.SULFURIC_ACID, 500);
         FluidStack nitric = new FluidStack(Fluids.NITRIC_ACID, 500);
         FluidStack organic = new FluidStack(Fluids.SOLVENT, 500);
         FluidStack chloric = new FluidStack(Fluids.HCL, 500);
         FluidStack schrabidic = new FluidStack(Fluids.SCHRABIDIC, 1000);
-        FluidStack hiperf = new FluidStack(Fluids.RADIOSOLVENT, 500);
-        FluidStack technetic = new FluidStack(Fluids.HTCO4, 500);
 
         registerRecipe(P_RED.ore(),		new CrystallizerRecipes.CrystallizerRecipe(ModItems.crystal_phosphorus, baseTime).prod(0.05F));
         //registerRecipe(NI.ore(),		new CrystallizerRecipe(ModItems.crystal_nickel, baseTime).prod(0.05F), nitric);

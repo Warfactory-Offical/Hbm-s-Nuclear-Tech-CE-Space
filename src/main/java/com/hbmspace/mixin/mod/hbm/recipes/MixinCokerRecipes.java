@@ -15,12 +15,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static com.hbm.inventory.fluid.Fluids.*;
 import static com.hbm.inventory.fluid.Fluids.GAS_COKER;
-
+// Th3_Sl1ze: let's say I'm not gonna touch this until I remember to change private to public in CokerRecipes..
 @Mixin(value = CokerRecipes.class, remap = false)
 public class MixinCokerRecipes {
 
     @Shadow
-    private static void registerRecipe(FluidType type, int quantity, ItemStack output, FluidStack byproduct){
+    private static void registerRecipe(FluidType type, int quantity, ItemStack output, FluidStack byproduct) {
     }
 
     @Inject(method = "registerDefaults", at = @At("TAIL"))

@@ -31,7 +31,7 @@ public class ArcWelderRecipesTweaker {
         recipes.add(new ArcWelderRecipes.ArcWelderRecipe(new ItemStack(ModItemsSpace.rp_fuselage_20_12), 250, 60_000L, new FluidStack(Fluids.OXYGEN, 500), new RecipesCommon.OreDictStack(OreDictManagerSpace.STAINLESS.plateWelded(), 4), new RecipesCommon.ComparableStack(ModItemsSpace.rp_fuselage_20_6), new RecipesCommon.OreDictStack(TI.shell(), 6))); // 8 win, 12 tit
 
         // space misc
-        //recipes.add(new ArcWelderRecipes.ArcWelderRecipe(new ItemStack(ModItemsSpace.insert_cmb), 600, 50_000L, new FluidStack(Fluids.NEON, 2_000), new RecipesCommon.OreDictStack(CMB.plate(), 2), new RecipesCommon.OreDictStack(U238.ingot())));
+        recipes.add(new ArcWelderRecipes.ArcWelderRecipe(new ItemStack(ModItemsSpace.insert_cmb), 600, 50_000L, new FluidStack(Fluids.NEON, 2_000), new RecipesCommon.OreDictStack(CMB.plate(), 2), new RecipesCommon.OreDictStack(U238.ingot())));
 
         recipes.add(new ArcWelderRecipes.ArcWelderRecipe(new ItemStack(ModItemsSpace.circuit, 1, ItemEnumsSpace.EnumCircuitType.AVIONICS.ordinal()), 250, 25_000L, new RecipesCommon.OreDictStack(AL.plateCast(), 2), new RecipesCommon.ComparableStack(ModItemsSpace.circuit, 2, ItemEnumsSpace.EnumCircuitType.AERO)));
     }

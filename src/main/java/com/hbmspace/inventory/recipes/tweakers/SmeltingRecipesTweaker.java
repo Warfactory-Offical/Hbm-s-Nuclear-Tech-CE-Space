@@ -1,7 +1,6 @@
-package com.hbmspace.mixin.mod.hbm.recipes;
+package com.hbmspace.inventory.recipes.tweakers;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.crafting.SmeltingRecipes;
 import com.hbm.inventory.OreDictManager;
 import com.hbm.items.ItemEnums;
 import com.hbm.items.ModItems;
@@ -14,15 +13,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = SmeltingRecipes.class, remap = false)
-public class MixinSmeltingRecipes {
-    @Inject(method = "AddSmeltingRec", at = @At("TAIL"))
-    private static void addSpaceSmelting(CallbackInfo ci) {
+public class SmeltingRecipesTweaker {
+
+    public static void init() {
         // Oredict doesn't work for vanilla smelting :(
         // space ores fuck yeeeeah
         for(int i = 0; i < SolarSystem.Body.values().length - 1; i++){

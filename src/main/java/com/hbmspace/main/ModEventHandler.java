@@ -2,6 +2,7 @@ package com.hbmspace.main;
 
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.toclient.PlayerInformPacketLegacy;
+import com.hbmspace.inventory.recipes.tweakers.CraftingManagerTweaker;
 import com.hbmspace.util.AstronomyUtil;
 import com.hbm.util.ChatBuilder;
 import com.hbm.util.ParticleUtil;
@@ -35,6 +36,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -73,6 +75,13 @@ public class ModEventHandler {
     public static final ResourceLocation ENT_HBM_PROP_ID = new ResourceLocation(Tags.MODID, "HBMLIVINGPROPS");
 
     public static Random rand = new Random();
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void tweakRecipes(RegistryEvent.Register<IRecipe> event) {
+        CraftingManagerTweaker.hack = event;
+        CraftingManagerTweaker.tweak();
+        CraftingManagerTweaker.hack = null;
+    }
 
     @SubscribeEvent
     public static void attachRadCap(AttachCapabilitiesEvent<Entity> e) {

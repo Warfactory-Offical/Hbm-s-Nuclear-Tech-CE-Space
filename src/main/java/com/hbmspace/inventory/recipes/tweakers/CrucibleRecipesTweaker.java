@@ -1,4 +1,4 @@
-package com.hbmspace.mixin.mod.hbm.recipes;
+package com.hbmspace.inventory.recipes.tweakers;
 
 import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.inventory.material.Mats;
@@ -7,21 +7,12 @@ import com.hbm.items.ModItems;
 import com.hbmspace.inventory.materials.MatsSpace;
 import com.hbmspace.items.ModItemsSpace;
 import net.minecraft.item.ItemStack;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.List;
+import static com.hbm.inventory.recipes.CrucibleRecipes.recipes;
 
-@Mixin(value = CrucibleRecipes.class, remap = false)
-public class MixinCrucibleRecipes {
-    @Shadow
-    public static List<CrucibleRecipes.CrucibleRecipe> recipes;
+public class CrucibleRecipesTweaker {
 
-    @Inject(method = "registerDefaults", at = @At("TAIL"))
-    public void registerSpace(CallbackInfo ci) {
+    public static void init() {
         int n = MaterialShapes.NUGGET.q(1);
         int i = MaterialShapes.INGOT.q(1);
         recipes.add(new CrucibleRecipes.CrucibleRecipe(18, "crucible.hsss", 12, new ItemStack(ModItems.ingot_dura_steel))

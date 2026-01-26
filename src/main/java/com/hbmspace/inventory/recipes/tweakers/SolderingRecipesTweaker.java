@@ -1,4 +1,4 @@
-package com.hbmspace.mixin.mod.hbm.recipes;
+package com.hbmspace.inventory.recipes.tweakers;
 
 import com.hbm.config.GeneralConfig;
 import com.hbm.inventory.RecipesCommon;
@@ -10,31 +10,16 @@ import com.hbm.items.ModItems;
 import com.hbmspace.items.ItemEnumsSpace;
 import com.hbmspace.items.ModItemsSpace;
 import net.minecraft.item.ItemStack;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
 
 import static com.hbm.inventory.OreDictManager.*;
+import static com.hbm.inventory.OreDictManager.PB;
+import static com.hbm.inventory.recipes.SolderingRecipes.*;
 
-@Mixin(value = SolderingRecipes.class, remap = false)
-public class MixinSolderingRecipes {
+public class SolderingRecipesTweaker {
 
-    @Shadow
-    public static List<SolderingRecipes.SolderingRecipe> recipes;
-
-    @Shadow public static HashSet<RecipesCommon.AStack> toppings;
-    @Shadow public static HashSet<RecipesCommon.AStack> pcb;
-    @Shadow public static HashSet<RecipesCommon.AStack> solder;
-
-    @Unique
-    private static void hbm$rebuildIngredientCaches() {
+    private static void rebuildIngredientCaches() {
         toppings.clear();
         pcb.clear();
         solder.clear();
@@ -46,9 +31,7 @@ public class MixinSolderingRecipes {
         }
     }
 
-    @Inject(method = "registerDefaults", at = @At("TAIL"))
-    public void registerSpace(CallbackInfo ci) {
-
+    public static void init() {
         boolean lbsm = GeneralConfig.enableLBSM && GeneralConfig.enableLBSMSimpleCrafting;
         boolean no528 = !GeneralConfig.enable528;
 
@@ -93,12 +76,7 @@ public class MixinSolderingRecipes {
                 new RecipesCommon.AStack[] {
                         new RecipesCommon.OreDictStack(PB.wireFine(), 8)}
         ));
-    }
 
-    @Inject(method = "registerDefaults", at = @At("TAIL"))
-    private void hbm$replaceControllerAdvancedRecipe(CallbackInfo ci) {
-        boolean lbsm = GeneralConfig.enableLBSM && GeneralConfig.enableLBSMSimpleCrafting;
-        boolean no528 = !GeneralConfig.enable528;
         if (!no528) return;
 
         final int targetMeta = ItemEnums.EnumCircuitType.CONTROLLER_ADVANCED.ordinal();
@@ -130,6 +108,6 @@ public class MixinSolderingRecipes {
                 }
         ));
 
-        hbm$rebuildIngredientCaches();
+        rebuildIngredientCaches();
     }
 }

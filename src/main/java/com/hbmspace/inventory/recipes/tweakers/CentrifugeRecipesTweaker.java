@@ -1,8 +1,7 @@
-package com.hbmspace.mixin.mod.hbm.recipes;
+package com.hbmspace.inventory.recipes.tweakers;
 
 import com.hbm.inventory.RecipesCommon;
 import com.hbm.inventory.material.Mats;
-import com.hbm.inventory.recipes.CentrifugeRecipes;
 import com.hbm.items.ModItems;
 import com.hbmspace.blocks.ModBlocksSpace;
 import com.hbmspace.inventory.materials.MatsSpace;
@@ -11,25 +10,14 @@ import com.hbmspace.items.ModItemsSpace;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.HashMap;
 
 import static com.hbm.inventory.OreDictManager.P_RED;
+import static com.hbm.inventory.recipes.CentrifugeRecipes.recipes;
 import static com.hbmspace.inventory.OreDictManagerSpace.NI;
 
-@Mixin(value = CentrifugeRecipes.class, remap = false)
-public class MixinCentrifugeRecipes {
+public class CentrifugeRecipesTweaker {
 
-    @Shadow
-    public static HashMap<RecipesCommon.AStack, ItemStack[]> recipes;
-
-    @Inject(method = "registerDefaults", at = @At("TAIL"))
-    public void registerSpace(CallbackInfo ci) {
+    public static void init() {
         recipes.put(new RecipesCommon.OreDictStack(NI.ore()), new ItemStack[] {
                 new ItemStack(ModItemsSpace.chunk_ore, 2, ItemEnumsSpace.EnumChunkType.PENTLANDITE.ordinal()),
                 new ItemStack(ModItems.sulfur, 1),

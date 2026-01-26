@@ -14,7 +14,7 @@ import com.hbmspace.config.WorldConfigSpace;
 import com.hbmspace.dim.CommandSpaceTP;
 import com.hbmspace.dim.SolarSystem;
 import com.hbmspace.inventory.OreDictManagerSpace;
-import com.hbmspace.inventory.recipes.tweakers.RecipeTweaker;
+import com.hbmspace.inventory.recipes.tweakers.RecipeTweakerManager;
 import com.hbmspace.items.ModItemsSpace;
 import com.hbmspace.items.weapon.ItemCustomMissilePart;
 import com.hbmspace.lib.HBMSpaceSoundHandler;
@@ -136,7 +136,7 @@ public class SpaceMain {
         PlanetGen.init();
         proxy.postInit(event);
 
-        RecipeTweaker.initRecipeTweakers();
+        RecipeTweakerManager.initRecipeTweakers();
     }
 
     @EventHandler
