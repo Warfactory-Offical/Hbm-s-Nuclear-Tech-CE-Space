@@ -25,7 +25,6 @@ public class CrystallizerRecipesTweaker {
         FluidStack schrabidic = new FluidStack(Fluids.SCHRABIDIC, 1000);
 
         registerRecipe(P_RED.ore(),		new CrystallizerRecipes.CrystallizerRecipe(ModItems.crystal_phosphorus, baseTime).prod(0.05F));
-        //registerRecipe(NI.ore(),		new CrystallizerRecipe(ModItems.crystal_nickel, baseTime).prod(0.05F), nitric);
         registerRecipe(ZI.ore(),		new CrystallizerRecipes.CrystallizerRecipe(ModItemsSpace.crystal_zinc, baseTime).prod(0.05F), nitric);
 
         registerRecipe(NB.ore(),		new CrystallizerRecipes.CrystallizerRecipe(ModItemsSpace.crystal_niobium, baseTime).prod(0.05F), sulfur);
@@ -36,7 +35,6 @@ public class CrystallizerRecipesTweaker {
         registerRecipe(MALACHITE.ingot(), new CrystallizerRecipes.CrystallizerRecipe(ModItems.crystal_copper, baseTime).prod(0.1F), new FluidStack(com.hbmspace.inventory.fluid.Fluids.COPPERSULFATE, 350));
         registerRecipe(new RecipesCommon.ComparableStack(ModItemsSpace.nickel_salts),	new CrystallizerRecipes.CrystallizerRecipe(ModItemsSpace.crystal_nickel, baseTime), nitric);
         registerRecipe(new RecipesCommon.ComparableStack(ModItemsSpace.leaf_rubber),	new CrystallizerRecipes.CrystallizerRecipe(ModItems.ingot_rubber, baseTime).setReq(64), chloric);
-        //registerRecipe(new ComparableStack(ModItems.leaf_pet),	new CrystallizerRecipe(ModItems.ingot_pc, baseTime).setReq(32), new FluidStack(Fluids.VINYL, 250));
 
         int mineraltime = 300;
         registerRecipe(new RecipesCommon.ComparableStack(ModItemsSpace.mineral_dust),	new CrystallizerRecipes.CrystallizerRecipe(new ItemStack(ModItemsSpace.mineral_fragment, 1, 0), mineraltime));

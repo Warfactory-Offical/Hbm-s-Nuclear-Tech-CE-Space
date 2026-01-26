@@ -20,12 +20,19 @@ import java.util.List;
 public class ShredderRecipesTweaker {
 
     public static void init() {
+        ShredderRecipes.removeRecipe(new ItemStack(ModBlocks.ore_nether_fire));
+        ShredderRecipes.removeRecipe(new ItemStack(Blocks.STONE));
         // TODO
         ShredderRecipes.setRecipe(Items.WHEAT, new ItemStack(ModItemsSpace.flour));
         ShredderRecipes.setRecipe(ModBlocks.reinforced_light, new ItemStack(Items.GLOWSTONE_DUST, 4));
         ShredderRecipes.setRecipe(new ItemStack(ModBlocksSpace.ore_glowstone, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Items.GLOWSTONE_DUST, 4));
 
+        ShredderRecipes.setRecipe(ModBlocksSpace.ore_quartz, new ItemStack(ModItems.powder_quartz, 2));
+        ShredderRecipes.setRecipe(new ItemStack(ModBlocksSpace.ore_fire, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(ModItems.powder_fire, 6));
+        ShredderRecipes.setRecipe(ModBlocksSpace.ore_fire, new ItemStack(ModItems.powder_fire, 6));
+
         ShredderRecipes.setRecipe(ModBlocksSpace.ore_gas_empty, new ItemStack(Blocks.GRAVEL, 1));
+        ShredderRecipes.setRecipe(new ItemStack(ModBlocksSpace.ore_rare, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(ModItems.powder_desh_mix, 1));
 
         ShredderRecipes.setRecipe(ModItemsSpace.crystal_cleaned, new ItemStack(ModItemsSpace.mineral_dust, 4));
         //ShredderRecipes.setRecipe(ModBlocksSpace.laythe_coral_block, new ItemStack(ModItems.powder_calcium, 4));

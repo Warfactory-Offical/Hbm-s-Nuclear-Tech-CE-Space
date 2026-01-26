@@ -6,6 +6,7 @@ import com.hbm.inventory.fluid.FluidStack;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.recipes.AssemblyMachineRecipes;
 import com.hbm.inventory.recipes.ChemicalPlantRecipes;
+import com.hbm.inventory.recipes.ChemplantRecipes;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.items.ModItems;
 import com.hbmspace.blocks.ModBlocksSpace;
@@ -90,26 +91,25 @@ public class ChemicalPlantRecipesTweaker {
         recs.register(new GenericRecipe("chem.butter").setup(100, 100)
                 .inputFluids(new FluidStack(Fluids.EMILK, 1000))
                 .outputItems(new ItemStack(ModItemsSpace.butter)));
-        // TODO
-        /*recs.register(new GenericRecipe("chem.strawberryicecream").setup(150, 100)
+        recs.register(new GenericRecipe("chem.strawberryicecream").setup(150, 100)
                 .inputFluids(new FluidStack(Fluids.CREAM, 1000))
                 .inputItems(new RecipesCommon.ComparableStack(ModItemsSpace.butter, 2), new RecipesCommon.ComparableStack(Blocks.PACKED_ICE, 1), new RecipesCommon.ComparableStack(ModItemsSpace.strawberry, 4))
-                .outputItems(new ItemStack(ModItemsSpace.s_cream, 4)));*/
+                .outputItems(new ItemStack(ModItemsSpace.s_cream, 4)));
 
         recs.register(new GenericRecipe("chem.minmusicecream").setup(150, 100)
                 .inputFluids(new FluidStack(Fluids.CREAM, 1000))
                 .inputItems(new RecipesCommon.ComparableStack(ModItemsSpace.butter, 4), new RecipesCommon.ComparableStack(ModBlocksSpace.minmus_smooth, 2), new RecipesCommon.ComparableStack(ModBlocksSpace.minmus_stone, 2))
                 .outputItems(new ItemStack(ModItemsSpace.min_cream, 4)));
 
-        /*recs.register(new GenericRecipe("chem.minmussmoothstone").setup(200, 1_000)
+        recs.register(new GenericRecipe("chem.minmussmoothstone").setup(200, 1_000)
                 .inputFluids(new FluidStack(Fluids.MILK, 350), new FluidStack(Fluids.EMILK, 250))
                 .inputItems(new RecipesCommon.ComparableStack(Blocks.ICE, 4), new RecipesCommon.ComparableStack(ModItemsSpace.mint_leaves, 2), new RecipesCommon.ComparableStack(ModBlocksSpace.minmus_smooth, 2))
-                .outputItems(new ItemStack(ModBlocksSpace.minmus_smooth, 4)));*/
+                .outputItems(new ItemStack(ModBlocksSpace.minmus_smooth, 4)));
         //something about a steam distilation?
-        /*recs.register(new GenericRecipe("chem.menthol").setup(50, 100)
+        recs.register(new GenericRecipe("chem.menthol").setup(50, 100)
                 .inputFluids(new FluidStack(Fluids.STEAM, 350))
                 .inputItems(new RecipesCommon.ComparableStack(ModItemsSpace.mint_leaves, 4))
-                .outputItems(new ItemStack(ModItemsSpace.ingot_menthol, 2)));*/
+                .outputItems(new ItemStack(ModItemsSpace.ingot_menthol, 2)));
         //this makes no sense but we're making stone with milk and mint so it doesn't matter
         recs.register(new GenericRecipe("chem.mentholfromminmus").setup(50, 300)
                 .inputFluids(new FluidStack(Fluids.STEAM, 350), new FluidStack(Fluids.SULFURIC_ACID, 500))
