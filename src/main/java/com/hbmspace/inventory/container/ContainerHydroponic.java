@@ -1,7 +1,7 @@
 package com.hbmspace.inventory.container;
 
-import com.hbm.inventory.SlotBattery;
-import com.hbm.inventory.SlotTakeOnly;
+import com.hbm.inventory.slot.SlotBattery;
+import com.hbm.inventory.slot.SlotTakeOnly;
 import com.hbm.inventory.container.ContainerBase;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.items.IItemHandler;

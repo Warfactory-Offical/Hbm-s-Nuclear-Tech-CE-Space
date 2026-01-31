@@ -4,7 +4,7 @@ import com.hbm.inventory.OreDictManager;
 import com.hbm.items.ItemEnums;
 import com.hbmspace.blocks.BlockEnumsSpace;
 import com.hbmspace.hazard.HazardRegistrySpace;
-import com.hbmspace.items.ItemEnumsSpace;
+import com.hbmspace.items.enums.ItemEnumsSpace;
 
 import static com.hbm.inventory.OreDictManager.DictFrame.fromOne;
 import static com.hbmspace.blocks.ModBlocksSpace.*;

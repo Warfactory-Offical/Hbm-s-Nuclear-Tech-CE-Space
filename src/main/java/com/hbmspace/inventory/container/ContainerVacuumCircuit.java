@@ -2,9 +2,9 @@ package com.hbmspace.inventory.container;
 
 import com.hbm.api.energymk2.IBatteryItem;
 import com.hbm.inventory.RecipesCommon;
-import com.hbm.inventory.SlotCraftingOutput;
-import com.hbm.inventory.SlotNonRetarded;
-import com.hbm.inventory.SlotUpgrade;
+import com.hbm.inventory.slot.SlotCraftingOutput;
+import com.hbm.inventory.slot.SlotNonRetarded;
+import com.hbm.inventory.slot.SlotUpgrade;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemMachineUpgrade;
 import com.hbmspace.inventory.recipes.VacuumCircuitRecipes;

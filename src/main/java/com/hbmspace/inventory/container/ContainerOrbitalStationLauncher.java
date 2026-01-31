@@ -1,6 +1,6 @@
 package com.hbmspace.inventory.container;
 
-import com.hbm.inventory.SlotNonRetarded;
+import com.hbm.inventory.slot.SlotNonRetarded;
 import com.hbm.inventory.container.ContainerBase;
 import com.hbm.items.weapon.ItemMissile;
 import com.hbmspace.handler.RocketStruct;

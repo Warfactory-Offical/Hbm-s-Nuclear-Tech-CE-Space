@@ -1,7 +1,7 @@
 package com.hbmspace.inventory.container;
 
 import com.hbm.api.energymk2.IBatteryItem;
-import com.hbm.inventory.SlotTakeOnly;
+import com.hbm.inventory.slot.SlotTakeOnly;
 import com.hbm.items.machine.IItemFluidIdentifier;
 import com.hbmspace.tileentity.machine.TileEntityMachineCryoDistill;
 import net.minecraft.entity.player.EntityPlayer;

@@ -2,9 +2,8 @@ package com.hbmspace.inventory.recipes.tweakers;
 
 import com.hbm.inventory.OreDictManager;
 import com.hbm.inventory.RecipesCommon;
-import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemStamp;
-import com.hbmspace.items.ItemEnumsSpace;
+import com.hbmspace.items.enums.ItemEnumsSpace;
 import com.hbmspace.items.ModItemsSpace;
 
 import static com.hbm.inventory.recipes.PressRecipes.makeRecipe;

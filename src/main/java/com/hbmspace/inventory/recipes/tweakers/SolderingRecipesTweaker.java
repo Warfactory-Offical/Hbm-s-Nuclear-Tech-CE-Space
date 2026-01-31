@@ -7,7 +7,7 @@ import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.recipes.SolderingRecipes;
 import com.hbm.items.ItemEnums;
 import com.hbm.items.ModItems;
-import com.hbmspace.items.ItemEnumsSpace;
+import com.hbmspace.items.enums.ItemEnumsSpace;
 import com.hbmspace.items.ModItemsSpace;
 import net.minecraft.item.ItemStack;
 

@@ -8,6 +8,7 @@ import com.hbmspace.dim.CelestialBody;
 import com.hbmspace.dim.SolarSystem;
 import com.hbmspace.dim.orbit.OrbitalStation;
 import com.hbmspace.entity.missile.EntityRideableRocket;
+import com.hbmspace.items.enums.ItemEnumMultiSpace;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.model.ModelRotation;

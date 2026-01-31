@@ -5,7 +5,7 @@ import com.hbm.inventory.material.Mats;
 import com.hbm.items.ModItems;
 import com.hbmspace.blocks.ModBlocksSpace;
 import com.hbmspace.inventory.materials.MatsSpace;
-import com.hbmspace.items.ItemEnumsSpace;
+import com.hbmspace.items.enums.ItemEnumsSpace;
 import com.hbmspace.items.ModItemsSpace;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

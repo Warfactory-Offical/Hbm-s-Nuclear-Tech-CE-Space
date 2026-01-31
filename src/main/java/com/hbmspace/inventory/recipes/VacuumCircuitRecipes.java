@@ -7,7 +7,7 @@ import com.hbm.inventory.RecipesCommon;
 import com.hbm.inventory.recipes.loader.SerializableRecipe;
 import com.hbm.items.ItemEnums;
 import com.hbm.items.ModItems;
-import com.hbmspace.items.ItemEnumsSpace;
+import com.hbmspace.items.enums.ItemEnumsSpace;
 import com.hbmspace.items.ModItemsSpace;
 import net.minecraft.item.ItemStack;
 

@@ -11,7 +11,7 @@ import com.hbmspace.dim.CelestialBody;
 import com.hbmspace.interfaces.AutoRegister;
 import com.hbmspace.inventory.container.ContainerDriveProcessor;
 import com.hbmspace.inventory.gui.GUIMachineDriveProcessor;
-import com.hbmspace.items.ItemEnumsSpace;
+import com.hbmspace.items.enums.ItemEnumsSpace;
 import com.hbmspace.items.ItemVOTVdrive;
 import com.hbmspace.items.ModItemsSpace;
 import com.hbmspace.tileentity.ISpaceGuiProvider;

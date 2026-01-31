@@ -16,6 +16,7 @@ import com.hbmspace.dim.SolarSystem;
 import com.hbmspace.inventory.OreDictManagerSpace;
 import com.hbmspace.inventory.recipes.tweakers.RecipeTweakerManager;
 import com.hbmspace.items.ModItemsSpace;
+import com.hbmspace.items.enums.EnumAddonWatzTypes;
 import com.hbmspace.items.weapon.ItemCustomMissilePart;
 import com.hbmspace.lib.HBMSpaceSoundHandler;
 import com.hbmspace.packet.PacketRegistry;
@@ -80,6 +81,7 @@ public class SpaceMain {
 
         SolarSystem.init();
         HbmPotion.init();
+        EnumAddonWatzTypes.init();
         ModFluidsSpace.init();
         ModItemsSpace.preInit();
         ModBlocksSpace.preInit();

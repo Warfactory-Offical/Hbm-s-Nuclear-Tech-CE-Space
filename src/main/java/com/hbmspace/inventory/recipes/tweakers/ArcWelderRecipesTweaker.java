@@ -9,7 +9,7 @@ import com.hbm.items.machine.ItemArcElectrode;
 import com.hbmspace.blocks.ModBlocksSpace;
 import com.hbmspace.inventory.OreDictManagerSpace;
 import com.hbmspace.inventory.materials.MatsSpace;
-import com.hbmspace.items.ItemEnumsSpace;
+import com.hbmspace.items.enums.ItemEnumsSpace;
 import com.hbmspace.items.ModItemsSpace;
 import net.minecraft.item.ItemStack;
 

@@ -1,8 +1,8 @@
 package com.hbmspace.inventory.container;
 
 import com.hbm.api.energymk2.IBatteryItem;
-import com.hbm.inventory.SlotBattery;
-import com.hbm.inventory.SlotTakeOnly;
+import com.hbm.inventory.slot.SlotBattery;
+import com.hbm.inventory.slot.SlotTakeOnly;
 import com.hbmspace.tileentity.machine.TileEntityMachineMilkReformer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

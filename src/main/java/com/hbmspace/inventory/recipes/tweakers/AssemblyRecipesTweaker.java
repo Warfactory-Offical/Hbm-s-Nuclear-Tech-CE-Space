@@ -11,12 +11,11 @@ import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemArcElectrode;
 import com.hbm.items.machine.ItemBatteryPack;
 import com.hbmspace.blocks.ModBlocksSpace;
-import com.hbmspace.items.ItemEnumsSpace;
+import com.hbmspace.items.enums.ItemEnumsSpace;
 import com.hbmspace.items.ModItemsSpace;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
-import static com.hbm.inventory.OreDictManager.*;
 import static com.hbm.inventory.OreDictManager.AL;
 import static com.hbm.inventory.OreDictManager.ALLOY;
 import static com.hbm.inventory.OreDictManager.ANY_CONCRETE;

@@ -14,7 +14,8 @@ import com.hbm.items.machine.ItemWatzPellet;
 import com.hbm.items.tool.ItemConveyorWand;
 import com.hbm.main.CraftingManager;
 import com.hbmspace.blocks.ModBlocksSpace;
-import com.hbmspace.items.ItemEnumsSpace;
+import com.hbmspace.items.enums.EnumAddonWatzTypes;
+import com.hbmspace.items.enums.ItemEnumsSpace;
 import com.hbmspace.items.ModItemsSpace;
 import com.hbmspace.util.RecipeUtil;
 import net.minecraft.init.Blocks;
@@ -137,15 +138,15 @@ public class CraftingManagerTweaker extends CraftingManager {
         RodRecipes.addRBMKRod(ModItemsSpace.billet_cm_fuel, ModItemsSpace.rbmk_fuel_lecm);
         RodRecipes.addRBMKRod(CMRG, ModItemsSpace.rbmk_fuel_mecm);
         RodRecipes.addRBMKRod(CM245, ModItemsSpace.rbmk_fuel_hecm);
-        addPellet(PU241,							ItemWatzPellet.EnumWatzType.PU241);
-        addPellet(AMF,								ItemWatzPellet.EnumWatzType.AMF);
-        addPellet(AMRG,								ItemWatzPellet.EnumWatzType.AMRG);
-        addPellet(CMRG,								ItemWatzPellet.EnumWatzType.CMRG);
-        addPellet(CMF,								ItemWatzPellet.EnumWatzType.CMF);
-        addPellet(BK247,							ItemWatzPellet.EnumWatzType.BK247);
-        addPellet(CF252,							ItemWatzPellet.EnumWatzType.CF252);
-        addPellet(CF251,							ItemWatzPellet.EnumWatzType.CF251);
-        addPellet(ES253,							ItemWatzPellet.EnumWatzType.ES253);
+        addPellet(PU241,							EnumAddonWatzTypes.PU241);
+        addPellet(AMF,								EnumAddonWatzTypes.AMF);
+        addPellet(AMRG,								EnumAddonWatzTypes.AMRG);
+        addPellet(CMRG,								EnumAddonWatzTypes.CMRG);
+        addPellet(CMF,								EnumAddonWatzTypes.CMF);
+        addPellet(BK247,							EnumAddonWatzTypes.BK247);
+        addPellet(CF252,							EnumAddonWatzTypes.CF252);
+        addPellet(CF251,							EnumAddonWatzTypes.CF251);
+        addPellet(ES253,							EnumAddonWatzTypes.ES253);
         CraftingManager.addShapelessAuto(new ItemStack(ModItems.rbmk_fuel_drx, 1), ModItems.rbmk_fuel_balefire, ModItems.particle_digamma);
 
         /* CraftingManager */

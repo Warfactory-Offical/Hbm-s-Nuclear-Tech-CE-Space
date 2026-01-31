@@ -1,4 +1,4 @@
-package com.hbmspace.items;
+package com.hbmspace.items.enums;
 
 public class ItemEnumsSpace {
 

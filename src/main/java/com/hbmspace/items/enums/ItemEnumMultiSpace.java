@@ -1,8 +1,10 @@
-package com.hbmspace.items;
+package com.hbmspace.items.enums;
 
 import com.hbm.items.IDynamicModels;
 import com.hbm.items.ItemEnumMulti;
 import com.hbm.items.ModItems;
+import com.hbmspace.items.IDynamicModelsSpace;
+import com.hbmspace.items.ModItemsSpace;
 import net.minecraft.creativetab.CreativeTabs;
 
 public class ItemEnumMultiSpace<E extends Enum<E>> extends ItemEnumMulti<E> implements IDynamicModelsSpace {
